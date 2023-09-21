@@ -1,5 +1,5 @@
 """
-ASGI config for OutsiderProyect project.
+ASGI config for OutsiderProject project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -12,7 +12,7 @@ import os
 from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "OutsiderProyect.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "OutsiderProject.settings")
 
 # Initialize Django ASGI application early to ensure the AppRegistry
 # is populated before importing code that may import ORM models.
