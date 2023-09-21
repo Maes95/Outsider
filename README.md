@@ -1,1 +1,1 @@
-# Outsider - TFG de Ingeniería de Computadores
+# Outsider - TFG / Ingeniería de Computadores
