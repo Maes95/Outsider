@@ -25,23 +25,35 @@ SECRET_KEY = "django-insecure-t!tf*ix*7aa)yaa-m8379yo%u**)rn!*c3m+g4l7s9#!)h1ao&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.1.13"]
+ALLOWED_HOSTS = ["localhost", "192.168.1.13", "192.168.0.16"]
 
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+    "http://localhost:3000",  # Local machine petitions
+    "http://192.168.1.13:3000",  # DEV-LAN Testing
+    "http://192.168.0.16:3000",  # DEV-LAN Testing
+    "http://172.27.48.1:3000",  # DEV-LAN Testing
+)
 
 # Application definition
 
 INSTALLED_APPS = [
     "daphne",
+    "channels",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "chat",
+    "rest_framework_swagger",
+    "drf_yasg",
+    "corsheaders",
+    "logic",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -78,7 +90,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379), ("192.168.1.13", 6379)],
+            "hosts": [("127.0.0.1", 6379), ("192.168.0.16", 6379)],
         },
     },
 }

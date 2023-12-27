@@ -16,9 +16,32 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
 
+# Admin urls
+# admin.site.site_url = "http://192.168.1.13:8080/"
+admin.site.site_url = "http://192.168.0.16:8080/"
+admin.site.site_header = "Django Administration - TFG"
+
+# Swagger url configuration
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Swagger API - Outsider",
+        default_version="v1.0",
+        description="Swagger",
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
-    path("chat/", include("chat.urls")),
+    path(
+        "swagger/",
+        schema_view.with_ui("swagger", cache_timeout=0),
+        name="schema-swagger-ui",
+    ),
+    path("logic/", include("logic.urls")),
     path("admin/", admin.site.urls),
 ]
