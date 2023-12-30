@@ -66,14 +66,14 @@
               margin-right: 1.5rem;
             "
             ref="chatInput"
-            @submit.prevent="handleMessageSubmit(username, text)"
+            @submit.prevent="handleChatSubmit(username, chatText)"
           >
             <v-text-field
               class="mx-auto"
-              v-model="text"
+              v-model="chatText"
               placeholder="Mensaje"
               append-inner-icon="mdi-send"
-              @click:append-inner="handleMessageSubmit(username, text)"
+              @click:append-inner="handleChatSubmit(username, chatText)"
             ></v-text-field>
           </form>
         </div>
@@ -90,19 +90,17 @@
       />
 
       <!-- Start game button -->
-      <div>
-        <v-btn
-          style="margin-bottom: 2rem; margin-top: 1rem; margin-right: 1rem"
-          :disabled="canStartGame()"
-          @click="startGame()"
-          class="text-none"
-          prepend-icon="mdi-nintendo-game-boy"
-          append-icon="mdi-check-circle-outline"
-          rounded
-        >
-          Empezar partida
-        </v-btn>
-      </div>
+      <v-btn
+        style="margin-top: 1rem; margin-bottom: 2rem; margin-right: 1rem"
+        :disabled="canStartGame()"
+        @click="startGame()"
+        class="text-none"
+        prepend-icon="mdi-nintendo-game-boy"
+        append-icon="mdi-check-circle-outline"
+        rounded
+      >
+        Empezar partida
+      </v-btn>
     </v-responsive>
 
     <!-- GAME -->
@@ -354,26 +352,28 @@ import Constants from "../constants";
 
 export default {
   data: () => ({
-    window: 0,
+    // General variables
+    user: null,
     username: "",
     roomName: null,
     webSocket: null,
-    messages: [],
-    text: "",
-
-    user: null,
     currentUsers: [],
 
-    startedGame: false,
+    // Chat variables
+    messages: [],
+    chatText: "",
+    chatLocation: false,
 
+    // Game variables
+    startedGame: false,
     wordClue: "",
     newWord: "",
     currentSlide: 0,
     repeatedWordDialog: false,
 
+    // Results variables
     startedVoting: false,
     sendingVote: false,
-
     showResults: false,
     playerOut: null,
 
@@ -392,7 +392,7 @@ export default {
     },
   }),
 
-  mounted() {
+  beforeMount() {
     // Check that the user has an username
     this.username = this.$store.state.userName;
     if (this.username.length == 0) {
@@ -434,12 +434,13 @@ export default {
       );
 
       this.webSocket.addEventListener("open", (event) => {
-        const messageData = {
-          action: "connection",
-          username: this.username,
-          message: "",
-        };
-        this.webSocket.send(JSON.stringify(messageData));
+        this.webSocket.send(
+          JSON.stringify({
+            action: "connection",
+            username: this.username,
+            message: "",
+          })
+        );
         console.log("Connection stablished");
       });
 
@@ -451,18 +452,22 @@ export default {
         const messageData = JSON.parse(event.data);
 
         if (!("message_type" in messageData)) return;
-
         const messageType = messageData["message_type"];
 
-        if (messageType == "startGame") {
+        this.messageListener(messageData, messageType);
+      });
+    },
+
+    messageListener(messageData, messageType) {
+      switch (messageType) {
+        case "startGame":
           this.currentUsers = JSON.parse(messageData["actual_users"]);
           this.user = JSON.parse(messageData["user"]);
           this.startedGame = true;
           this.wordClue = messageData["key_word"];
           return;
-        }
 
-        if (messageType == "nextTurn") {
+        case "nextTurn":
           if (this.currentSlide + 1 >= this.currentUsers.length) {
             // Ending round/game -> Voting phase
             this.startedVoting = true;
@@ -471,17 +476,14 @@ export default {
           this.currentUsers = JSON.parse(messageData["actual_users"]);
           this.user = JSON.parse(messageData["user"]);
           return;
-        }
 
-        if (messageType == "votingOutsider") {
+        case "votingOutsider":
           this.sendResults(messageData["player_out"]);
           return;
-        }
 
-        if (messageType == "votingComplete") {
+        case "votingComplete":
           // Check vote results
           const playerOut = messageData["player_out"];
-
           this.showResults = true;
 
           if (playerOut) {
@@ -490,55 +492,57 @@ export default {
           } else {
             // Else -> Tie detected
           }
-
           return;
-        }
+      }
 
-        // Update actual connections
-        if (messageType == "connection" || messageType == "disconnection") {
-          this.currentUsers = JSON.parse(messageData["actual_users"]);
-          this.user = JSON.parse(messageData["user"]);
-        }
+      // Update actual connections
+      if (messageType == "connection" || messageType == "disconnection") {
+        this.currentUsers = JSON.parse(messageData["actual_users"]);
+        this.user = JSON.parse(messageData["user"]);
+      }
 
-        // Chat messages configuration
-        this.messages.push(messageData);
+      // Chat messages configuration
+      this.messages.push(messageData);
 
-        if (this.messages.length == 50) this.messages = [];
+      if (this.messages.length == 50) this.messages = [];
 
-        this.$nextTick(function () {
-          // nextTick -> DOM is now updated
-          if (this.$refs.chat[this.$refs.chat.length - 1])
-            this.$refs.chat[this.$refs.chat.length - 1].scrollIntoView({
-              block: "nearest",
-              behavior: "smooth",
-            });
-        });
+      this.$nextTick(function () {
+        // nextTick -> DOM is now updated
+        if (this.$refs.chat[this.$refs.chat.length - 1])
+          this.$refs.chat[this.$refs.chat.length - 1].scrollIntoView({
+            block: "nearest",
+            behavior: "smooth",
+          });
       });
     },
 
-    handleMessageSubmit(username, text) {
-      if (text.length == 0) return;
+    handleChatSubmit(username, chatText) {
+      if (chatText.length == 0) return;
 
-      if (text.length >= 100) {
-        this.text = "";
+      if (chatText.length >= 100) {
+        this.chatText = "";
         alert("Evita spamear en el chat (づ ◕‿◕ )づ");
 
         return;
       }
 
-      const messageData = { username: username, message: text };
-
-      // Send the message data to the server using WebSockets
-      this.webSocket.send(JSON.stringify(messageData));
-      this.text = "";
+      this.webSocket.send(
+        JSON.stringify({
+          action: "default",
+          message: chatText,
+          username: username,
+        })
+      );
+      this.chatText = "";
     },
 
     startGame() {
-      const messageData = {
-        action: "startGame",
-        message: "",
-      };
-      this.webSocket.send(JSON.stringify(messageData));
+      this.webSocket.send(
+        JSON.stringify({
+          action: "startGame",
+          message: "",
+        })
+      );
     },
 
     nextTurn() {
@@ -551,33 +555,24 @@ export default {
         return;
       }
 
-      const messageData = {
-        action: "nextTurn",
-        message: this.newWord,
-        order: this.currentUsers,
-      };
-
-      this.webSocket.send(JSON.stringify(messageData));
+      this.webSocket.send(
+        JSON.stringify({
+          action: "nextTurn",
+          message: this.newWord,
+          order: this.currentUsers,
+        })
+      );
     },
 
     sendVote(player) {
       this.sendingVote = true;
 
-      const messageData = {
-        action: "votingOutsider",
-        message: player.id,
-      };
-
-      this.webSocket.send(JSON.stringify(messageData));
-    },
-
-    sendResults(playerOut) {
-      // Vote completed -> Send results to all the player
-      const messageData = {
-        action: "votingComplete",
-        message: playerOut,
-      };
-      this.webSocket.send(JSON.stringify(messageData));
+      this.webSocket.send(
+        JSON.stringify({
+          action: "votingOutsider",
+          message: player.id,
+        })
+      );
     },
 
     finishRound() {
