@@ -1,4 +1,7 @@
 <template>
+  <!-- Disconnection dialog -->
+  <DisconnectionDialog v-model:disconnection="disconnection" />
+
   <v-container class="fill-height">
     <!-- LOBBY -->
     <v-responsive
@@ -21,8 +24,8 @@
               :style="{
                 color:
                   currentUsers.length > 2 && currentUsers.length <= 5
-                    ? 'white'
-                    : 'black',
+                    ? '#47ffda'
+                    : '#ffac2b',
               }"
             >
               <b> {{ currentUsers.length }} / 5</b>
@@ -42,42 +45,12 @@
       </v-card>
 
       <!-- Chat -->
-      <v-card
-        style="margin-top: 2rem; margin-bottom: 2rem"
-        class="mx-auto"
-        max-width="400"
-      >
-        <div id="chat" style="margin: 1.25rem">
-          <div
-            ref="chat"
-            style="margin-bottom: 1rem"
-            class="text-left"
-            v-for="message in messages"
-          >
-            <b>{{ message.username }}</b> - {{ message.message }}
-          </div>
-        </div>
-
-        <div>
-          <form
-            style="
-              margin-bottom: 0.5rem;
-              margin-left: 1.5rem;
-              margin-right: 1.5rem;
-            "
-            ref="chatInput"
-            @submit.prevent="handleChatSubmit(username, chatText)"
-          >
-            <v-text-field
-              class="mx-auto"
-              v-model="chatText"
-              placeholder="Mensaje"
-              append-inner-icon="mdi-send"
-              @click:append-inner="handleChatSubmit(username, chatText)"
-            ></v-text-field>
-          </form>
-        </div>
-      </v-card>
+      <ChatComponent
+        ref="chat"
+        v-model:username="username"
+        v-model:messages="messages"
+        v-model:webSocket="webSocket"
+      />
 
       <!-- Room code -->
       <v-text-field
@@ -109,7 +82,7 @@
       class="align-center text-center fill-height"
     >
       <!-- PLayer role and given 'password' -->
-      <h2 style="margin-bottom: 2rem">
+      <h2 style="margin-bottom: 2rem; margin-top: 1rem">
         <v-icon icon="mdi-account-circle" /> {{ username }} ||
         <span style="color: #ffac2b" v-if="user.outsider">
           Outsider <v-icon icon="mdi-emoticon-devil-outline" />
@@ -126,149 +99,157 @@
         </p>
       </h2>
 
-      <!-- Actual turn interaction window -->
-      <v-card
-        style="margin-bottom: 2rem"
-        variant="elevated"
-        class="mx-auto"
-        max-width="30rem"
-        color="#545454"
-      >
-        <v-window
-          disabled
-          v-model="currentSlide"
-          style="height: 100%; display: grid; align-content: center"
-        >
-          <v-form @submit.prevent ref="nextTurn">
-            <v-window-item v-for="player in currentUsers">
-              <v-sheet
-                color="#545454"
-                class="mx-auto"
-                style="width: 25rem; padding-bottom: 1rem"
-              >
-                <!-- Header -->
-                <div style="padding-top: 2rem">
-                  <h2 v-if="!startedVoting">
-                    Turno de:
-                    <span style="color: #9cb443"> {{ player.username }}</span>
-                  </h2>
-                  <h2 v-else>
-                    <v-chip
-                      size="x-large"
-                      append-icon="mdi-skull"
-                      prepend-icon="mdi-skull"
-                    >
-                      Votaciones! - Elige al outsider del grupo
-                    </v-chip>
-                  </h2>
-                </div>
+      <v-row style="max-width: 60rem" class="mx-auto">
+        <!-- Actual turn interaction window -->
+        <v-col>
+          <v-card
+            style="margin-bottom: 2rem"
+            variant="elevated"
+            class="mx-auto"
+            max-width="30rem"
+            color="#545454"
+          >
+            <v-window
+              disabled
+              v-model="currentSlide"
+              style="height: 100%; display: grid; align-content: center"
+            >
+              <v-form @submit.prevent ref="nextTurn">
+                <v-window-item v-for="player in currentUsers">
+                  <v-sheet
+                    color="#545454"
+                    class="mx-auto"
+                    style="padding-bottom: 1rem"
+                  >
+                    <!-- Header -->
+                    <div style="padding-top: 2rem">
+                      <h2 v-if="!startedVoting">
+                        Turno de:
+                        <span style="color: #9cb443">
+                          {{ player.username }}</span
+                        >
+                      </h2>
+                      <h2 v-else>
+                        <v-chip
+                          size="x-large"
+                          append-icon="mdi-skull"
+                          prepend-icon="mdi-skull"
+                        >
+                          Votaciones! - Elige al outsider del grupo
+                        </v-chip>
+                      </h2>
+                    </div>
 
-                <v-divider
-                  style="margin-top: 2rem; margin-bottom: 2rem"
-                  :thickness="3"
-                />
-
-                <!-- Current users/words list -->
-                <h2 class="h2-spacing">Palabras usadas:</h2>
-                <v-list-item
-                  style="margin-top: 1rem"
-                  v-for="player in currentUsers"
-                >
-                  <h3>
-                    <v-icon
-                      v-if="player.id == user.id"
-                      icon="mdi-account-circle"
+                    <v-divider
+                      style="margin-top: 2rem; margin-bottom: 2rem"
+                      :thickness="3"
                     />
 
-                    {{ player.username }} -
-                    <span style="color: #47ffda" v-if="player.guessWord">
-                      {{ player.guessWord }}</span
+                    <!-- Current users/words list -->
+                    <h2 class="h2-spacing">Palabras usadas:</h2>
+                    <v-list-item
+                      style="margin-top: 1rem"
+                      v-for="player in currentUsers"
                     >
-                    <i v-else> No ha respondido </i>
+                      <h3>
+                        <v-icon
+                          v-if="player.id == user.id"
+                          icon="mdi-account-circle"
+                        />
 
-                    <span v-if="startedVoting">
-                      &nbsp
+                        {{ player.username }} -
+                        <span style="color: #47ffda" v-if="player.guessWord">
+                          {{ player.guessWord }}</span
+                        >
+                        <i v-else> No ha respondido </i>
+
+                        <span v-if="startedVoting">
+                          &nbsp
+                          <v-btn
+                            density="comfortable"
+                            variant="outlined"
+                            style="color: #ffc168"
+                            prepend-icon="mdi-skull"
+                            :rounded="true"
+                            :loading="sendingVote"
+                            @click="sendVote(player)"
+                          >
+                            Eliminar
+                            <template v-slot:loader>
+                              <v-progress-linear
+                                indeterminate
+                              ></v-progress-linear>
+                            </template>
+                          </v-btn>
+                        </span>
+                      </h3>
+                    </v-list-item>
+
+                    <v-divider
+                      style="margin-top: 2rem; margin-bottom: 2rem"
+                      :thickness="3"
+                    />
+
+                    <!-- New word form -->
+                    <v-card
+                      style="margin-left: 1rem; margin-right: 1rem"
+                      color="#323232"
+                    >
+                      <v-text-field
+                        class="mx-auto"
+                        style="
+                          margin-top: 1rem;
+                          margin-bottom: 0.75rem;
+                          padding-left: 2rem;
+                          padding-right: 2rem;
+                        "
+                        v-model="newWord"
+                        label="Hmmmmmm..."
+                        clearable
+                        @keydown.space.prevent
+                        :rules="wordRules"
+                        :disabled="!(user.state == 'PLAYER_TURN')"
+                      />
+
                       <v-btn
-                        density="comfortable"
-                        variant="outlined"
-                        style="color: #ffc168"
-                        prepend-icon="mdi-skull"
+                        v-if="!startedVoting"
+                        class="text-none"
+                        style="margin-bottom: 1rem"
+                        @click="nextTurn()"
                         :rounded="true"
-                        :loading="sendingVote"
-                        @click="sendVote(player)"
+                        :disabled="!(user.state == 'PLAYER_TURN')"
+                        nextTurn
                       >
-                        Eliminar
-                        <template v-slot:loader>
-                          <v-progress-linear indeterminate></v-progress-linear>
-                        </template>
+                        Enviar
                       </v-btn>
-                    </span>
-                  </h3>
-                </v-list-item>
+                    </v-card>
+                  </v-sheet>
+                </v-window-item>
+              </v-form>
+            </v-window>
+          </v-card>
+        </v-col>
 
-                <v-divider
-                  style="margin-top: 2rem; margin-bottom: 2rem"
-                  :thickness="3"
-                />
+        <!-- Chat and player turn indicators-->
+        <v-col v-if="showChat">
+          <ChatComponent
+            style="margin-top: 2rem"
+            ref="chat"
+            v-model:username="username"
+            v-model:messages="messages"
+            v-model:webSocket="webSocket"
+          />
 
-                <!-- New word form -->
-                <v-card color="#323232">
-                  <v-text-field
-                    class="mx-auto"
-                    style="
-                      width: 20rem;
-                      margin-top: 1rem;
-                      margin-bottom: 0.75rem;
-                    "
-                    v-model="newWord"
-                    label="Hmmmmmm..."
-                    clearable
-                    @keydown.space.prevent
-                    :rules="wordRules"
-                    :disabled="!(user.state == 'PLAYER_TURN')"
-                  />
-
-                  <v-btn
-                    v-if="!startedVoting"
-                    class="text-none"
-                    style="margin-bottom: 1rem"
-                    @click="nextTurn()"
-                    :rounded="true"
-                    :disabled="!(user.state == 'PLAYER_TURN')"
-                    nextTurn
-                  >
-                    Enviar
-                  </v-btn>
-                </v-card>
-              </v-sheet>
-            </v-window-item>
-          </v-form>
-        </v-window>
-      </v-card>
+          <div v-if="!startedVoting" style="margin-top: 6rem">
+            <TurnIndicatorComponent v-model:user="user" />
+          </div>
+        </v-col>
+      </v-row>
 
       <!-- Player turn indicators -->
-      <div v-if="!startedVoting">
-        <div v-if="user.state == 'PLAYER_TURN'">
-          <v-chip variant="flat" size="x-large">
-            <v-icon start color="#9cb443" icon="mdi mdi-circle" />
-            <h2>Es tu turno!</h2>
-          </v-chip>
-          <h3 class="mx-auto" style="margin-top: 1rem; max-width: 20rem">
-            Escribe una palabra semejante a la
-            <u v-if="user.outsider" style="color: #ffac2b"> contraseña</u>
-            <u v-else style="color: #47ffda"> contraseña</u>
-            fijándote en las palabras escritas por los otros jugadores
-          </h3>
-        </div>
-
-        <div v-else>
-          <v-chip variant="flat" size="x-large">
-            <v-icon start color="#ffac2b" icon="mdi mdi-circle" />
-            <h2>Espera a tu turno...</h2>
-          </v-chip>
-        </div>
+      <div v-if="!showChat" style="margin-bottom: 1rem">
+        <TurnIndicatorComponent v-model:user="user" />
       </div>
-
       <!-- Repeated word dialogue -->
       <v-dialog max-width="22.5rem" v-model="repeatedWordDialog">
         <template v-slot:default="{ isActive }">
@@ -294,7 +275,7 @@
     </v-responsive>
 
     <!-- RESULTS -->
-    <v-dialog v-model="showResults">
+    <v-dialog max-width="700" width="auto" v-model="showResults">
       <template v-slot:default="{ isActive }">
         <v-card color="#323232" title="Resultados">
           <v-card-text>
@@ -346,6 +327,12 @@
 }
 </style>
 
+<script setup>
+import ChatComponent from "@/components/ChatComponent.vue";
+import TurnIndicatorComponent from "@/components/TurnIndicatorComponent.vue";
+import DisconnectionDialog from "@/components/DisconnectionDialog.vue";
+</script>
+
 <script>
 import axios from "axios";
 import Constants from "../constants";
@@ -356,13 +343,13 @@ export default {
     user: null,
     username: "",
     roomName: null,
-    webSocket: null,
+    webSocket: 0,
     currentUsers: [],
+    disconnection: false,
 
     // Chat variables
     messages: [],
-    chatText: "",
-    chatLocation: false,
+    showChat: false,
 
     // Game variables
     startedGame: false,
@@ -411,21 +398,31 @@ export default {
   },
 
   created() {
+    this.showChat = !this.isMobile(); // Show in-game chat if not mobile
     this.roomName = this.$route.params.roomName;
     window.addEventListener("beforeunload", function (event) {
       event.preventDefault();
     });
   },
 
-  beforeRouteLeave(to, from, next) {
-    // Websocket end connection
+  beforeUnmount() {
+    // Close webSocket before leaving
     if (this.webSocket) {
       this.webSocket.close();
     }
-    next();
   },
 
   methods: {
+    isMobile() {
+      if (/Android|iPhone/i.test(navigator.userAgent)) {
+        return true;
+      } else if (screen.width < 1024) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
     webSocketConfiguration() {
       console.log("Starting connection to websocket");
 
@@ -501,39 +498,14 @@ export default {
         this.user = JSON.parse(messageData["user"]);
       }
 
+      // Check minimum players
+      if (this.startedGame && !this.showResults && this.currentUsers.length < 3)
+        this.disconnection = true;
+
       // Chat messages configuration
       this.messages.push(messageData);
 
       if (this.messages.length == 50) this.messages = [];
-
-      this.$nextTick(function () {
-        // nextTick -> DOM is now updated
-        if (this.$refs.chat[this.$refs.chat.length - 1])
-          this.$refs.chat[this.$refs.chat.length - 1].scrollIntoView({
-            block: "nearest",
-            behavior: "smooth",
-          });
-      });
-    },
-
-    handleChatSubmit(username, chatText) {
-      if (chatText.length == 0) return;
-
-      if (chatText.length >= 100) {
-        this.chatText = "";
-        alert("Evita spamear en el chat (づ ◕‿◕ )づ");
-
-        return;
-      }
-
-      this.webSocket.send(
-        JSON.stringify({
-          action: "default",
-          message: chatText,
-          username: username,
-        })
-      );
-      this.chatText = "";
     },
 
     startGame() {
@@ -576,7 +548,7 @@ export default {
     },
 
     finishRound() {
-      location.reload();
+      this.$router.push("/");
     },
   },
 };

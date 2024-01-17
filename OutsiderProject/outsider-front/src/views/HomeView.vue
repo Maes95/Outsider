@@ -178,6 +178,13 @@ export default {
       axios
         .get(serverPath)
         .then((response) => {
+          if (response.data.started_game) {
+            this.errorDialogText =
+              "Ahora mismo se está jugando un partida en esta sala. Prueba con otro código.";
+            this.errorDialog = true;
+            return;
+          }
+
           this.$router.push({ path: routerPath });
         })
         .catch((error) => {

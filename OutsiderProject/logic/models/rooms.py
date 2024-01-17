@@ -21,5 +21,11 @@ class RoomModel(models.Model):
         null=True,
     )
 
+    started_game = models.BooleanField(
+        verbose_name="Partida en transcurso",
+        help_text="Indica si la partida ha empezado",
+        default=False,
+    )
+
     def __str__(self):
         return self.name

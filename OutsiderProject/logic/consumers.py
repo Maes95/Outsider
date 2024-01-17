@@ -146,6 +146,9 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
 
                 self.db_room.current_connections[0]["state"] = State.PLAYER_TURN
 
+                self.db_room.started_game = True
+                await self.update_room(self.db_room)
+
                 message = {
                     "outsider": self.outsider["id"],
                     "selected_word": self.selected_word,
@@ -214,7 +217,7 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
         if self.db_room.current_connections[0]["id"] == self.user.id:
             self.user.captain = True
 
-        await self.updateConnections(type="connection", username=event["username"])
+        await self.updateConnections(type="disconnection", username=event["username"])
 
     async def default(self, event):
         message = event["message"]

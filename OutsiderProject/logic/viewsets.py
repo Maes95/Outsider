@@ -43,7 +43,7 @@ class RoomViewSet(GenericViewSet, RetrieveModelMixin, DestroyModelMixin):
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = RoomModel
-        fields = ["id", "name"]
+        fields = ["id", "name", "started_game"]
 
 
 class WordListViewSet(GenericViewSet, RetrieveModelMixin):

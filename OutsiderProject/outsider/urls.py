@@ -21,8 +21,8 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
 # Admin urls
-# admin.site.site_url = "http://192.168.1.13:8080/"
-admin.site.site_url = "http://192.168.0.16:8080/"
+# admin.site.site_url = "http://192.168.0.16:8080/"
+admin.site.site_url = "http://192.168.1.13:8080/"
 admin.site.site_header = "Django Administration - TFG"
 
 # Swagger url configuration
