@@ -87,6 +87,7 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
             if self.db_room.current_connections:
                 if self.user.captain:
                     self.db_room.current_connections[0]["captain"] = True
+                self.db_room.started_game = True
                 await self.update_room(self.db_room)
             else:
                 # Delete current room if there's no users left
@@ -178,7 +179,18 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
             elif action == "votingOutsider":
                 message_type = "votingOutsider"
                 message = {
-                    "playerVote": message,
+                    "player_vote": message,
+                }
+
+            # Check if the Ousider guessed correctly the password
+            elif action == "lastChance":
+                message_type = "lastChance"
+
+                guess = message.casefold()
+                key_word = self.selected_word["a"].casefold()
+
+                message = {
+                    "last_chance_guess": guess == key_word,
                 }
 
         # Send message to room group
@@ -237,17 +249,16 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
 
     async def startGame(self, event):
         turn_order = event["message"]["turn_order"]
-        key_word = event["message"]["selected_word"]
         outsider = event["message"]["outsider"]
 
-        if self.user.captain:
-            self.outsider = outsider
+        self.selected_word = event["message"]["selected_word"]
+        self.outsider = outsider
 
         if outsider == self.user.id:
             self.user.outsider = True
-            key_word = key_word["b"]
+            key_word = self.selected_word["b"]
         else:
-            key_word = key_word["a"]
+            key_word = self.selected_word["a"]
 
         if turn_order[0]["id"] == self.user.id:
             self.user.state = State.PLAYER_TURN
@@ -282,7 +293,7 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
         if not self.user.captain:
             return
 
-        self.votes.append(event["message"]["playerVote"])
+        self.votes.append(event["message"]["player_vote"])
 
         if len(self.votes) >= len(self.db_room.current_connections):
             counter = Counter(self.votes).most_common()
@@ -315,6 +326,17 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
             content={
                 "message_type": "votingComplete",
                 "player_out": player_out,
+            }
+        )
+
+    async def lastChance(self, event):
+        last_chance_guess = event["message"]["last_chance_guess"]
+
+        # Send message to WebSocket
+        await self.send_json(
+            content={
+                "message_type": "lastChanceGuess",
+                "last_chance_guess": last_chance_guess,
             }
         )
 

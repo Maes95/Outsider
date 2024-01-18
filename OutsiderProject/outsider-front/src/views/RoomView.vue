@@ -99,6 +99,7 @@
         </p>
       </h2>
 
+      <!-- Turn information and chat -->
       <v-row style="max-width: 60rem" class="mx-auto">
         <!-- Actual turn interaction window -->
         <v-col>
@@ -250,6 +251,7 @@
       <div v-if="!showChat" style="margin-bottom: 1rem">
         <TurnIndicatorComponent v-model:user="user" />
       </div>
+
       <!-- Repeated word dialogue -->
       <v-dialog max-width="22.5rem" v-model="repeatedWordDialog">
         <template v-slot:default="{ isActive }">
@@ -275,45 +277,13 @@
     </v-responsive>
 
     <!-- RESULTS -->
-    <v-dialog max-width="700" width="auto" v-model="showResults">
-      <template v-slot:default="{ isActive }">
-        <v-card color="#323232" title="Resultados">
-          <v-card-text>
-            <h3 v-if="playerOut">
-              <span style="color: #47ffda">{{ playerOut.username }} </span>
-              ha sido eliminado y era
-              <span v-if="playerOut.outsider">
-                <span style="color: #ffac2b"> outsider </span>
-                por ello han ganado el resto de jugadores inocentes
-                <v-icon
-                  style="color: #9cb443"
-                  icon="mdi-emoticon-happy-outline"
-                />
-              </span>
-              <span v-else>
-                <span style="color: #9cb443"> inocente </span>
-                por ende ha ganado el jugador Outsider
-                <v-icon
-                  style="color: #ffac2b"
-                  icon="mdi-emoticon-devil-outline"
-                />
-              </span>
-            </h3>
-            <h3 v-else>Empate en las votaciones. Nadie gana O.o</h3>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              style="margin: 0.5rem"
-              variant="tonal"
-              text="Terminar partida"
-              rounded
-              class="text-none"
-              @click="finishRound()"
-            ></v-btn>
-          </v-card-actions>
-        </v-card>
-      </template>
+    <v-dialog persistent max-width="700" width="auto" v-model="showResults">
+      <ResultsComponent
+        v-model:user="user"
+        v-model:playerOut="playerOut"
+        v-model:lastChance="lastChance"
+        v-model:webSocket="webSocket"
+      />
     </v-dialog>
   </v-container>
 </template>
@@ -331,6 +301,7 @@
 import ChatComponent from "@/components/ChatComponent.vue";
 import TurnIndicatorComponent from "@/components/TurnIndicatorComponent.vue";
 import DisconnectionDialog from "@/components/DisconnectionDialog.vue";
+import ResultsComponent from "@/components/ResultsComponent.vue";
 </script>
 
 <script>
@@ -363,6 +334,8 @@ export default {
     sendingVote: false,
     showResults: false,
     playerOut: null,
+    lastChance: false,
+    lastChanceWord: "",
 
     wordRules: [
       (value) => !!value || "Escribe una palabra",
@@ -457,6 +430,21 @@ export default {
 
     messageListener(messageData, messageType) {
       switch (messageType) {
+        case "connection":
+        case "disconnection":
+          let checkUsers = JSON.parse(messageData["actual_users"]);
+
+          // Check minimum players
+          if (this.startedGame && !this.showResults && checkUsers.length < 3) {
+            this.disconnection = true;
+          } else if (this.startedGame && this.showResults) {
+            return;
+          } else {
+            this.currentUsers = checkUsers;
+            this.user = JSON.parse(messageData["user"]);
+          }
+          break;
+
         case "startGame":
           this.currentUsers = JSON.parse(messageData["actual_users"]);
           this.user = JSON.parse(messageData["user"]);
@@ -486,25 +474,15 @@ export default {
           if (playerOut) {
             // Check the most voted player
             this.playerOut = playerOut;
+            this.lastChance = playerOut.outsider;
           } else {
             // Else -> Tie detected
           }
           return;
       }
 
-      // Update actual connections
-      if (messageType == "connection" || messageType == "disconnection") {
-        this.currentUsers = JSON.parse(messageData["actual_users"]);
-        this.user = JSON.parse(messageData["user"]);
-      }
-
-      // Check minimum players
-      if (this.startedGame && !this.showResults && this.currentUsers.length < 3)
-        this.disconnection = true;
-
       // Chat messages configuration
       this.messages.push(messageData);
-
       if (this.messages.length == 50) this.messages = [];
     },
 
@@ -545,10 +523,6 @@ export default {
           message: player.id,
         })
       );
-    },
-
-    finishRound() {
-      this.$router.push("/");
     },
   },
 };
