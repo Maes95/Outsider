@@ -422,7 +422,7 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
                 current_playing = current_playing + 1
 
             # Check if the players can continue playing without the eliminated player
-            if player_out["outsider"]:
+            if player_out and player_out["outsider"]:
                 self.db_room.number_outsiders -= 1
 
             # Send message to room group
@@ -448,7 +448,7 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
         continue_playing = event["continue_playing"]
         actual_users = event["actual_users"]
 
-        if player_out["id"] == self.user.id:
+        if player_out and player_out["id"] == self.user.id:
             self.user.state = State.OUT
 
         await self.send_json(

@@ -43,7 +43,7 @@
 
           <!-- Last chance -->
           <span v-if="playerOut.outsider && !lastChanceEnd">
-            tendría que ser eliminado ya que es un
+            tendría que ser eliminado ya que es el último outsider
             <span style="color: #ffac2b"> Outsider</span>, pero tendrá una
             oportunidad adicional para ganar adivinando la
             <span style="color: #47ffda">contraseña</span>.
@@ -113,7 +113,7 @@
             <p v-if="continuePlaying" style="margin-top: 1rem">
               Podéis seguir jugando sin
               <span style="color: #47ffda"> {{ playerOut.username }}</span> e
-              intentar encontrar al
+              intentar encontrar al jugador/jugadores
               <span style="color: #ffac2b"> Outsider</span>. El jugador que haya
               creado la sala (capitán) toma la decisión.
               <span style="color: #47ffda" v-if="user.captain">
@@ -140,7 +140,7 @@
         <h1 style="margin-bottom: 1rem; font-size: x-large">Empate...</h1>
         <p>Empate en las votaciones. Nadie gana U.u</p>
         <p style="margin-top: 1rem">
-          Podeis seguir jugando e intentar encontrar al
+          Podeis seguir jugando e intentar encontrar al jugador/jugadores
           <span style="color: #ffac2b"> Outsider</span>. El jugador que haya
           creado la sala (capitán) toma la decisión.
           <span style="color: #47ffda" v-if="user.captain">
