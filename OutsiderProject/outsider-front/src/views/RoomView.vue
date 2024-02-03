@@ -23,12 +23,12 @@
               class="text-right"
               :style="{
                 color:
-                  currentUsers.length > 2 && currentUsers.length <= 5
+                  currentUsers.length > 2 && currentUsers.length <= 8
                     ? '#47ffda'
                     : '#ffac2b',
               }"
             >
-              <b> {{ currentUsers.length }} / 5</b>
+              <b> {{ currentUsers.length }} / 8</b>
             </v-col>
           </v-row>
         </v-card-title>
@@ -83,20 +83,33 @@
     >
       <!-- PLayer role and given 'password' -->
       <h2 style="margin-bottom: 2rem; margin-top: 1rem">
-        <v-icon icon="mdi-account-circle" /> {{ username }} ||
-        <span style="color: #ffac2b" v-if="user.outsider">
-          Outsider <v-icon icon="mdi-emoticon-devil-outline" />
+        <v-icon
+          style="color: #47ffda"
+          v-if="user.captain"
+          icon="mdi-crown-circle-outline"
+        />
+        -
+        <span v-if="user.state == State.OUT">
+          <v-icon icon="mdi-account-circle" /> {{ username }} - Eliminado
+          <v-icon icon="mdi-emoticon-confused-outline" />
+          <p style="margin-top: 1rem">Contraseña: ???</p>
         </span>
-        <span style="color: #9cb443" v-else>
-          Inocente <v-icon icon="mdi-emoticon-happy-outline" />
+        <span v-else>
+          <v-icon icon="mdi-account-circle" /> {{ username }} ||
+          <span style="color: #ffac2b" v-if="user.outsider">
+            Outsider <v-icon icon="mdi-emoticon-devil-outline" />
+          </span>
+          <span style="color: #9cb443" v-else>
+            Inocente <v-icon icon="mdi-emoticon-happy-outline" />
+          </span>
+          <p style="margin-top: 1rem">
+            Contraseña:
+            <span
+              :style="{ color: user.outsider == true ? '#ffac2b' : '#47ffda' }"
+              >{{ wordClue }}</span
+            >
+          </p>
         </span>
-        <p style="margin-top: 1rem">
-          Contraseña:
-          <span
-            :style="{ color: user.outsider == true ? '#ffac2b' : '#47ffda' }"
-            >{{ wordClue }}</span
-          >
-        </p>
       </h2>
 
       <!-- Turn information and chat -->
@@ -106,27 +119,17 @@
           <v-card
             style="margin-bottom: 2rem"
             variant="elevated"
-            class="mx-auto"
-            max-width="30rem"
             color="#545454"
           >
-            <v-window
-              disabled
-              v-model="currentSlide"
-              style="height: 100%; display: grid; align-content: center"
-            >
+            <v-window disabled v-model="currentSlide">
               <v-form @submit.prevent ref="nextTurn">
                 <v-window-item v-for="player in currentUsers">
-                  <v-sheet
-                    color="#545454"
-                    class="mx-auto"
-                    style="padding-bottom: 1rem"
-                  >
+                  <v-sheet color="#545454" style="padding-bottom: 1rem">
                     <!-- Header -->
                     <div style="padding-top: 2rem">
                       <h2 v-if="!startedVoting">
                         Turno de:
-                        <span style="color: #9cb443">
+                        <span style="color: #47ffda">
                           {{ player.username }}</span
                         >
                       </h2>
@@ -136,8 +139,8 @@
                           append-icon="mdi-skull"
                           prepend-icon="mdi-skull"
                         >
-                          Votaciones! - Elige al outsider del grupo
-                        </v-chip>
+                          Elige al outsider del grupo</v-chip
+                        >
                       </h2>
                     </div>
 
@@ -146,11 +149,11 @@
                       :thickness="3"
                     />
 
-                    <!-- Current users/words list -->
+                    <!-- Current players/words list -->
                     <h2 class="h2-spacing">Palabras usadas:</h2>
                     <v-list-item
                       style="margin-top: 1rem"
-                      v-for="player in currentUsers"
+                      v-for="player in currentPlayers"
                     >
                       <h3>
                         <v-icon
@@ -171,18 +174,38 @@
                             variant="outlined"
                             style="color: #ffc168"
                             prepend-icon="mdi-skull"
+                            :disabled="user.state == State.OUT"
                             :rounded="true"
                             :loading="sendingVote"
                             @click="sendVote(player)"
                           >
                             Eliminar
                             <template v-slot:loader>
-                              <v-progress-linear
-                                indeterminate
-                              ></v-progress-linear>
+                              <v-progress-linear indeterminate />
                             </template>
                           </v-btn>
                         </span>
+                      </h3>
+                    </v-list-item>
+
+                    <v-divider
+                      v-if="eliminatedPlayers.length"
+                      style="margin-top: 2rem; margin-bottom: 2rem"
+                      :thickness="3"
+                    />
+
+                    <!-- Eliminated players list -->
+                    <v-list-item
+                      style="color: #323232"
+                      v-for="player in eliminatedPlayers"
+                    >
+                      <h3>
+                        <v-icon
+                          v-if="player.id == user.id"
+                          icon="mdi-account-circle"
+                        />
+
+                        <i> {{ player.username }} - Eliminado </i>
                       </h3>
                     </v-list-item>
 
@@ -209,7 +232,7 @@
                         clearable
                         @keydown.space.prevent
                         :rules="wordRules"
-                        :disabled="!(user.state == 'PLAYER_TURN')"
+                        :disabled="!(user.state == State.PLAYER_TURN)"
                       />
 
                       <v-btn
@@ -218,7 +241,7 @@
                         style="margin-bottom: 1rem"
                         @click="nextTurn()"
                         :rounded="true"
-                        :disabled="!(user.state == 'PLAYER_TURN')"
+                        :disabled="!(user.state == State.PLAYER_TURN)"
                         nextTurn
                       >
                         Enviar
@@ -248,7 +271,7 @@
       </v-row>
 
       <!-- Player turn indicators -->
-      <div v-if="!showChat" style="margin-bottom: 1rem">
+      <div v-if="!showChat && !startedVoting" style="margin-bottom: 1rem">
         <TurnIndicatorComponent v-model:user="user" />
       </div>
 
@@ -279,10 +302,13 @@
     <!-- RESULTS -->
     <v-dialog persistent max-width="700" width="auto" v-model="showResults">
       <ResultsComponent
+        v-model:showResults="showResults"
         v-model:user="user"
         v-model:playerOut="playerOut"
         v-model:lastChance="lastChance"
+        v-model:lastChanceEnd="lastChanceEnd"
         v-model:webSocket="webSocket"
+        v-model:continuePlaying="continuePlaying"
       />
     </v-dialog>
   </v-container>
@@ -308,6 +334,13 @@ import ResultsComponent from "@/components/ResultsComponent.vue";
 import axios from "axios";
 import Constants from "../constants";
 
+const State = {
+  LOBBY: "LOBBY",
+  PLAYING: "PLAYING",
+  PLAYER_TURN: "PLAYER_TURN",
+  OUT: "OUT",
+};
+
 export default {
   data: () => ({
     // General variables
@@ -316,6 +349,8 @@ export default {
     roomName: null,
     webSocket: 0,
     currentUsers: [],
+    eliminatedPlayers: [],
+    currentPlayers: [],
     disconnection: false,
 
     // Chat variables
@@ -335,11 +370,14 @@ export default {
     showResults: false,
     playerOut: null,
     lastChance: false,
+    lastChanceEnd: false,
     lastChanceWord: "",
+    continuePlaying: true,
 
     wordRules: [
       (value) => !!value || "Escribe una palabra",
       (value) => (value && value.length >= 2) || "Mínimo de 2 caracteres",
+      (value) => (value && value.length < 16) || "Palabra demasiado larga",
     ],
 
     canStartGame() {
@@ -347,7 +385,7 @@ export default {
       return (
         !this.user.captain ||
         this.currentUsers.length <= 2 ||
-        this.currentUsers.length > 5
+        this.currentUsers.length > 8
       );
     },
   }),
@@ -362,10 +400,18 @@ export default {
 
     // Check if room exists
     const serverPath = Constants.API_URL + "logic/rooms/" + this.roomName + "/";
-    axios.get(serverPath).catch((error) => {
-      this.$router.push("/");
-      return;
-    });
+    axios
+      .get(serverPath)
+      .then((response) => {
+        if (response.data.started_game) {
+          this.$router.push("/");
+          return;
+        }
+      })
+      .catch((error) => {
+        this.$router.push("/");
+        return;
+      });
 
     this.webSocketConfiguration();
   },
@@ -373,9 +419,12 @@ export default {
   created() {
     this.showChat = !this.isMobile(); // Show in-game chat if not mobile
     this.roomName = this.$route.params.roomName;
+
+    /*
     window.addEventListener("beforeunload", function (event) {
       event.preventDefault();
     });
+    */
   },
 
   beforeUnmount() {
@@ -394,6 +443,17 @@ export default {
       } else {
         return false;
       }
+    },
+
+    filterPlayers(users) {
+      return users.filter(
+        (player) =>
+          player.state == State.PLAYING || player.state == State.PLAYER_TURN
+      );
+    },
+
+    filterPlayersInverse(users) {
+      return users.filter((player) => player.state == State.OUT);
     },
 
     webSocketConfiguration() {
@@ -429,47 +489,79 @@ export default {
     },
 
     messageListener(messageData, messageType) {
+      console.log(messageType);
+
       switch (messageType) {
         case "connection":
         case "disconnection":
           let checkUsers = JSON.parse(messageData["actual_users"]);
+          let filteredPlayers = this.filterPlayers(checkUsers);
 
-          // Check minimum players
-          if (this.startedGame && !this.showResults && checkUsers.length < 3) {
-            this.disconnection = true;
-          } else if (this.startedGame && this.showResults) {
-            return;
-          } else {
-            this.currentUsers = checkUsers;
-            this.user = JSON.parse(messageData["user"]);
+          this.user = JSON.parse(messageData["user"]);
+
+          if (messageType == "disconnection") {
+            let disconnectedUser = messageData["disconnected_user"];
+
+            console.log(disconnectedUser);
+
+            // Check disconnections of PLAYERS (Ignore spectators) during rounds
+            if (
+              this.startedGame &&
+              this.continuePlaying &&
+              (disconnectedUser.state != State.OUT ||
+                (this.lastChance && !this.lastChanceEnd))
+            ) {
+              this.disconnection = true;
+              this.webSocket.send(
+                JSON.stringify({
+                  action: "endGame",
+                  message: "",
+                })
+              );
+              return;
+            }
+
+            if (
+              this.showResults &&
+              (disconnectedUser.state == State.OUT || !this.continuePlaying)
+            ) {
+              return;
+            }
           }
+
+          this.currentUsers = checkUsers;
+          this.currentPlayers = filteredPlayers;
+          this.eliminatedPlayers = this.filterPlayersInverse(this.currentUsers);
+
           break;
 
         case "startGame":
           this.currentUsers = JSON.parse(messageData["actual_users"]);
+          this.currentPlayers = this.filterPlayers(this.currentUsers);
           this.user = JSON.parse(messageData["user"]);
+
           this.startedGame = true;
           this.wordClue = messageData["key_word"];
           return;
 
         case "nextTurn":
-          if (this.currentSlide + 1 >= this.currentUsers.length) {
+          if (this.currentSlide + 1 >= this.currentPlayers.length) {
             // Ending round/game -> Voting phase
             this.startedVoting = true;
           } else this.currentSlide++;
 
           this.currentUsers = JSON.parse(messageData["actual_users"]);
+          this.currentPlayers = this.filterPlayers(this.currentUsers);
           this.user = JSON.parse(messageData["user"]);
-          return;
-
-        case "votingOutsider":
-          this.sendResults(messageData["player_out"]);
           return;
 
         case "votingComplete":
           // Check vote results
-          const playerOut = messageData["player_out"];
+          var playerOut = messageData["player_out"];
+
           this.showResults = true;
+          this.currentUsers = JSON.parse(messageData["actual_users"]);
+          this.continuePlaying = messageData["continue_playing"];
 
           if (playerOut) {
             // Check the most voted player
@@ -478,6 +570,38 @@ export default {
           } else {
             // Else -> Tie detected
           }
+          return;
+
+        case "lastChanceGuess":
+          this.lastChanceEnd = true;
+          this.continuePlaying = false;
+          return;
+
+        case "nextRound":
+          this.currentUsers = JSON.parse(messageData["actual_users"]);
+          this.currentPlayers = this.filterPlayers(this.currentUsers);
+          this.eliminatedPlayers = this.filterPlayersInverse(this.currentUsers);
+          this.user = JSON.parse(messageData["user"]);
+
+          this.startedGame = true;
+          this.currentSlide = 0;
+          this.$refs.nextTurn.reset();
+          this.wordClue = messageData["key_word"];
+
+          this.showResults = false;
+          this.startedVoting = false;
+          this.sendingVote = false;
+          this.playerOut = null;
+          this.lastChance = false;
+          this.lastChanceEnd = false;
+          this.lastChanceWord = "";
+          return;
+
+        case "endGame":
+          if (this.webSocket) {
+            this.webSocket.close();
+          }
+          if (!this.disconnection) this.$router.push("/");
           return;
       }
 
@@ -497,9 +621,10 @@ export default {
 
     nextTurn() {
       this.$refs.nextTurn.validate();
-      if (!this.newWord || this.newWord.length < 2) return;
+      if (!this.newWord || this.newWord.length < 2 || this.newWord.length > 16)
+        return;
 
-      const words = this.currentUsers.map(({ guessWord }) => guessWord);
+      const words = this.currentPlayers.map(({ guessWord }) => guessWord);
       if (words.indexOf(this.newWord) !== -1) {
         this.repeatedWordDialog = true;
         return;
@@ -509,7 +634,7 @@ export default {
         JSON.stringify({
           action: "nextTurn",
           message: this.newWord,
-          order: this.currentUsers,
+          order: this.currentPlayers,
         })
       );
     },

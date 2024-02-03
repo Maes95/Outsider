@@ -122,8 +122,12 @@ export default {
     usernameRules: [
       (value) => !!value || "Nombre obligatorio",
       (value) => (value && value.length >= 5) || "Mínimo de 5 caracteres",
+      (value) => (value && value.length < 12) || "Nombre demasiado largo",
     ],
-    gameCodeRules: [(value) => !!value || "Introduce un código válido"],
+    gameCodeRules: [
+      (value) => !!value || "Introduce un código válido",
+      (value) => (value && value.length < 10) || "Código demasiado largo",
+    ],
     errorDialog: false,
     errorDialogText: "Error inesperado",
   }),

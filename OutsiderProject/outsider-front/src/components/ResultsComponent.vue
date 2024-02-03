@@ -13,9 +13,9 @@
           <span v-else-if="playerOut.outsider && lastChanceEnd">
             <!-- Ousider win -->
             <div v-if="result">
-              Victoria del
+              Victoria de los
               <span style="color: #ffac2b">
-                Jugador Outsider
+                Jugadores Outsider
                 <v-icon icon="mdi-emoticon-devil-outline" />
               </span>
             </div>
@@ -30,9 +30,9 @@
 
           <!-- Ousider win -->
           <span v-else>
-            Victoria del
+            Victoria de los
             <span style="color: #ffac2b">
-              Jugador Outsider
+              Jugadores Outsider
               <v-icon icon="mdi-emoticon-devil-outline" />
             </span>
           </span>
@@ -43,7 +43,7 @@
 
           <!-- Last chance -->
           <span v-if="playerOut.outsider && !lastChanceEnd">
-            tendría que ser eliminado ya que es el
+            tendría que ser eliminado ya que es un
             <span style="color: #ffac2b"> Outsider</span>, pero tendrá una
             oportunidad adicional para ganar adivinando la
             <span style="color: #47ffda">contraseña</span>.
@@ -98,6 +98,10 @@
               <span style="color: #ffac2b"> Outsider</span>, por ello, han
               ganado de forma aplastante los
               <span style="color: #9cb443"> Jugadores Inocentes</span>.
+              <p style="margin-top: 1rem">
+                Fin de la partida
+                <v-icon icon="mdi-emoticon-excited-outline" />
+              </p>
             </span>
           </span>
 
@@ -105,7 +109,29 @@
           <span v-else>
             ha sido el jugador más votado! Pero era
             <span style="color: #9cb443"> Inocente</span>... Por ello ha ganado
-            el jugador <span style="color: #ffac2b"> Outsider</span>.
+            el bando <span style="color: #ffac2b"> Outsider</span>.
+            <p v-if="continuePlaying" style="margin-top: 1rem">
+              Podéis seguir jugando sin
+              <span style="color: #47ffda"> {{ playerOut.username }}</span> e
+              intentar encontrar al
+              <span style="color: #ffac2b"> Outsider</span>. El jugador que haya
+              creado la sala (capitán) toma la decisión.
+              <span style="color: #47ffda" v-if="user.captain">
+                <br />
+                <br />
+                Tú eres el capitán "<v-icon
+                  style="color: #47ffda"
+                  v-if="user.captain"
+                  icon="mdi-crown-circle-outline"
+                />", asi que elige qué hacer a continuación
+              </span>
+            </p>
+            <p v-else style="margin-top: 1rem">
+              No quedan jugadores suficientes para seguir jugando. <br />
+              <br />
+              Fin de la partida
+              <v-icon icon="mdi-emoticon-excited-outline" />
+            </p>
           </span>
         </p>
       </h3>
@@ -113,19 +139,47 @@
       <h3 v-else>
         <h1 style="margin-bottom: 1rem; font-size: x-large">Empate...</h1>
         <p>Empate en las votaciones. Nadie gana U.u</p>
+        <p style="margin-top: 1rem">
+          Podeis seguir jugando e intentar encontrar al
+          <span style="color: #ffac2b"> Outsider</span>. El jugador que haya
+          creado la sala (capitán) toma la decisión.
+          <span style="color: #47ffda" v-if="user.captain">
+            <br />
+            <br />
+            Tú eres el capitán "<v-icon
+              style="color: #47ffda"
+              v-if="user.captain"
+              icon="mdi-crown-circle-outline"
+            />", asi que elige qué hacer a continuación
+          </span>
+        </p>
       </h3>
     </v-card-text>
 
     <v-card-actions>
+      <v-btn
+        v-if="user.captain && continuePlaying && !lastChance"
+        style="margin: 0.5rem"
+        variant="outlined"
+        text="Siguiente turno"
+        rounded
+        class="text-none"
+        :disabled="lastChance && !lastChanceEnd"
+        @click="nextAction((action = 'nextRound'))"
+      />
+
       <v-spacer></v-spacer>
+
       <v-btn
         style="margin: 0.5rem"
         variant="tonal"
         text="Terminar partida"
         rounded
         class="text-none"
-        :disabled="lastChance && !lastChanceEnd"
-        @click="finishRound()"
+        :disabled="
+          continuePlaying && ((lastChance && !lastChanceEnd) || !user.captain)
+        "
+        @click="nextAction((action = 'endGame'))"
       />
     </v-card-actions>
   </v-card>
@@ -135,7 +189,9 @@
 var user = defineModel("user");
 var playerOut = defineModel("playerOut");
 var lastChance = defineModel("lastChance");
+var lastChanceEnd = defineModel("lastChanceEnd");
 var webSocket = defineModel("webSocket");
+var continuePlaying = defineModel("continuePlaying");
 </script>
 
 <script>
@@ -143,7 +199,6 @@ export default {
   data: () => ({
     lastChanceGuess: "",
     result: false,
-    lastChanceEnd: false,
 
     lastChanceRules: [
       (value) => !!value || "Escribe una palabra",
@@ -163,11 +218,11 @@ export default {
         if (!("message_type" in messageData)) return;
         const messageType = messageData["message_type"];
 
-        // Check only the possible lastChanceGuess messages
-        if (messageType != "lastChanceGuess") return;
-
-        this.result = JSON.parse(messageData["last_chance_guess"]);
-        this.lastChanceEnd = true;
+        switch (messageType) {
+          case "lastChanceGuess":
+            this.result = JSON.parse(messageData["last_chance_guess"]);
+            return;
+        }
       });
     },
 
@@ -183,8 +238,13 @@ export default {
       );
     },
 
-    finishRound() {
-      this.$router.push("/");
+    nextAction(action) {
+      this.webSocket.send(
+        JSON.stringify({
+          action: action,
+          message: "",
+        })
+      );
     },
   },
 };
