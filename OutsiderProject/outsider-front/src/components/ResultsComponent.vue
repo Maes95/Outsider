@@ -15,7 +15,7 @@
             <div v-if="result">
               Victoria de los
               <span style="color: #ffac2b">
-                Jugadores Outsider
+                Outsiders
                 <v-icon icon="mdi-emoticon-devil-outline" />
               </span>
             </div>
@@ -23,7 +23,7 @@
             <div v-else>
               Victoria de los
               <span style="color: #9cb443">
-                Jugadores Inocentes <v-icon icon="mdi-emoticon-happy-outline" />
+                Inocentes <v-icon icon="mdi-emoticon-happy-outline" />
               </span>
             </div>
           </span>
@@ -32,7 +32,7 @@
           <span v-else>
             Victoria de los
             <span style="color: #ffac2b">
-              Jugadores Outsider
+              Outsiders
               <v-icon icon="mdi-emoticon-devil-outline" />
             </span>
           </span>
@@ -43,7 +43,7 @@
 
           <!-- Last chance -->
           <span v-if="playerOut.outsider && !lastChanceEnd">
-            tendría que ser eliminado ya que es el último outsider
+            tendría que ser eliminado ya que es el último
             <span style="color: #ffac2b"> Outsider</span>, pero tendrá una
             oportunidad adicional para ganar adivinando la
             <span style="color: #47ffda">contraseña</span>.

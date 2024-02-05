@@ -141,7 +141,7 @@ export default {
       const { valid } = await this.$refs.start.validate();
       if (!valid) return;
 
-      this.roomCode = this.roomCode.trim();
+      this.roomCode = this.roomCode.split(/\s+/).join("");
 
       var serverPath;
       const routerPath = "/rooms/" + this.roomCode;
@@ -153,6 +153,15 @@ export default {
         const formData = {
           name: this.roomCode,
         };
+
+        var asciiCheck = /^\w+$/.test(this.roomCode);
+
+        if (!asciiCheck) {
+          this.errorDialogText =
+            "Código de sala no válido, intenta con algo más sencillo (sin usar la letra ñ u otros caracteres epeciales, por ejemplo).";
+          this.errorDialog = true;
+          return;
+        }
 
         serverPath = Constants.API_URL + "logic/rooms/";
 

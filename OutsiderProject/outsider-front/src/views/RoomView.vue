@@ -1,8 +1,8 @@
 <template>
-  <!-- Disconnection dialog -->
-  <DisconnectionDialog v-model:disconnection="disconnection" />
-
   <v-container class="fill-height">
+    <!-- Disconnection dialog -->
+    <DisconnectionDialog v-model:disconnection="disconnection" />
+
     <!-- LOBBY -->
     <v-responsive
       v-if="startedGame == false"
@@ -81,36 +81,7 @@
       v-else="startedGame == false"
       class="align-center text-center fill-height"
     >
-      <!-- PLayer role and given 'password' -->
-      <h2 style="margin-bottom: 2rem; margin-top: 1rem">
-        <v-icon
-          style="color: #47ffda"
-          v-if="user.captain"
-          icon="mdi-crown-circle-outline"
-        />
-        -
-        <span v-if="user.state == State.OUT">
-          <v-icon icon="mdi-account-circle" /> {{ username }} - Eliminado
-          <v-icon icon="mdi-emoticon-confused-outline" />
-          <p style="margin-top: 1rem">Contraseña: ???</p>
-        </span>
-        <span v-else>
-          <v-icon icon="mdi-account-circle" /> {{ username }} ||
-          <span style="color: #ffac2b" v-if="user.outsider">
-            Outsider <v-icon icon="mdi-emoticon-devil-outline" />
-          </span>
-          <span style="color: #9cb443" v-else>
-            Inocente <v-icon icon="mdi-emoticon-happy-outline" />
-          </span>
-          <p style="margin-top: 1rem">
-            Contraseña:
-            <span
-              :style="{ color: user.outsider == true ? '#ffac2b' : '#47ffda' }"
-              >{{ wordClue }}</span
-            >
-          </p>
-        </span>
-      </h2>
+      <PlayerInfoComponent v-model:user="user" v-model:wordClue="wordClue" />
 
       <!-- Turn information and chat -->
       <v-row style="max-width: 60rem" class="mx-auto">
@@ -241,7 +212,9 @@
                         style="margin-bottom: 1rem"
                         @click="nextTurn()"
                         :rounded="true"
-                        :disabled="!(user.state == State.PLAYER_TURN)"
+                        :disabled="
+                          !(user.state == State.PLAYER_TURN) || sendWord
+                        "
                         nextTurn
                       >
                         Enviar
@@ -300,7 +273,7 @@
     </v-responsive>
 
     <!-- RESULTS -->
-    <v-dialog persistent max-width="700" width="auto" v-model="showResults">
+    <v-dialog persistent max-width="700" v-model="showResults">
       <ResultsComponent
         v-model:showResults="showResults"
         v-model:user="user"
@@ -325,6 +298,7 @@
 
 <script setup>
 import ChatComponent from "@/components/ChatComponent.vue";
+import PlayerInfoComponent from "@/components/PlayerInfoComponent.vue";
 import TurnIndicatorComponent from "@/components/TurnIndicatorComponent.vue";
 import DisconnectionDialog from "@/components/DisconnectionDialog.vue";
 import ResultsComponent from "@/components/ResultsComponent.vue";
@@ -334,12 +308,7 @@ import ResultsComponent from "@/components/ResultsComponent.vue";
 import axios from "axios";
 import Constants from "../constants";
 
-const State = {
-  LOBBY: "LOBBY",
-  PLAYING: "PLAYING",
-  PLAYER_TURN: "PLAYER_TURN",
-  OUT: "OUT",
-};
+var State = Constants.State
 
 export default {
   data: () => ({
@@ -363,6 +332,7 @@ export default {
     newWord: "",
     currentSlide: 0,
     repeatedWordDialog: false,
+    sendWord: false,
 
     // Results variables
     startedVoting: false,
@@ -489,8 +459,6 @@ export default {
     },
 
     messageListener(messageData, messageType) {
-      console.log(messageType);
-
       switch (messageType) {
         case "connection":
         case "disconnection":
@@ -501,8 +469,6 @@ export default {
 
           if (messageType == "disconnection") {
             let disconnectedUser = messageData["disconnected_user"];
-
-            console.log(disconnectedUser);
 
             // Check disconnections of PLAYERS (Ignore spectators) during rounds
             if (
@@ -553,6 +519,9 @@ export default {
           this.currentUsers = JSON.parse(messageData["actual_users"]);
           this.currentPlayers = this.filterPlayers(this.currentUsers);
           this.user = JSON.parse(messageData["user"]);
+
+          if (this.user.state == State.PLAYER_TURN) this.sendWord = false;
+
           return;
 
         case "votingComplete":
@@ -587,6 +556,7 @@ export default {
           this.currentSlide = 0;
           this.$refs.nextTurn.reset();
           this.wordClue = messageData["key_word"];
+          this.sendWord = false;
 
           this.showResults = false;
           this.startedVoting = false;
@@ -629,6 +599,8 @@ export default {
         this.repeatedWordDialog = true;
         return;
       }
+
+      this.sendWord = true;
 
       this.webSocket.send(
         JSON.stringify({

@@ -10,7 +10,7 @@
       <u v-else style="color: #47ffda"> contraseña</u>
       fijándote en las palabras escritas por los otros jugadores
       <p v-if="user.outsider" style="margin-top: 0.5rem;">
-        Recuerda que los inocentes usan otra contraseña diferente, ten cuidado
+        Recuerda que los inocentes usan otra contraseña diferente, ten cuidado...
       </p>
     </h3>
   </div>
