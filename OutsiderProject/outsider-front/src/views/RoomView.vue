@@ -8,72 +8,14 @@
       v-if="startedGame == false"
       class="align-center text-center fill-height"
     >
-      <h1 style="font-size: 3rem; margin-top: 2rem; margin-bottom: 2rem">
-        ~ Outsider ~
-      </h1>
-
-      <!-- Current players list -->
-      <v-card variant="tonal" class="mx-auto text-left" max-width="300">
-        <v-card-title style="margin-bottom: 0.5rem">
-          <v-row>
-            <v-col class="text-left">
-              <b> Jugadores </b>
-            </v-col>
-            <v-col
-              class="text-right"
-              :style="{
-                color:
-                  currentUsers.length > 2 && currentUsers.length <= 8
-                    ? '#47ffda'
-                    : '#ffac2b',
-              }"
-            >
-              <b> {{ currentUsers.length }} / 8</b>
-            </v-col>
-          </v-row>
-        </v-card-title>
-
-        <v-list-item
-          v-for="(item, i) in currentUsers"
-          :key="i"
-          :style="{ color: item.captain == true ? '#47ffda' : 'white' }"
-        >
-          - {{ item.username }}
-          <v-icon v-if="item.captain" icon="mdi-crown-circle-outline"></v-icon>
-          <v-icon v-if="item.id == user.id" icon="mdi-account-circle"></v-icon>
-        </v-list-item>
-      </v-card>
-
-      <!-- Chat -->
-      <ChatComponent
-        ref="chat"
+      <LobbyComponent
+        v-model:roomName="roomName"
+        v-model:user="user"
         v-model:username="username"
+        v-model:currentUsers="currentUsers"
         v-model:messages="messages"
         v-model:webSocket="webSocket"
       />
-
-      <!-- Room code -->
-      <v-text-field
-        :model-value="roomName"
-        class="mx-auto text-left"
-        style="width: 10rem"
-        label="Código de sala"
-        variant="outlined"
-        readonly
-      />
-
-      <!-- Start game button -->
-      <v-btn
-        style="margin-top: 1rem; margin-bottom: 2rem; margin-right: 1rem"
-        :disabled="canStartGame()"
-        @click="startGame()"
-        class="text-none"
-        prepend-icon="mdi-nintendo-game-boy"
-        append-icon="mdi-check-circle-outline"
-        rounded
-      >
-        Empezar partida
-      </v-btn>
     </v-responsive>
 
     <!-- GAME -->
@@ -230,14 +172,14 @@
         <!-- Chat and player turn indicators-->
         <v-col v-if="showChat">
           <ChatComponent
-            style="margin-top: 2rem"
+            style="margin-top: 1rem"
             ref="chat"
             v-model:username="username"
             v-model:messages="messages"
             v-model:webSocket="webSocket"
           />
 
-          <div v-if="!startedVoting" style="margin-top: 6rem">
+          <div v-if="!startedVoting" style="margin-top: 4rem">
             <TurnIndicatorComponent v-model:user="user" />
           </div>
         </v-col>
@@ -297,6 +239,7 @@
 </style>
 
 <script setup>
+import LobbyComponent from "@/components/LobbyComponent.vue";
 import ChatComponent from "@/components/ChatComponent.vue";
 import PlayerInfoComponent from "@/components/PlayerInfoComponent.vue";
 import TurnIndicatorComponent from "@/components/TurnIndicatorComponent.vue";
@@ -308,7 +251,7 @@ import ResultsComponent from "@/components/ResultsComponent.vue";
 import axios from "axios";
 import Constants from "../constants";
 
-var State = Constants.State
+var State = Constants.State;
 
 export default {
   data: () => ({
@@ -333,6 +276,7 @@ export default {
     currentSlide: 0,
     repeatedWordDialog: false,
     sendWord: false,
+    numberOutsiders: null,
 
     // Results variables
     startedVoting: false,
@@ -349,15 +293,6 @@ export default {
       (value) => (value && value.length >= 2) || "Mínimo de 2 caracteres",
       (value) => (value && value.length < 16) || "Palabra demasiado larga",
     ],
-
-    canStartGame() {
-      if (!this.currentUsers || !this.user) return true;
-      return (
-        !this.user.captain ||
-        this.currentUsers.length <= 2 ||
-        this.currentUsers.length > 8
-      );
-    },
   }),
 
   beforeMount() {
@@ -427,7 +362,7 @@ export default {
     },
 
     webSocketConfiguration() {
-      console.log("Starting connection to websocket");
+      // console.log("Starting connection to websocket");
 
       this.webSocket = new WebSocket(
         Constants.WEBSOCKET_URL + "ws/room/" + this.roomName + "/"
@@ -441,11 +376,11 @@ export default {
             message: "",
           })
         );
-        console.log("Connection stablished");
+        // console.log("Connection stablished");
       });
 
       this.webSocket.addEventListener("close", (event) => {
-        console.log("Connection closed");
+        // console.log("Connection closed");
       });
 
       this.webSocket.addEventListener("message", (event) => {
@@ -531,11 +466,12 @@ export default {
           this.showResults = true;
           this.currentUsers = JSON.parse(messageData["actual_users"]);
           this.continuePlaying = messageData["continue_playing"];
+          this.numberOutsiders = messageData["number_outsiders"];
 
           if (playerOut) {
             // Check the most voted player
             this.playerOut = playerOut;
-            this.lastChance = playerOut.outsider;
+            this.lastChance = playerOut.outsider && this.numberOutsiders < 1;
           } else {
             // Else -> Tie detected
           }
@@ -580,22 +516,18 @@ export default {
       if (this.messages.length == 50) this.messages = [];
     },
 
-    startGame() {
-      this.webSocket.send(
-        JSON.stringify({
-          action: "startGame",
-          message: "",
-        })
-      );
-    },
-
     nextTurn() {
       this.$refs.nextTurn.validate();
       if (!this.newWord || this.newWord.length < 2 || this.newWord.length > 16)
         return;
 
-      const words = this.currentPlayers.map(({ guessWord }) => guessWord);
-      if (words.indexOf(this.newWord) !== -1) {
+      this.newWord = this.newWord.trim();
+
+      var words = this.currentPlayers.map(({ guessWord }) =>
+        guessWord.toUpperCase()
+      );
+
+      if (words.indexOf(this.newWord.toUpperCase()) !== -1) {
         this.repeatedWordDialog = true;
         return;
       }

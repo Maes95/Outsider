@@ -42,7 +42,7 @@
           <span style="color: #47ffda">{{ playerOut.username }} </span>
 
           <!-- Last chance -->
-          <span v-if="playerOut.outsider && !lastChanceEnd">
+          <span v-if="playerOut.outsider && lastChance && !lastChanceEnd">
             tendría que ser eliminado ya que es el último
             <span style="color: #ffac2b"> Outsider</span>, pero tendrá una
             oportunidad adicional para ganar adivinando la
@@ -83,7 +83,7 @@
           </span>
 
           <!-- Last chance ended -->
-          <span v-else-if="playerOut.outsider && lastChanceEnd">
+          <span v-else-if="playerOut.outsider && lastChance && lastChanceEnd">
             <!-- Ousider win -->
             <span v-if="result">
               ha deducido la contraseña de <u>forma correcta</u> y aunque se
@@ -103,6 +103,35 @@
                 <v-icon icon="mdi-emoticon-excited-outline" />
               </p>
             </span>
+          </span>
+
+          <!-- One Outsider left -->
+          <span v-else-if="playerOut.outsider && !lastChance">
+            ha sido el jugador más votado... Y era un
+            <span style="color: #ffac2b"> Outsider</span>! Una victoria para el
+            equipo de los <span style="color: #9cb443"> Inocentes</span>.
+            <p v-if="continuePlaying" style="margin-top: 1rem">
+              Podéis seguir jugando sin
+              <span style="color: #47ffda"> {{ playerOut.username }}</span> e
+              intentar encontrar al otro jugador
+              <span style="color: #ffac2b"> Outsider</span>. El jugador que haya
+              creado la sala (capitán) toma la decisión.
+              <span style="color: #47ffda" v-if="user.captain">
+                <br />
+                <br />
+                Tú eres el capitán "<v-icon
+                  style="color: #47ffda"
+                  v-if="user.captain"
+                  icon="mdi-crown-circle-outline"
+                />", asi que elige qué hacer a continuación
+              </span>
+            </p>
+            <p v-else style="margin-top: 1rem">
+              No quedan jugadores suficientes para seguir jugando. <br />
+              <br />
+              Fin de la partida
+              <v-icon icon="mdi-emoticon-excited-outline" />
+            </p>
           </span>
 
           <!-- Ousider win -->

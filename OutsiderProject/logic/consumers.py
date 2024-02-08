@@ -304,7 +304,7 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
 
         if self.user.id in self.outsiders:
             self.user.outsider = True
-            key_word = self.selected_word["b"]
+            key_word = "???"
         else:
             key_word = self.selected_word["a"]
 
@@ -312,6 +312,9 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
 
         if event["message"]["first_player"]["id"] == self.user.id:
             self.user.state = State.PLAYER_TURN
+            # Only send the password if the outsider if the first player
+            if self.user.outsider:
+                key_word = self.selected_word["b"]
         elif self.user.state != State.OUT:
             self.user.state = State.PLAYING
 
@@ -410,10 +413,22 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
 
             current_playing = 0
 
+            next_captain = None
+
             for player in self.db_room.current_connections:
                 if player["id"] == player_out:
                     player["state"] = State.OUT
                     player_out = player
+
+                    if player_out["captain"]:
+                        index = self.db_room.current_connections.index(player)
+
+                        if index + 1 < len(self.db_room.current_connections):
+                            self.db_room.current_connections[index]["captain"] = True
+                            next_captain = self.db_room.current_connections[index]
+                        else:
+                            self.db_room.current_connections[0]["captain"] = True
+                            next_captain = self.db_room.current_connections[0]
 
                     if player_out["id"] in self.outsiders:
                         player_out["outsider"] = True
@@ -425,15 +440,21 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
             if player_out and player_out["outsider"]:
                 self.db_room.number_outsiders -= 1
 
+            can_continue = (
+                current_playing > self.db_room.number_outsiders * 2
+                if self.db_room.number_outsiders > 0
+                else False
+            )
+
             # Send message to room group
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
                     "type": "votingComplete",
                     "player_out": player_out,
-                    "continue_playing": current_playing
-                    > self.db_room.number_outsiders * 2,
+                    "continue_playing": can_continue,
                     "number_outsiders": self.db_room.number_outsiders,
+                    "next_captain": next_captain,
                     "actual_users": json.dumps(
                         self.db_room.current_connections, default=lambda x: x.__dict__
                     ),
@@ -443,19 +464,26 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
             await self.update_room(self.db_room)
 
     async def votingComplete(self, event):
-        self.number_outsiders = event["number_outsiders"]
         player_out = event["player_out"]
+        next_captain = event["next_captain"]
         continue_playing = event["continue_playing"]
         actual_users = event["actual_users"]
 
-        if player_out and player_out["id"] == self.user.id:
-            self.user.state = State.OUT
+        if player_out:
+            if player_out["id"] == self.user.id:
+                self.user.state = State.OUT
+                if self.user.captain == True:
+                    self.user.captain = False
+
+            elif next_captain and next_captain["id"] == self.user.id:
+                self.user.captain = True
 
         await self.send_json(
             content={
                 "message_type": "votingComplete",
                 "player_out": player_out,
                 "continue_playing": continue_playing,
+                "number_outsiders": event["number_outsiders"],
                 "actual_users": json.dumps(actual_users, default=lambda x: x.__dict__),
             }
         )

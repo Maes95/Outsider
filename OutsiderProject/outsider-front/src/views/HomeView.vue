@@ -158,7 +158,7 @@ export default {
 
         if (!asciiCheck) {
           this.errorDialogText =
-            "Código de sala no válido, intenta con algo más sencillo (sin usar la letra ñ u otros caracteres epeciales, por ejemplo).";
+            "Código de sala no válido, intenta con algo más sencillo (sin usar la letra ñ u otros caracteres especiales).";
           this.errorDialog = true;
           return;
         }
