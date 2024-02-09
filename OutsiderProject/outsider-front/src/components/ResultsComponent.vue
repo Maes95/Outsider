@@ -114,8 +114,8 @@
               Podéis seguir jugando sin
               <span style="color: #47ffda"> {{ playerOut.username }}</span> e
               intentar encontrar al otro jugador
-              <span style="color: #ffac2b"> Outsider</span>. El jugador que haya
-              creado la sala (capitán) toma la decisión.
+              <span style="color: #ffac2b"> Outsider</span>. El jugador que
+              tenga la corona (capitán) toma la decisión.
               <span style="color: #47ffda" v-if="user.captain">
                 <br />
                 <br />
@@ -143,8 +143,8 @@
               Podéis seguir jugando sin
               <span style="color: #47ffda"> {{ playerOut.username }}</span> e
               intentar encontrar al jugador/jugadores
-              <span style="color: #ffac2b"> Outsider</span>. El jugador que haya
-              creado la sala (capitán) toma la decisión.
+              <span style="color: #ffac2b"> Outsider</span>. El jugador que
+              tenga la corona (capitán) toma la decisión.
               <span style="color: #47ffda" v-if="user.captain">
                 <br />
                 <br />
@@ -170,8 +170,8 @@
         <p>Empate en las votaciones. Nadie gana U.u</p>
         <p style="margin-top: 1rem">
           Podeis seguir jugando e intentar encontrar al jugador/jugadores
-          <span style="color: #ffac2b"> Outsider</span>. El jugador que haya
-          creado la sala (capitán) toma la decisión.
+          <span style="color: #ffac2b"> Outsider</span>. El jugador que tenga la
+          corona (capitán) toma la decisión.
           <span style="color: #47ffda" v-if="user.captain">
             <br />
             <br />

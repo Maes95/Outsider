@@ -96,7 +96,11 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
 
             if self.db_room.current_connections:
                 if self.user.captain:
-                    self.db_room.current_connections[0]["captain"] = True
+                    for player in self.db_room.current_connections:
+                        if player["state"] != State.OUT:
+                            player["captain"] = True
+                            break
+
                 if self.user.outsider:
                     self.db_room.number_outsiders -= 1
 
@@ -421,20 +425,17 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
                     player_out = player
 
                     if player_out["captain"]:
-                        index = self.db_room.current_connections.index(player)
-
-                        if index + 1 < len(self.db_room.current_connections):
-                            self.db_room.current_connections[index]["captain"] = True
-                            next_captain = self.db_room.current_connections[index]
-                        else:
-                            self.db_room.current_connections[0]["captain"] = True
-                            next_captain = self.db_room.current_connections[0]
+                        for player in self.db_room.current_connections:
+                            if player["state"] != State.OUT:
+                                player["captain"] = True
+                                next_captain = player
+                                break
 
                     if player_out["id"] in self.outsiders:
                         player_out["outsider"] = True
-                    continue
 
-                current_playing = current_playing + 1
+                elif player["state"] != State.OUT:
+                    current_playing = current_playing + 1
 
             # Check if the players can continue playing without the eliminated player
             if player_out and player_out["outsider"]:
@@ -481,6 +482,7 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
         await self.send_json(
             content={
                 "message_type": "votingComplete",
+                "user": json.dumps(self.user.__dict__),
                 "player_out": player_out,
                 "continue_playing": continue_playing,
                 "number_outsiders": event["number_outsiders"],

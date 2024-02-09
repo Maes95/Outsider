@@ -101,6 +101,16 @@
                       </h3>
                     </v-list-item>
 
+                    <div v-if="startedVoting">
+                      <v-divider
+                        style="margin-top: 2rem; margin-bottom: 2rem"
+                        :thickness="3"
+                      />
+                      <h4>
+                        Faltan {{ timeOut }} segundos para terminar de votar...
+                      </h4>
+                    </div>
+
                     <v-divider
                       v-if="eliminatedPlayers.length"
                       style="margin-top: 2rem; margin-bottom: 2rem"
@@ -280,6 +290,8 @@ export default {
 
     // Results variables
     startedVoting: false,
+    votingTimer: null,
+    timeOut: 0,
     sendingVote: false,
     showResults: false,
     playerOut: null,
@@ -449,6 +461,7 @@ export default {
           if (this.currentSlide + 1 >= this.currentPlayers.length) {
             // Ending round/game -> Voting phase
             this.startedVoting = true;
+            this.votingTimerStart();
           } else this.currentSlide++;
 
           this.currentUsers = JSON.parse(messageData["actual_users"]);
@@ -464,6 +477,7 @@ export default {
           var playerOut = messageData["player_out"];
 
           this.showResults = true;
+          this.user = JSON.parse(messageData["user"]);
           this.currentUsers = JSON.parse(messageData["actual_users"]);
           this.continuePlaying = messageData["continue_playing"];
           this.numberOutsiders = messageData["number_outsiders"];
@@ -516,6 +530,17 @@ export default {
       if (this.messages.length == 50) this.messages = [];
     },
 
+    votingTimerStart() {
+      this.timeOut = 45;
+      this.votingTimer = setInterval(() => {
+        if (this.timeOut <= 1) {
+          clearInterval(this.votingTimer);
+          this.sendVote();
+        }
+        this.timeOut -= 1;
+      }, 1000);
+    },
+
     nextTurn() {
       this.$refs.nextTurn.validate();
       if (!this.newWord || this.newWord.length < 2 || this.newWord.length > 16)
@@ -546,10 +571,13 @@ export default {
     sendVote(player) {
       this.sendingVote = true;
 
+      var message = "";
+      if (player) var message = player.id;
+
       this.webSocket.send(
         JSON.stringify({
           action: "votingOutsider",
-          message: player.id,
+          message: message,
         })
       );
     },
