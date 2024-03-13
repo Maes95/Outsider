@@ -11,7 +11,12 @@ from . import sync_rest_calls
 
 async def startGameLogic(self, restart=False):
     if not self.word_list:
-        self.word_list = await sync_rest_calls.get_word_list()
+        try:
+            self.word_list = await sync_rest_calls.get_word_list()
+        except Exception as e:
+            print("EXCEPTION -> There's no 'Current' word list.")
+            print(e)
+            return None
 
     if restart:
         self.db_room = await sync_rest_calls.get_room(room_name=self.room_name)
@@ -24,8 +29,9 @@ async def startGameLogic(self, restart=False):
                     if word not in self.db_room.repeated_words
                 ]
             )
-        except:
+        except Exception as e:
             print("EXCEPTION -> No more words to select, restarting...")
+            print(e)
             self.selected_word = random.choice(self.word_list.word_list)
             self.db_room.repeated_words = []
 

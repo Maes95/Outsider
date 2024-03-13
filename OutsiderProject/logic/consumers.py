@@ -21,23 +21,44 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
         self.first_player = None
         self.finish_game = False
 
+        self.possible_actions = [
+            "default",
+            "connection",
+            "startGame",
+            "nextTurn",
+            "votingOutsider",
+            "lastChance",
+            "nextRound",
+            "endGame",
+        ]
+
     # region Websocket methods
 
     async def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"room_{self.room_name}"
 
+        try:
+            self.db_room = await sync_rest_calls.get_room(room_name=self.room_name)
+            if self.db_room.started_game == True:
+                await self.close()
+        except:
+            await self.close()
+            return "Error - Cannot access a room that does not exist"
+
         # Join room group
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
-
-        self.db_room = await sync_rest_calls.get_room(room_name=self.room_name)
 
     async def disconnect(self, close_code):
         if self.finish_game:
             return
 
-        self.db_room = await sync_rest_calls.get_room(room_name=self.room_name)
+        try:
+            self.db_room = await sync_rest_calls.get_room(room_name=self.room_name)
+        except:
+            await self.close()
+            return "Error - Cannot access a room that does not exist"
 
         if self.user and self.db_room.current_connections:
             for player in self.db_room.current_connections:
@@ -83,11 +104,14 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
         if "username" in content:
             username = content["username"]
 
-        message_type = "default"
+        action = "default"
 
         # Check action to take
         if "action" in content:
             action = content["action"]
+
+            if action not in self.possible_actions:
+                return
 
             # Check connections to add the new player
             if action == "connection":
@@ -98,14 +122,24 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
 
             # Start game by selecting the posibles 'outsiders', shuffling the players and selecting a word
             elif action == "startGame":
-                self = await consumer_methods.startGameLogic(self, restart=False)
+                start_game = await consumer_methods.startGameLogic(self, restart=False)
 
-                message = {
-                    "outsiders": self.outsiders,
-                    "selected_word": self.selected_word,
-                    "first_player": self.first_player,
-                    "turn_order": self.db_room.current_connections,
-                }
+                if not start_game:
+                    action = "endGame"
+                    try:
+                        await sync_rest_calls.delete_room(room_name=self.room_name)
+                    except:
+                        pass
+
+                if action == "startGame":
+                    self = start_game
+
+                    message = {
+                        "outsiders": self.outsiders,
+                        "selected_word": self.selected_word,
+                        "first_player": self.first_player,
+                        "turn_order": self.db_room.current_connections,
+                    }
 
             # Add guessWord and pass the turn to the next player
             elif action == "nextTurn":
@@ -159,12 +193,10 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
                 except:
                     pass
 
-        message_type = action
-
         # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name,
-            {"type": message_type, "message": message, "username": username},
+            {"type": action, "message": message, "username": username},
         )
 
     # endregion
@@ -197,7 +229,7 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
                 "message_type": type,
                 "message": ms,
                 "username": username,
-                "user": json.dumps(self.user.__dict__),
+                "user": json.dumps(self.user.__dict__) if self.user else "",
                 "actual_users": json.dumps(
                     self.db_room.current_connections, default=lambda x: x.__dict__
                 ),

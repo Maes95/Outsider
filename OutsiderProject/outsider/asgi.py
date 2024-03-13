@@ -26,7 +26,6 @@ django_asgi_app = get_asgi_application()
 application = ProtocolTypeRouter(
     {
         "http": django_asgi_app,
-        # Cuidado con esto que estaba jodiendo la lógica y no había conexión Vue-Django de websockets
         "websocket": AllowedHostsOriginValidator(
             AuthMiddlewareStack(URLRouter(websocket_urlpatterns))
         ),
