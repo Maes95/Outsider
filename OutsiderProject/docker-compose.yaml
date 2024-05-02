@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  # Redis server for websocket use
+  redis:
+    container_name: redis
+    restart: always
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  # Django backend container with WS logic (Django Channels)
+  django:
+    container_name: backend_django
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: backend_django
+    ports:
+      - "8050:8050"
+    depends_on:
+      - redis
+
+  # Main container / Vue frontend
+  vue_frontend:
+    container_name: vue_frontend
+    restart: always
+    build:
+      context: ./outsider-front
+      dockerfile: Dockerfile
+    image: vue_frontend
+    ports:
+      - 80:80
+    depends_on:
+      - django
+
+  # Traefik container for SSL implementation

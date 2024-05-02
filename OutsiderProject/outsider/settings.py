@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,17 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-t!tf*ix*7aa)yaa-m8379yo%u**)rn!*c3m+g4l7s9#!)h1ao&"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["localhost", "192.168.1.13", "192.168.0.16"]
+# To run the app in local set DEBUG to True and change the url values in OutsiderProject\outsider-front\src\constants.js
 
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
-    "http://localhost:3000",  # Local machine petitions
-    "http://192.168.1.13:3000",  # DEV-LAN Testing
-    "http://192.168.0.16:3000",  # DEV-LAN Testing
-    "http://172.27.48.1:3000",  # DEV-LAN Testing
-)
+ALLOWED_HOSTS = ["*"]
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
@@ -86,11 +82,17 @@ WSGI_APPLICATION = "outsider.wsgi.application"
 # ASGI and Channels Configuration
 ASGI_APPLICATION = "outsider.asgi.application"
 
+# To test the websocket backend via 'pytest', the DEBUG flag must be set to false and a valid redis server must be running on localhost
+if DEBUG == True:
+    hosts = [("localhost", 6379), ("0.0.0.0", 6379)]
+else:
+    hosts = [("redis", 6379)]
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379), ("192.168.1.13", 6379)],
+            "hosts": hosts,
         },
     },
 }

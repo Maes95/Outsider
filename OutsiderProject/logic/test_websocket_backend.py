@@ -1,7 +1,6 @@
 import pytest
 import json
 
-from asgiref.sync import sync_to_async
 from channels.testing import WebsocketCommunicator
 from channels.routing import URLRouter
 from django.urls import re_path

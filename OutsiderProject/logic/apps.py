@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 import json
+import sys
 
 
 def import_current_word_list():
@@ -27,14 +28,18 @@ def clean_rooms():
         print("Deleting 'zombie' rooms...")
         RoomModel.objects.all().delete()
     except Exception as e:
-        print("Exception while deleting the 'zombie' rooms")
+        print(e)
     return
 
 
-class MyAppConfig(AppConfig):
+class LogicConfig(AppConfig):
     name = "logic"
     verbose_name = "logic"
 
     def ready(self):
-        clean_rooms()
-        import_current_word_list()
+        # Must migrate to update the database, ignore if testing via 'pytest'
+        if "migrate" in sys.argv or "pytest" in sys.modules:
+            return
+        else:
+            clean_rooms()
+            import_current_word_list()

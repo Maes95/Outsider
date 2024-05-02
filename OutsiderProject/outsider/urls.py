@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import include, path
 from drf_yasg import openapi
@@ -22,7 +23,7 @@ from rest_framework import permissions
 
 # Admin urls
 # admin.site.site_url = "http://192.168.0.16:8080/"
-admin.site.site_url = "http://192.168.1.13:8080/"
+admin.site.site_url = "http://localhost:8080/"
 admin.site.site_header = "Django Administration - TFG"
 
 # Swagger url configuration
