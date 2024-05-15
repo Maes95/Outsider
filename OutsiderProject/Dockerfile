@@ -24,5 +24,5 @@ RUN pip install -r requirements.txt
 # Port where the Django app runs  
 # EXPOSE 8050 -> Local docker
 
-# Start server on 15.188.198.53:8050 (Static EC2 machine IP)
-CMD python manage.py makemigrations && python manage.py migrate && python manage.py runserver 15.188.198.53:8050
+# Start server on 0.0.0.0:8050
+CMD python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8050

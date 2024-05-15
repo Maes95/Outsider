@@ -17,7 +17,7 @@ services:
     depends_on:
       - redis
     ports:
-      - "8050:8050"
+      - 8050:8050
 
   # Main container / Vue frontend
   vue_frontend:
