@@ -23,7 +23,7 @@ from rest_framework import permissions
 
 # Admin urls
 # admin.site.site_url = "http://192.168.0.16:8080/"
-admin.site.site_url = "http://localhost:8080/"
+admin.site.site_url = "http://15.188.198.53:8080/"
 admin.site.site_header = "Django Administration - TFG"
 
 # Swagger url configuration

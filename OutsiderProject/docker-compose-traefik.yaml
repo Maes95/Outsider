@@ -1,5 +1,3 @@
-version: "3"
-
 volumes:
   production_traefik:
 
@@ -36,7 +34,7 @@ services:
       - django
     expose:
       - 80
-  
+
   # Traefik container for SSL implementation
   traefik:
     container_name: traefik
