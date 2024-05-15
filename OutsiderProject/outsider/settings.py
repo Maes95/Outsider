@@ -84,15 +84,15 @@ ASGI_APPLICATION = "outsider.asgi.application"
 
 # To test the websocket backend via 'pytest', the DEBUG flag must be set to false and a valid redis server must be running on localhost
 if DEBUG == True:
-    hosts = [("localhost", 6379), ("0.0.0.0", 6379)]
+    redis_hosts = [("localhost", 6379), ("0.0.0.0", 6379)]
 else:
-    hosts = [("redis", 6379)]
+    redis_hosts = [("redis", 6379)]
 
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": hosts,
+            "hosts": redis_hosts,
         },
     },
 }
