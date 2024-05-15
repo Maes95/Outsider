@@ -29,6 +29,7 @@ DEBUG = False
 # To run the app in local set DEBUG to True and change the url values in OutsiderProject\outsider-front\src\constants.js
 
 ALLOWED_HOSTS = ["*"]
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
