@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
+import mimetypes
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -31,6 +34,8 @@ DEBUG = False
 ALLOWED_HOSTS = ["*"]
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 CORS_ORIGIN_ALLOW_ALL = True
+
+mimetypes.add_type("text/css", ".css", True)
 
 # Application definition
 
