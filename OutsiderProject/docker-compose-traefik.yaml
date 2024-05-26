@@ -1,12 +1,18 @@
 volumes:
   production_traefik:
 
+networks:
+  proxy:
+    name: proxy
+
 services:
   # Redis server for websocket use
   redis:
     container_name: redis
     restart: always
     image: redis:latest
+    networks:
+      - proxy
     ports:
       - "6379:6379"
 
@@ -17,6 +23,8 @@ services:
       context: .
       dockerfile: ./Dockerfile
     image: backend_django
+    networks:
+      - proxy
     depends_on:
       - redis
     ports:
@@ -30,6 +38,8 @@ services:
       context: ./outsider-front
       dockerfile: Dockerfile
     image: vue_frontend
+    networks:
+      - proxy
     depends_on:
       - django
     expose:
@@ -42,6 +52,8 @@ services:
       context: .
       dockerfile: ./traefik/Dockerfile
     image: traefik_front
+    networks:
+      - proxy
     depends_on:
       - django
       - vue_frontend
