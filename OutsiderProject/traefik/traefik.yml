@@ -28,7 +28,6 @@ certificatesResolvers:
 
 http:
   routers:
-  
     # https://docs.traefik.io/master/routing/routers/#certresolver
 
     django:
@@ -41,13 +40,13 @@ http:
       tls:
         certResolver: letsencrypt
 
-    frontend:
-      rule: "Host(`apphistologia.top`) || Host(`www.apphistologia.top`)"
+    vue_frontend:
+      rule: "Host(`outsidergame.top`) || Host(`www.outsidergame.top`)"
       entryPoints:
         - websecure
       middlewares:
         - csrf
-      service: frontend
+      service: vue_frontend
       tls:
         certResolver: letsencrypt
 
@@ -63,10 +62,10 @@ http:
       loadBalancer:
         servers:
           - url: http://django:8050
-    frontend:
+    vue_frontend:
       loadBalancer:
         servers:
-          - url: http://frontend:80
+          - url: http://vue_frontend:80
 
 providers:
   # https://docs.traefik.io/master/providers/file/
