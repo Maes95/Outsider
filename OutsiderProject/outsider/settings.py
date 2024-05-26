@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-t!tf*ix*7aa)yaa-m8379yo%u**)rn!*c3m+g4l7s9#!)h1ao&"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # To run the app in local set DEBUG to True and change the url values in OutsiderProject\outsider-front\src\constants.js
 
@@ -88,8 +88,9 @@ WSGI_APPLICATION = "outsider.wsgi.application"
 # ASGI and Channels Configuration
 ASGI_APPLICATION = "outsider.asgi.application"
 
-# To test the websocket backend via 'pytest', the DEBUG flag must be set to false and a valid redis server must be running on localhost
-if DEBUG == True:
+# To test the websocket backend via 'pytest', the TEST flag must be set to false and a valid redis server must be running on localhost
+TEST = True
+if TEST == True:
     redis_hosts = [("localhost", 6379), ("0.0.0.0", 6379)]
 else:
     redis_hosts = [("redis", 6379)]
