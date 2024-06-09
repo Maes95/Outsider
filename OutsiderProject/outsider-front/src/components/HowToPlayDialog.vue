@@ -24,7 +24,7 @@
 
             <p style="margin-bottom: 1rem">
               Al empezar la partida, los jugadores
-              <span style="color: #9cb443"> Inocentes</span> reciben reciben una
+              <span style="color: #9cb443"> Inocentes</span> reciben una
               <span style="color: #47ffda"> palabra secreta o contraseña</span>,
               como por ejemplo <span style="color: #47ffda"> "Hoja"</span>.
               <u> Siguiendo un orden</u>
