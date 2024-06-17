@@ -19,14 +19,14 @@ del juego.
 
 También sería esencial tener una pantalla pre-partida en la cual se vayan uniendo los jugadores
 antes de comenzar el juego per se. En esta pantalla se propone añadir un chat para los jugadores además
-de mostrar la información pertinente al estado de la partida: Número de jugadores preparados, código de la
+de mostrar la información pertinente al estado de la partida: número de jugadores preparados, código de la
 sala para que se puedan unir más jugadores, ...
 
 \subsection{Juego sencillo}
 
 En primer lugar, se plantea poder jugar de forma sencilla solo una ronda en la cual se deciden los
-roles de los jugadores, se les indica una pista/contraseña a los jugadores Inocentes y se procede con la lógica
-de juego estándar: Cada jugador siguiendo un orden secuencial, escribirá una palabra relacionada con su contraseña
+roles de los jugadores, se les indica una pista/contraseña\tutor{Para los jugadores Inocentes, es la palabra a adivinar por el outsider. Pista/contraseña suena extraño} a los jugadores Inocentes y se procede con la lógica
+de juego estándar:\tutor{Después de dos puntos, va minúsculas. He corregido un par, pero a partir de aquí, corrigelas tu} Cada jugador siguiendo un orden secuencial, escribirá una palabra relacionada con su contraseña
 para indicar a los demás que conocen la palabra asignada; después de que todos los jugadores hayan compartido una
 palabra, se lleva a cabo una votación simultánea, donde cada jugador vota por la persona que creen
 que es el Outsider.
@@ -45,22 +45,22 @@ una última oportunidad para ganar adivinando la contraseña.
 
 \subsection{Multirondas}
 
-Cuando existen más de tres jugadores en una partida, se ve bastante necesario el poder jugar varias rondas con otras contraseñas,
+Cuando existen más de tres jugadores en una partida, se ve\tutor{Es ``se ve'', es poco formal. mejor ``se detecta la necesidad de ...''} bastante necesario el poder jugar varias rondas con otras contraseñas,
 ya que, si no se elimina al Outsider de primeras y se elimina a un jugador Inocente, podrían seguir jugando el resto de jugadores
 rondas adicionales.
 
 Los jugadores eliminados pasan a ser espectadores mientras el resto sigue jugando hasta que el número de jugadores sea
-igual al de Outsiders o se elimine mediante votación al Outsider en cuestión.
+igual al de Outsiders\tutor{Aún no has introducido que puede haber más, clarifica al menos que, de momento, solo hay 1} o se elimine mediante votación al Outsider en cuestión.
 
 \subsection{Varios Outsider}
 
-Relacionado con el anterior punto, en partidas con varios jugadores se ve necesario aumentar el número de Outsiders en aras de
-una jugabilidad más interesante. De esta manera, se plantea que cuando el número de jugadores sea mayor que 6, simplemente sean
+Relacionado con el anterior punto, en partidas con varios jugadores se ve\tutor{lo mismo} necesario aumentar el número de Outsiders en aras de
+una jugabilidad más interesante. De esta manera, se plantea que cuando el número de jugadores sea mayor que seis, simplemente sean
 dos jugadores Outsider en la partida.
 
 En estos casos el Outsider solo tendrá la oportunidad de adivinar la contraseña si es el último Outsider en la partida.
 
-\section{Objetivos secundarios y técnológicos}
+\section{Objetivos secundarios y tecnológicos}
 
 Dados los objetivos/reglas principales que debería cumplir el juego, se añaden varios puntos adicionales que se quieren
 tratar como requisitos del proyecto.
@@ -82,12 +82,12 @@ Se entiende que si un grupo quiere jugar en un espacio físico común, por ejemp
 jugadores, en la mayoría de casos todos los jugadores jugarán con sus propios dispositivos móviles, principalmente smartphones.
 
 Por otro lado, también se ve bastante común que otro grupo de jugadores quiera jugar de forma remota, cada uno en una
-localizacón diferente. En este caso, se podría asumir que la mayoría de jugadores intentarían jugar con sus dispositivos de
+localización diferente. En este caso, se podría asumir que la mayoría de jugadores intentarían jugar con sus dispositivos de
 escritorio.
 
 \subsection{Testing}
 
-Se propone de forma adicional trabajar ciertos elementos de CI, especialmente el testing del software, ya que, es una práctica
+Se propone de forma adicional trabajar ciertos elementos de CI\tutor{La primera vez que hablas de un término, no puede ser usando sus siglas. Usa: Integración Continua (CI, por sus siglas en inglés)}, especialmente el testing del software, ya que, es una práctica
 esencial en la industria y resulta interesante trabajar el testing con tecnologías en tiempo real.
 
 \subsection{Despliegue}
@@ -100,7 +100,7 @@ De esta forma se pretende aprender sobre tecnologías de despliegue y de crear u
 
 \subsection{Feedback de usuarios}
 
-Para finalizar con la descripción inicial de objetivos/requisitos, se querría tener en cuenta una pequeña prueba con usuarios a mitad de
+Para finalizar con la descripción inicial de objetivos/requisitos\tutor{Mejor déjalo sólo en objetivos, que esta sección se te ha alargado mucho y parecen casi requisitos}, se querría tener en cuenta una pequeña prueba con usuarios a mitad de
 desarrollo con el objetivo de encontrar bugs y pequeñas mejoras para el juego, lo que dará su propia lista de cambios a realizar.
 
 \section{Resumen de objetivos}
@@ -110,9 +110,9 @@ desarrollo con el objetivo de encontrar bugs y pequeñas mejoras para el juego, 
     \item Creación del juego básico.
     \item Añadir una mecánica adicional a la hora de eliminar al último jugador Outsider.
     \item Permitir jugar varias rondas.
-    \item Añadir más jugadores Outisder al juego si hay muchos jugadores en partida.
+    \item Añadir más jugadores Outsider al juego si hay muchos jugadores en partida.
     \item Gestionar la usabilidad de la aplicación en diferentes dispositivos.
     \item Tener en cuenta el feedback de los usuarios - Testing manual.
-    \item Realiación de tests para la lógica en tiempo real - Testing automático.
+    \item Realización de tests para la lógica en tiempo real - Testing automático.
     \item Desplegar la aplicación a través de tecnologías modernas.
 \end{enumerate}
