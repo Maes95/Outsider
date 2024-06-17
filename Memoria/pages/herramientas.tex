@@ -11,7 +11,7 @@ Además de conocer en profundidad cómo funcionan este framework y Python (que e
 esta se trata de una herramienta que permite un desarrollo rápido, seguro y escalable.
 
 Por otra parte se trabajará con Django channels \cite{djangoChannels} para gestionar el uso de websockets. Django channels
-permite el uso de websockets y tecnologías análogas mediante varios paquetes que se integran dentro del framework de Django.
+permite el uso de websockets y tecnologías análogas mediante varios paquetes\tutor{librerías?} que se integran dentro del framework de Django.
 A través del uso de 'consumers' o consumidores, abstracciones propias de Channels, 
 se desarrollará la mayor parte de la lógica de la aplicación. 
 
@@ -22,7 +22,7 @@ Posteriormente se hará mención a pytest \cite{pytest} a la hora de implementar
 Por otro lado, para el desarrollo frontend se propone el uso de Vue \cite{vue3} debido a su popularidad, versatilidad
 y a su uso personal en otros proyectos. De esta forma se creará un frontend sencillo pero bastante personalizable.
 
-Se hace referencia a Vue3 por ser la versíon más moderna de Vue, la cual tiene cambios destacables en comparación
+Se hace referencia a Vue3 por ser la versión más moderna de Vue, la cual tiene cambios destacables en comparación
 a Vue2 \cite{vue3vue2}. Todos los paquetes y librerías adicionales se incorporarán teniendo en cuenta que se está haciendo uso de
 Vue3. En especial, se destaca la librería de componentes Vuetify \cite{vuetify}, la cual es un gran añadido a la hora de
 ofrecer una gran diversidad de componentes para la construcción de una interfaz vistosa y dinámica.
@@ -36,13 +36,13 @@ iconos de forma sencilla o Contrast Finder \cite{contrastFinder} para comparar c
 
 \subsection{Docker}
 
-Docker \cite{docker} es una herramienta de código abierto que facilita un despliegue seguro y portátil utilizando contenedores
+Docker \cite{docker} es una herramienta de código abierto que facilita un despliegue seguro\tutor{es menos seguro que una VM. Para no pillarte los dedos, usa otros adjetivos como sencillo o popular} y portátil\tutor{portable? portátil no es el adjetivo aquí} utilizando contenedores
 virtuales. Estos contenedores se emplearán para hospedar los diversos servicios del sistema en un
 servidor.
 
 \subsection{AWS}
 
-Amazon \cite{aws} Web Services (AWS) es una plataforma de servicios en la nube ofrecida por Amazon. Proporciona
+Amazon Web Services (AWS)~\cite{aws} es una plataforma de servicios en la nube ofrecida por Amazon. Proporciona
 una amplísima gama de servicios que incluyen computación, almacenamiento, bases de datos, ... Estas soluciones permitirán
 alojar la aplicación final de forma flexible y sencilla.
 
@@ -58,7 +58,7 @@ Todo el código del proyecto será accesible mediante un repositorio público en
 
 \subsection{WSL}
 
-Se destaca de forma adicional el uso del subsitema de Windows para Linux (WSL) \cite{wsl} para poder ejecutar de forma sencilla
+Se destaca de forma adicional el uso del subsistema de Windows para Linux (WSL) \cite{wsl} para poder ejecutar de forma sencilla
 todo el entorno de la aplicación así como para la realización de pruebas de despliegue sin dejar de hacer uso directo de Windows
 como sistema operativo.
 
@@ -74,7 +74,7 @@ de terminal.
 
 \section{Metodología}
 
-Este proyecto se ha guiado por una metodología de trabajo que se enfoca en la revisión de objetivos y
+Este proyecto se ha guiado por una metodología de trabajo iterativa-incremental\tutor{te añado yo esto, para ponerle nombre a lo que hemos hecho}, que se enfoca en la revisión de objetivos y
 avances entre el tutor y el alumno. Durante cada encuentro, se han ido discutiendo propuestas de mejora que se han convertido en
 objetivos para la siguiente evaluación. En primera instancia se han planteado unos objetivos principales (crear el juego
 con funcionalidades básicas) y diversos objetivos adicionales/opcionales que se han ido discutiendo e
