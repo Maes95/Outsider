@@ -8,26 +8,111 @@ producto software, es decir, relacionados con el usuario de forma directa.
 
 \subsection{Funcionalidad básica, lobby y conexiones}
 
-Además del propio juego, es necesario dar la capacidad y herramientas necesarias a los usuarios para 
-poder organizar partidas de forma sencilla. Para ello se plantea la creación de una landing page que
-permita al usuario
+Además del propio juego, es necesario dar las capacidades y herramientas necesarias a los usuarios para
+poder organizar partidas de forma sencilla. Para ello se plantea la creación de una página de inicio que
+permita al usuario poder crear salas de juego o unirse a salas ya creadas.
 
+El objetivo principal sería permitir a todos los usuarios de la aplicación poder jugar a
+diferentes partidas teniendo en cuenta varias limitaciones como el que un jugador no debería poder acceder
+a una partida ya empezada o evitar la creación de salas con el mismo nombre. De forma adicional, en esta página se deberían mostrar instrucciones que expliquen el funcionamiento
+del juego.
 
-
+También sería esencial tener una pantalla pre-partida en la cual se vayan uniendo los jugadores
+antes de comenzar el juego per se. En esta pantalla se propone añadir un chat para los jugadores además
+de mostrar la información pertinente al estado de la partida: Número de jugadores preparados, código de la
+sala para que se puedan unir más jugadores, ...
 
 \subsection{Juego sencillo}
 
+En primer lugar, se plantea poder jugar de forma sencilla solo una ronda en la cual se deciden los
+roles de los jugadores, se les indica una pista/contraseña a los jugadores Inocentes y se procede con la lógica
+de juego estándar: Cada jugador siguiendo un orden secuencial, escribirá una palabra relacionada con su contraseña
+para indicar a los demás que conocen la palabra asignada; después de que todos los jugadores hayan compartido una
+palabra, se lleva a cabo una votación simultánea, donde cada jugador vota por la persona que creen
+que es el Outsider.
+
+El Outsider ganará si no es el jugador más votado. Por otra parte, el resto de los jugadores Inocentes ganarán
+si logran descubrir al Outsider y este llega a ser el jugador más votado.
+
+El objetivo es llevar a cabo la implementación de esta lógica de la forma más consistente posible, trabajando en
+detalle con las conexiones websocket.
+
 \subsection{Útima oportunidad}
 
-\subsection{Varios Outsider}
+Habiendo implementado el juego sencillo, se querría añadir nuevas funcionalidades base. En primer lugar, dado el transcurso
+normal del juego, tras la votación simultánea, en el caso de que el Outsider reciba la mayoría de los votos, se le otorgará
+una última oportunidad para ganar adivinando la contraseña.
 
 \subsection{Multirondas}
 
+Cuando existen más de tres jugadores en una partida, se ve bastante necesario el poder jugar varias rondas con otras contraseñas,
+ya que, si no se elimina al Outsider de primeras y se elimina a un jugador Inocente, podrían seguir jugando el resto de jugadores
+rondas adicionales.
+
+Los jugadores eliminados pasan a ser espectadores mientras el resto sigue jugando hasta que el número de jugadores sea
+igual al de Outsiders o se elimine mediante votación al Outsider en cuestión.
+
+\subsection{Varios Outsider}
+
+Relacionado con el anterior punto, en partidas con varios jugadores se ve necesario aumentar el número de Outsiders en aras de
+una jugabilidad más interesante. De esta manera, se plantea que cuando el número de jugadores sea mayor que 6, simplemente sean
+dos jugadores Outsider en la partida.
+
+En estos casos el Outsider solo tendrá la oportunidad de adivinar la contraseña si es el último Outsider en la partida.
+
 \section{Objetivos secundarios y técnológicos}
 
-\subsection{Feedback de usuarios reales}
+Dados los objetivos/reglas principales que debería cumplir el juego, se añaden varios puntos adicionales que se quieren
+tratar como requisitos del proyecto.
+
+\subsection{Plataforma de juego}
+
+Se quiere aprovechar el uso de un entorno web para hacer más accesible el juego a diferente tipo de usuarios.
+
+El objetivo es hacer usable la aplicación en el mayor número de dispositivos posibles y se quiere diferenciar principalmente entre
+teléfonos móviles y equipos de escritorio (ordenadores y portátiles principalmente). Se diferencia entre estos dos tipos de
+dispositivos porque también se preveen dos tipos de juego de forma predominante:
+
+\begin{enumerate}
+    \item Juego presencial en un mismo espacio físico
+    \item Juego remoto
+\end{enumerate}
+
+Se entiende que si un grupo quiere jugar en un espacio físico común, por ejemplo, en un cumpleaños en la casa de uno de los
+jugadores, en la mayoría de casos todos los jugadores jugarán con sus propios dispositivos móviles, principalmente smartphones.
+
+Por otro lado, también se ve bastante común que otro grupo de jugadores quiera jugar de forma remota, cada uno en una
+localizacón diferente. En este caso, se podría asumir que la mayoría de jugadores intentarían jugar con sus dispositivos de
+escritorio.
 
 \subsection{Testing}
 
+Se propone de forma adicional trabajar ciertos elementos de CI, especialmente el testing del software, ya que, es una práctica
+esencial en la industria y resulta interesante trabajar el testing con tecnologías en tiempo real.
+
 \subsection{Despliegue}
 
+Para poder enseñar el resultado del proyecto de la forma más accesible posible, también se querría trabajar con tecnologías de
+AWS (Amazon Web Services) para poder tener la aplicación desplegada y totalmente disponible para cualquier usuario a la hora
+de acceder a esta.
+
+De esta forma se pretende aprender sobre tecnologías de despliegue y de crear una mejor presentación final del proyecto.
+
+\subsection{Feedback de usuarios}
+
+Para finalizar con la descripción inicial de objetivos/requisitos, se querría tener en cuenta una pequeña prueba con usuarios a mitad de
+desarrollo con el objetivo de encontrar bugs y pequeñas mejoras para el juego, lo que dará su propia lista de cambios a realizar.
+
+\section{Resumen de objetivos}
+
+\begin{enumerate}
+    \item Gestionar las conexiones entre jugadores mediante salas.
+    \item Creación del juego básico.
+    \item Añadir una mecánica adicional a la hora de eliminar al último jugador Outsider.
+    \item Permitir jugar varias rondas.
+    \item Añadir más jugadores Outisder al juego si hay muchos jugadores en partida.
+    \item Gestionar la usabilidad de la aplicación en diferentes dispositivos.
+    \item Tener en cuenta el feedback de los usuarios - Testing manual.
+    \item Realiación de tests para la lógica en tiempo real - Testing automático.
+    \item Desplegar la aplicación a través de tecnologías modernas.
+\end{enumerate}
