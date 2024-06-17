@@ -5,12 +5,12 @@ de testing y despliegue.
 \section{Requisitos}
 
 Definidos los objetivos del proyecto y tras realizar una primera reunión
-con el tutor del TFG, \nombretutor, se pueden definir de forma más concisa tanto los
+con el tutor del TFG, se pueden definir de forma más concisa tanto los
 requisitos funcionales como los no funcionales que debe cumplir la aplicación.
 
 \subsection{Requisitos funcionales}
 
-Una posible estructura de la memoria final asociada con cada TFG podría ser la siguiente (leed la normativa de TFG):
+Una posible estructura de la memoria final asociada con cada TFG podría ser la siguiente (leed la normativa de TFG):\tutor{Esto se te ha colado ...}
 \begin{itemize}
 	\item RF1 Página de inicio - Debe existir una página principal que permita establecer el nombre dentro del juego al usuario,
 	      que explique las reglas de juego y que establezca una interfaz sencilla para poder crear o unirse a una sala.
@@ -34,7 +34,7 @@ Una posible estructura de la memoria final asociada con cada TFG podría ser la 
 	      desenlace final de la ronda y se les mostraría a cada uno de los jugadores de forma simultánea este resultado.
 	\item RF11 Gameloop - El sistema debe identificar cuando todos los jugadores han enviado sus palabras, mostrar la interfaz
 	      de votación y finalmente gestionar y revelar los resultados a todos los jugadores de forma consistente.
-	\item RF12 Varias rondas - Si el número de jugadores  y el resultado de la ronda lo permite, el sistema debe asumir que tras
+	\item RF12 Varias\tutor{Múltiples} rondas - Si el número de jugadores  y el resultado de la ronda lo permite, el sistema debe asumir que tras
 	      la finalización de una ronda pueden jugarse otras rondas de forma adicional si se desea. Por ejemplo, si hay cuatro jugadores y los tres jugadores
 	      Inocentes no han identificado/votado al Outsider de forma correcta, se podría jugar otra ronda con tres jugadores si se ha votado de forma
 	      errónea a un jugador Inocente o con los mismos cuatro si ha habido un empate en la votación.
@@ -42,7 +42,7 @@ Una posible estructura de la memoria final asociada con cada TFG podría ser la 
 	\item RF14 Última oportunidad - En el caso en el que el jugador con más votos sea el último Outsider en la partida, este tendrá un intento de
 	      adivinar la contraseña que conocen los jugadores Inocentes.
 	\item RF15 Multiplataforma - La aplicación debe ser accesible desde diferntes tipos de dispositivos como telefónos móviles u ordenadores portátiles
-	      y de sobremesa.
+	      y de sobremesa.\tutor{Esto es un requisito no-funcional}
 \end{itemize}
 
 \subsection{Requisitos no funcionales}
@@ -87,7 +87,7 @@ se definen los servicios mínimos que debería ofrecer el sistema en conjunto:
 
 Estos serían los elementos básicos del sistema, pero hay que tener en cuenta su
 despliegue final. Para entenderlo todo de forma más organizada en la figura \ref{fig:res_arquitecturaSoftware} se muestra un esquema de la arquitectura
-a nivel general. En el apéndice se muestra la misma imagen (\ref{fig:res_arquitecturaSoftware}) de mayor tamaño.
+a nivel general. En el apéndice \tutor{referencia el apéndice} se muestra la misma imagen (\ref{fig:res_arquitecturaSoftware}) de mayor tamaño.
 
 \begin{figure}[h]
 	\centering
@@ -100,8 +100,8 @@ De este esquema inicial cabría destacar un poco más en detalle el funcionamien
 está construido sobre la especificación ASGI (Asynchronous Server Gateway Interface), diseñada para proporcionar una interfaz estándar entre servidores web Python, frameworks y aplicaciones que soportan asincronía \cite{ASGI}. Dicho de otra forma,
 permite hacer uso tanto de conexiones y peticiones HTTP como del uso del protocolo websocket sin problemas, algo totalmente nencesario para el desarrollo del proyecto. 
 
-Dicho esto, la comunicación a bajo nivel se hace un poco más enrevesada, ya que, lo que facilita Django Channels son las herramientas de alto
-nivel para trabajar directamente con los websockets. En la figura \ref{fig:res_esquemaDjangoChannels} se puede observar con mayor detalle como funcionan
+Dicho esto\tutor{Evita esta forma de comenzar las frases}, la comunicación a bajo nivel se hace un poco más enrevesada\tutor{suena un poco coloquial, mejor ``compleja''}, ya que, lo que facilita Django Channels son las herramientas de alto
+nivel para trabajar directamente con los websockets. En la figura \ref{fig:res_esquemaDjangoChannels} se puede observar\tutor{detalla un poco lo que se observa en la figura, trata de describirlo} con mayor detalle como funcionan
 las conexiones a bajo nivel en el entorno ASGI de Channels \cite{whatIsDjangoChannels}. De esta forma se puede entender un poco más sobre como funcionan las 
 conexiones a bajo nivel respecto al anterior esquema general, el cual solo hace referencia a las conexiones de alto nivel entre los servicios principales de la aplicación.
 
@@ -112,7 +112,7 @@ conexiones a bajo nivel respecto al anterior esquema general, el cual solo hace 
 	\label{fig:res_esquemaDjangoChannels}
 \end{figure}
 
-Obviando la comunicación ASGI a bajo nivel y los elementos asociados al despliegue (que se trataran con más detalle en las siguientes secciones), el resto del esquema es más sencillo: El usuario utilizará una URL, 
+Obviando\tutor{Denostra tu trabajo decir que estás obviando parte de el. Como más arriba te pido que lo detalles, hila esta frase para referirte a que a partir de aquí hablas de aspectos de alto nivel} la comunicación ASGI a bajo nivel y los elementos asociados al despliegue (que se trataran con más detalle en las siguientes secciones), el resto del esquema es más sencillo: El usuario utilizará una URL, 
 \href{http://outsidergame.top/}{outsidergame.top}  para acceder a la aplicación web y hacer uso de esta. La aplicación web (Vue) hará las necesarias comunicaciones (tanto HTTP como websocket) 
 para acceder al contenido y la lógica del juego contenidas en el servidor de Django/Channels. De forma adicional se dispone una URL de administrador, 
 \href{http://outsidergame.top:8050/admin/}{outsidergame.top:8050/admin/} protegida con credenciales para que el supuesto administrador de la web 
@@ -170,13 +170,13 @@ durante el proceso de desarrollo.
 \subsection{Implementación básica Backend/Frontend}
 
 La primera parte del desarrollo se ha basado en la implementación básica tanto del frontend a través de Vue como del 
-backend con el uso de Django. Para esta tarea, lo más importante es la correcta instalación de depedencias así como de
+backend con el uso de Django. Para esta tarea, lo más importante es la correcta instalación de dependencias así como de
 la preparación del entorno de desarrollo.
 
-Debido a la experencia previa en este apartado, no ha sido necesariamanete complicado esta instalación inicial. Para Django,
-la instalación es muy sencilla, solo se necesita tener python en el sistema y ejecutar un par de mandatos, por otra parte,
+Debido a la experencia previa en este apartado, no ha sido necesariamente complicado esta instalación inicial. Para Django,
+la instalación es muy sencilla, solo se necesita tener python\tutor{alternas el uso de Python y python de manera poco consistente. Trata de usar siempre el término en mayúsculas} en el sistema y ejecutar un par de mandatos, por otra parte,
 la instalación de Vue puede resultar algo más complicada, y en este caso se ha optado por hacer uso directamente de Vuetify para
-tener todas las dependencias derivadas de Node.js integradas en el proyecto. De esta forma se debería tener una estructura de proyecto
+tener todas las dependencias derivadas de Node.js integradas en el proyecto. De esta forma se debería tener\tutor{mejor: se tiene} una estructura de proyecto
 como la que se puede observar en la figura \ref{fig:res_designJuego}. En el directorio 'outsider' se encuentran los archivos 
 de configuración base de Django, mientras que en la carpeta 'outsider-front' se encuentra todo el código fuente relacionado 
 con el uso de Vue/Vuetify. 
@@ -190,11 +190,11 @@ la lógica del backend Django estará contenida dentro del directorio 'logic'.
 
 Como se había destacado antes, dentro de la carpeta 'outsider-front', se encontrará de forma bastante desglosada todos los componentes
 que conforman el frontend de Vue así como todas las configuraciones y ficheros auxiliares pertinentes. En la sección \ref{Desarrollo del frontend}
-se tratará en detalle la estructura del framework de Vue/Vuetify y la construcción de la página web frontend.
+se tratará en detalle la estructura del framework de Vue/Vuetify y la construcción de la página web (frontend).
 
 De manera adicional, cabe destacar que, debido a las facilidades de mandatos que ofrecen los sistemas unix así como que el despliegue
 final será en una maquina linux, se está trabajando a través de WSL, es decir,
-ambas aplicaciones: frontend y backend así como sus depedencias (python y node.js principalmente) se ejecutan en ubuntu a través de la interfaz
+ambas aplicaciones: frontend y backend, así como sus depedencias (python y node.js principalmente) se ejecutan en ubuntu a través de la interfaz
 de WSL, ya que, el ordenador en el cual se está desarrolando el proyecto solo tiene instalado Windows 11 y por decisión propia se prefiere su uso de forma
 cotidiana. Es importante tener esto en cuenta en primera instancia para evitar problemas en el futuro despliegue o mientras se está trabajando en el proyecto,
 debido a que, el uso de mandatos y la disponiblidad de ciertos instaladores y librerías cambia drásticamente entre Windows y Linux.
@@ -213,34 +213,34 @@ Por ello, lo primero será realizar la instalación de Channels en el server de 
 
 Además de la instalación sencilla mediante pip install, es necesaria la configuración de varios settings del proyecto, así
 como implementar el uso del servidor ASGI Daphne. En la documentación \cite{djangoChannelsInstall} se indica paso a paso el proceso 
-de instalación en detalle si se quiere indagar en el tema.
+de instalación en detalle si se quiere indagar en el tema\tutor{trata de dejar esto más formal}.
 
-Con Django Channels instalado en el sistema, lo primero que se ha realizado son los propios tutoriales de uso, los cuales detallan 
+Con Django Channels\tutor{En otras partes de la memoria, has puesto channels en minúscula} instalado en el sistema, lo primero que se ha realizado son los propios tutoriales de uso, los cuales detallan 
 la creación de un chat asíncrono, desde la configuración básica, hasta el uso de la funcionalidad de layers de forma asíncrona.
 
 Estos tutoriales, que también se encuentran en la propia documentación de Channels \cite{djangoChannelsTutorial}, son 
 de bastante calidad y se podrían comparar con la realización de una práctica guiada en una asignatura de la 
 \escuelalargo. Se enseñan las capacidades básicas de los websocket y se va expandiendo a nivel funcional un ejemplo
 de chat bastante completo. Se han encontrado tan interesantes estos ejemplos, que la funcionalidad backend del chat 
-en la aplicación final, se ha dejado prácticamente como viene definida en estos tutoriales.
+en la aplicación final, se ha dejado prácticamente como viene definida en estos tutoriales\tutor{mejor: se ha mantenido la configuración por defecto ...}.
 
 En términos generales, el funcionamiento de Channels, vendría a ser la siguiente:
 
 \begin{itemize}
-	\item En primer lugar, después de tener el proyecto configurado y una aplicación de django lista para
+	\item En primer lugar, después de tener el proyecto configurado y una aplicación de django\tutor{alternas mayúscula con minúcula al referirte a Django} lista para
 	      trabajar con websockets (para este proyecto será la aplicación de 'logic'), será necesario la creación de un 
 	      consumidor websocket.
 	\item Cuando Django acepta una solicitud HTTP, consulta la configuración de url raíz para buscar una función de vista/view y luego 
 	      llama a la función de vista para manejar la solicitud. De manera similar, cuando Channels acepta una conexión WebSocket, 
 	      consulta la configuración de url para buscar un consumidor y luego llama a varias funciones dentro del propio consumidor 
 	      para manejar eventos de la conexión.
-	\item Siendo más específicos, los consumidores se estructuran en torno a una serie de métodos/funciones con nombre correspondientes al tipo de mensaje 
+	\item Siendo más específicos\tutor{estas enumerando, no puedes empezar un item así. La frase se entiende sin poner esta entradilla. Esto ocurre con los siguientes items de la lista, resulta confuso al leerlo}, los consumidores se estructuran en torno a una serie de métodos/funciones con nombre correspondientes al tipo de mensaje 
 	      que recibe del propio websocket. En otras palabras, se tendrá un consumidor con un método 'connect', un método 'disconnect' y un método 'receive' 
 	      que gestionarán o consumirán, valga la redundancia, los mensajes de tipo websocket de nueva conexión 'new WebSocket', los de desconexión 
 	      'WebSocket.close()' y los de envío de mensajes estándar 'WebSocket.send()' respectivamente.
 	\item De esta forma, se entiende que los mensajes generados en el frontend web a través de la conexión websocket se 'producen' con el objetivo
 	      de que el backend 'consuma' estos mensajes mediante los propios 'consumidores' que se han instanciado a la hora de crear la comunicación websocket.
-	\item Como inciso final, el uso de Django Channels se basa en el uso de estos objetos consumidores de la forma que se vea 
+	\item Como inciso final\tutor{Por último ...}, el uso de Django Channels se basa en el uso de estos objetos consumidores de la forma que se vea 
 	      más adecuada. Por ejemplo, cabe destacar que los consumidores pueden heredar de diferentes clases con diferentes características,
 	      por ejemplo pueden exisitr consumidores síncronos, asíncronos, realizar decodificación JSON de forma automática, ...
 \end{itemize}
@@ -250,7 +250,7 @@ la lógica gira en torno al control del flujo del juego, solo se hace uso de un 
 un jugador y una sala de juego. Por esto útimo también se denomina al consumidor como 'RoomConsumer'. El código~\ref{alg:RoomConsumer} ejemplifica los métodos 
 principales e inicialización del consumer en cuestión. Como se puede observar se ha hecho uso de un AsyncJsonWebsocketConsumer, con decodificación JSON y el uso de 
 comunicación asíncrona para poder gestionar varias peticiones de forma paralela sin necesidad de esperar a que se completen las peticiones en orden.
-
+\tutor{Corrige/reduce los espacios que se generan entre las lineas 10-11 y 11-12}
 \begin{mypython}[float={h},caption={RoomConsumer},label={alg:RoomConsumer}]
 	import json
 	from channels.generic.websocket import AsyncJsonWebsocketConsumer
@@ -272,15 +272,14 @@ a nivel lógico en el servidor, se quiere indicar a todos los jugadores que est�
 
 Para empezar, se debe hacer uso del sistema de layers ya que, es indispensable para diferenciar diferentes salas de juego y permitir 
 la comunicación entre diferentes instancias de consumidores, en este caso, queremos que jugadores de una misma sala se comuniquen entre sí de forma constante. 
-Por ello, además de gestionar el servidor redis mediante un contenedor docker (docker run --rm -p 6379:6379 redis:7), también se tiene que procesar toda la lógica de broadcast
+Por ello, además de gestionar el servidor redis mediante un contenedor docker (docker run --rm -p 6379:6379 redis:7\tutor{no es necesario indicar el comando aquí}), también se tiene que procesar toda la lógica de broadcast
 o envio de mensajes desde el backend al frontend. Esto se realizará mediante el propio consumidor, el cual tiene la capacidad de suscribirse a un grupo haciendo uso
 de la aplicación de layers. Esta última operación se debe realizar cuando se acepta una conexión websocket en el propio consumidor. 
 
-En el siguiente código~\ref{alg:JoinGroup} se puede observar como se hace uso del método 'channel\textunderscore layer.group\textunderscore add()' para añadir al consumidor per se 
+En el código~\ref{alg:JoinGroup} se puede observar como se hace uso del método 'channel\textunderscore layer.group\textunderscore add()' para añadir al consumidor per se 
 al grupo (siempre estará relacionado el grupo a nivel lógico con la sala de juego en la que esté el propio jugador) cuando se realiza una nueva conexión websocket (método connect del consumidor). 
 
 \begin{mypython}[float={h},caption={Añadir consumer a un grupo},label={alg:JoinGroup}]
-						
 	async def connect(self):
 		...
 		# Join room group
@@ -293,14 +292,14 @@ Por otro lado, dentro del método receive, puede ser que un usuario en concreto 
 debe hacer uso del método 'channel\textunderscore layer.group\textunderscore send()' para que los diferentes consumidores que forman parte del mismo grupo reciban la 
 información de que un jugador está intentando empezar un partida. 
 
-Este mensaje se despachará en base al 'tipo' de mensaje que defina el propio método de broadcast, es decir debe
+Este mensaje se despachará\tutor{de nuevo, muy coloquial} en base al 'tipo' de mensaje que defina el propio método de broadcast, es decir debe
 existir un método denominado como 'startGame' el cual, además de poder realizar lógica adicional (por ejemplo, solo enviar la contraseña a jugadores Inocentes) 
 enviaría finalmente el mensaje de empezar partida desde el consumidor al propio websocket (el propio usuario en el cliente web) mediante el método 'send\textunderscore json()'. 
 
-Se puede ver de forma resumida, tanto el código de broadcast como el envío del mensaje final al cliente en el código~\ref{alg:ReceiveCode}. Para otras acciones existirán
+Se puede ver\tutor{apreciar} de forma resumida, tanto el código de broadcast como el envío del mensaje final al cliente en el código~\ref{alg:ReceiveCode}. Para otras acciones existirán
 otros métodos correspondientes y en este código solo se resalta el uso de 'startGame' para ejemplificar el uso de grupos de consumers.
 
-Para finalizar este apartado y haciendo un poco de resumen, el objeto consumidor, además de de gestionar los mensajes que le llegan desde el cliente web y procesar la lógica necesaria, 
+Para finalizar este apartado y haciendo un poco\tutor{de nuevo, muy coloquial} de resumen, el objeto consumidor, además de de gestionar los mensajes que le llegan desde el cliente web y procesar la lógica necesaria, 
 es capaz de enviar nueva información de vuelta a usuarios que compartan un mismo grupo, que en el contexto de este proyecto serán las salas de juego. De esta forma se logra
 una comunicación bidireccional usuario-servidor con la capacidad de poder relacionar de forma consistente un grupo de conexiones en concreto.
 
@@ -329,6 +328,7 @@ una comunicación bidireccional usuario-servidor con la capacidad de poder relac
 
 \subsection{Implementación del backend}
 
+\tutor{Esta sección es extraña, porque toda la subsección anterior también es backend. Para evitar que re-escribas todo, trata de darle un nombre más concreto a esta sección}
 Habiendo explicado el funcionamiento general de Django Channels, se procede a definir en detalle los métodos y funcionalidades 
 de la implementación de la lógica del juego, incluyendo elementos adicionales, como el uso de peticiones REST y teniendo en cuenta 
 la legibilidad y estrucutra del código.
@@ -386,9 +386,11 @@ una lista de palabras inicial válidas o se ha borrado de la base de datos en al
 
 \subsection{Gestión de conexiones simultáneas y otros problemas generales}
 
-En esta sección se querría destacar los principales problemas que se han ido encontrado a lo largo del desarrollo, especialmente los relacionados con 
+\tutor{Si vas a hablar de problemas generales, trata de dar un título más genérico a esta subsección: ``Problemas afrontados durante el desarrollo'' o algo similar}	
+En esta sección se destacan los principales problemas que se han ido encontrado a lo largo del desarrollo, especialmente los relacionados con 
 la lógica en el backend.
 
+\tutor{Separa los items que enumeras de otra forma. No se sabe de qué están hablando. Por ejemplo, puedes poner un título a cada item. El primero podría ser ``Problemas de sincronización''}
 \begin{itemize}
 	\item En primer lugar, es muy importante tener en cuenta problemas de sincronización como salas ya creadas, o códigos no válidos. A la hora de gestionar a varios jugadores en una misma sala
 		  eran recurrentes los problemas relacioandos con la información que tiene un consumidor y otro, ya que, la mayor parte de la lógica, por ejemplo, calcular el resultado de una votación
@@ -397,20 +399,20 @@ la lógica en el backend.
 	
 		  Por otra parte, se ideó un mecanismo clave en la gestión asíncrona de la lógica del juego: Hay muchos puntos en los cuales cualquier jugador podría empezar/acabar con la partida
 		  o como se acaba de comentar, hay partes de código que solo tiene sentido que gestione un usuario/consumidor en exclusiva, para no repetir cálculos y respetar una sincronía dentro
-		  de la comunicación asíncrona. Este tipo de problemas pueden resultar familiares a los que hayan trabajado con este tipo de tecnologías, personalmente se pensó en soluciones como el concepto de Barrier
+		  de la comunicación asíncrona. Este tipo de problemas pueden resultar familiares a los que hayan trabajado con este tipo de tecnologías, personalmente\tutor{evita usar términos que se refieran a ti} se pensó en soluciones como el concepto de Barrier
 		  a la hora de forzar la espera de un proceso en un punto hasta que el resto de procesos hayan llegado al mismo punto \cite{Barrier}. 
 		
-		  Finalmente, se llegó a una solución sencila que también ayuda al diseño y experiencia de usuario: Un rol adicional de capitán o jefe de la sala. La clave radica en la sencillez de la idea, 
+		  Finalmente, se llegó a una solución sencilla que también ayuda al diseño y experiencia de usuario: Un rol adicional de capitán o jefe de la sala. La clave radica en la sencillez de la idea, 
 		  el primer jugador que entra en una sala (el creador) es el capitán de la sala, y eso le permite iniciar la partida y tener la capacidad de terminarla entre rondas. De esta forma, gran parte de lógica la asume el 
 		  consumidor del websocket asociado al usuario capitán. El único problema es la posible desconexión de este capitán, por ello, una gran parte del desarrollo ha sido la correcta sincronización de conexiones dentro 
 		  de la sala. Para evitar posibles problemas en la lógica del juego, si un jugador (que no ha sido eliminado y no está como espectador en el juego) se desconecta en mitad de partida, se cancela la partida 
 		  y los jugadores vuelven a la página principal.
 		
 		  Esto es debido a que recalcular la lógica en mitad de partida se hace demasiado complicada, especialmente mostrar los cambios de forma visual y sencilla a los usuarios. Por otra parte, las partidas son
-		  absurdamente rápidas y sencillas y se persigue un trato de la información sencillo y poco persistente. Solo exisite información de los usuarios mientras están en una sala de juego, si se cierra la página 
+		  absurdamente\tutor{muy coloquial} rápidas y sencillas y se persigue un trato de la información sencillo y poco persistente. Solo exisite información de los usuarios mientras están en una sala de juego, si se cierra la página 
 		  web no hay ninguna traza de información que se haya almacenado obviando el historial de navegación y los datos asociados a la caché del propio navegador.
 
-	\item Dicho esto, se querría hablar también sobre la gestión de resultados de las rondas, ya que, también ha sido un apartado un poco tedioso. El juego funciona de forma sencila, pero con todas las reglas aplicadas
+	\item Dicho esto\tutor{de nuevo, evitamos comenzar así un item}, se querría\tutor{querría es un verbo que chirría en un texto académico} hablar también sobre la gestión de resultados de las rondas, ya que, también ha sido un apartado un poco tedioso. El juego funciona de forma sencila, pero con todas las reglas aplicadas
 		  hay diversos resultados a la hora de tratar la información de votación de los jugadores, desde empates, hasta la imposibilidad de seguir jugando de forma coherente (mismo número de outsiders que de jugadores).
 		  Por ende, es importante tener en cuenta lo complicado que se puede volver un simple diálogo de texto y tener en cuenta todos los resultados posibles. En este aspecto el testing automático puede facilitar las
 		  cosas y por ello puede resultar bastante úitl aplicarlo desde un primer momento.
@@ -421,7 +423,7 @@ la lógica en el backend.
 		  no tiene ninguna clase de pista adicional, se hace complicado evitar ser descubierto como Outsider. Por ende, la lista de palabras se hace algo más compleja, ya que, en este caso, el Outsider
 		  debería tener otra palabra que se parezca a nivel semántico a la contraseña, pero sin ser la propia contraseña; por ello, para generar esta lista de tuplas se ha hecho uso de ChatGPT \cite{ChatGPT} para
 		  poder tener al menos unos datos iniciales con los que testear y mostrar la aplicación evitando palabras repetidas entre diferentes partidas. Igualmente esto sería un aspecto a mejorar e incluso
-		  se podrían modificar las reglas para poder tratar con este aspecto en especial., porque, incluso haciendo uso de IA, se ha hecho muy poco consistente esta generación de tuplas de palabras semánticamente similares.
+		  se podrían modificar las reglas para poder tratar con este aspecto en especial, porque, incluso haciendo uso de IA, se ha hecho muy poco consistente esta generación de tuplas de palabras semánticamente similares.
 		
 \end{itemize}
 
@@ -435,7 +437,7 @@ configuraciones adicionales.
 
 Vue solo hace una gran distinción entre elementos: páginas y componentes, que se distinguen por su uso específico. La diferencia es simplemente que 
 las vistas son componentes con capacidad de enrutamiento; es decir, mientras que los componentes pueden actuar como bloques reutilizables de comportamiento, estilo 
-y estructura en diversas partes de la página web, las vistas tienen una ruta específica dentro de la página web. En el desarrollo del proyecto, como se pude observar 
+y estructura en diversas partes de la página web, las vistas tienen una ruta específica dentro de la página web\tutor{trata de re-escribir esta última frase para clarificarla. Comienzas hablando de páginas y componentes pero lo primero que introduces son las vistas y las comparas con ... las vistas? algo se te ha colado aquí}. En el desarrollo del proyecto, como se pude observar 
 en la siguiente figura (\ref{fig:res_estructFronted}), se han planteado dos vistas que definen la pagían de inicio y la página que gestiona la sala de juego. Por otra parte
 existen diversos componentes reutilizables que se integran dentro de cada una de la vistas.
 
@@ -493,10 +495,14 @@ antes de ingresar en la sala.
  \end{figure}
 
 \section{Testing}
+\tutor{Mejor: Pruebas automáticas}
 
 \section{Pruebas con usuarios}
+\tutor{Mejor: Pruebas manuales. Ya después puedes hablar de pruebas con usuarios en esta misma sección}
 
 \section{Despliegue}
+
+\tutor{Entiendo que simplemente no has llegado aquí}
 
 
 
