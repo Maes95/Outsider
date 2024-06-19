@@ -508,10 +508,9 @@ Breve resumen del Trabajo de Fin de Grado (TFG). Recomendable entre 250-300 pala
 % \afterpage{\blankpage} % puede generar problema en índice de contenidos
 % \newpage
 
-
 % Capítulo 2
 \chapter{Objetivos}
-
+\label{chap:objetivos}
 \input{pages/objetivos.tex}
 
 \blankpage
@@ -519,33 +518,19 @@ Breve resumen del Trabajo de Fin de Grado (TFG). Recomendable entre 250-300 pala
 % Capítulo 3
 \chapter{Herramientas y Metodología}
 \label{chap:herramientas}
-
 \input{pages/herramientas.tex}
-
 
 % Capítulo 4
 \chapter{Descripción informática}
 \label{chap:descripInfor}
-
 \input{pages/descripInfor.tex}
 
-
-% Nuevo capítulo
-\chapter{Resultados (opcional)}
-\label{sec:resulObtenidos}
-
-\input{pages/resultados.tex}
-
-\blankpage
-
-% Nuevo capítulo
-
+% Capítulo 5
 \chapter{Conclusiones y trabajos futuros}
-
+\label{chap:conclusiones}
 \input{pages/conclusiones.tex}
 
 \blankpage
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Bibliografía %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -558,15 +543,11 @@ Breve resumen del Trabajo de Fin de Grado (TFG). Recomendable entre 250-300 pala
 	\bibliography{bibliografia}
 }
 
-
-
 % No expandir elementos para llenar toda la página
 \raggedbottom
 \afterpage{\blankpage}
 
 \newpage
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Apéndices %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -592,12 +573,11 @@ Breve resumen del Trabajo de Fin de Grado (TFG). Recomendable entre 250-300 pala
 \thispagestyle{empty}
 \newpage
 
-
-% Primer apéndice
-\chapter{Este es el primer apéndice}
-\label{sec:apendice}
-
+\chapter{Esquemas y recursos adicionales}
 \input{pages/appendixes/apendice-1.tex}
+
+\chapter{Instrucciones de testing y despliegue de la aplicación}
+\input{pages/appendixes/apendice-2.tex}
 
 % Fin del documento
 \end{document}

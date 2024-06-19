@@ -3,15 +3,16 @@ de trabajo que se ha seguido para la elaboración de la aplicación.
 
 \section{Herramientas y tecnologías usadas}
 
-\subsection{Django - Django channels}
+\subsection{Django - Django Channels}
 
 Las bases del proyecto se fundamentan en el uso de Django \cite{django} como tecnología de backend.
 
 Además de conocer en profundidad cómo funcionan este framework y Python (que es el lenguaje con el que trabaja Django),
 esta se trata de una herramienta que permite un desarrollo rápido, seguro y escalable.
 
-Por otra parte se trabajará con Django channels \cite{djangoChannels} para gestionar el uso de websockets. Django channels
-permite el uso de websockets y tecnologías análogas mediante varios paquetes\tutor{librerías?} que se integran dentro del framework de Django.
+Por otra parte se trabajará con Django Channels \cite{djangoChannels} para gestionar el uso de websockets. Django Channels
+permite el uso de websockets y tecnologías análogas mediante varios paquetes \alumno{en la documentación se hace uso
+directo del término paquete o módulo 'Channels is comprised of several packages...' son prácticamente sinónimos pero como veas} que se integran dentro del framework de Django.
 A través del uso de 'consumers' o consumidores, abstracciones propias de Channels, 
 se desarrollará la mayor parte de la lógica de la aplicación. 
 
@@ -36,7 +37,7 @@ iconos de forma sencilla o Contrast Finder \cite{contrastFinder} para comparar c
 
 \subsection{Docker}
 
-Docker \cite{docker} es una herramienta de código abierto que facilita un despliegue seguro\tutor{es menos seguro que una VM. Para no pillarte los dedos, usa otros adjetivos como sencillo o popular} y portátil\tutor{portable? portátil no es el adjetivo aquí} utilizando contenedores
+Docker \cite{docker} es una herramienta de código abierto que facilita un despliegue sencillo y portable utilizando contenedores
 virtuales. Estos contenedores se emplearán para hospedar los diversos servicios del sistema en un
 servidor.
 
@@ -48,13 +49,13 @@ alojar la aplicación final de forma flexible y sencilla.
 
 Se detallará el uso tanto de Docker como de AWS en el proceso de preparación y despliegue de la aplicación.
 
-\subsection{Github}
+\subsection{GitHub}
 
 GitHub \cite{github} es una plataforma de desarrollo colaborativo basada en la web que utiliza Git, un sistema de control de versiones
 distribuido. Permite a los desarrolladores alojar, gestionar y compartir proyectos de software, facilitando la accesibilidad
 del código.
 
-Todo el código del proyecto será accesible mediante un repositorio público en Github.
+Todo el código del proyecto será accesible mediante un repositorio público en GitHub \cite{repositorio} .
 
 \subsection{WSL}
 
@@ -74,7 +75,7 @@ de terminal.
 
 \section{Metodología}
 
-Este proyecto se ha guiado por una metodología de trabajo iterativa-incremental\tutor{te añado yo esto, para ponerle nombre a lo que hemos hecho}, que se enfoca en la revisión de objetivos y
+Este proyecto se ha guiado por el uso de una metodología de trabajo iterativa-incremental enfocada en la revisión de objetivos y
 avances entre el tutor y el alumno. Durante cada encuentro, se han ido discutiendo propuestas de mejora que se han convertido en
 objetivos para la siguiente evaluación. En primera instancia se han planteado unos objetivos principales (crear el juego
 con funcionalidades básicas) y diversos objetivos adicionales/opcionales que se han ido discutiendo e

@@ -159,7 +159,7 @@ async def test_room_connection_started_game_room(create_test_room):
 @pytest.mark.parametrize("create_test_room", [test_room], indirect=True)
 async def test_room_connection_multiple_connections_behavior(create_test_room):
 
-    # User1 and User2 'connection' and 'disconnection' spected behavior included the room state
+    # User1 and User2 'connection' and 'disconnection' expected behavior included the room state
 
     communicator_1 = WebsocketCommunicator(
         application=URLRouter(
@@ -278,7 +278,7 @@ async def test_send_and_receive_chat_message(create_test_room):
     communicator_1, response_1 = await communicator_connection(username="User1")
     communicator_2, response_2 = await communicator_connection(username="User2")
 
-    # Recieve "User2" connection message
+    # Receive "User2" connection message
     response_1 = await communicator_1.receive_json_from()
 
     await sync_rest_calls.create_room(room_name="other_room")
@@ -603,7 +603,7 @@ async def test_voting_outsider_continue_playing(create_test_room):
     ###
 
     # If there's another conclusive voting (for example all vote to the User4), the game is concluded because
-    # there'll be none outsiders (User4 -> Outisder) or there'll be 1 outsider agaisnt only 1 innocent player
+    # there'll be none outsiders (User4 -> Outsider) or there'll be 1 outsider against only 1 innocent player
 
     if voted_user == user_2:
         await communicator_3.send_json_to(

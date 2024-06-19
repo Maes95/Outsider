@@ -1,7 +1,7 @@
 En esta sección se definirán los objetivos principales del proyecto así como de otros objetivos y
 requisitos secundarios que han ido definiéndose a lo largo del proyecto.
 
-\section{Objetivos funcionales del juego}
+\section{Objetivos funcionales del juego} \label{Objetivos}
 
 En primera instancia destacamos las funcionalidades básicas que debería cumplir el juego como
 producto software, es decir, relacionados con el usuario de forma directa.
@@ -25,8 +25,14 @@ sala para que se puedan unir más jugadores, ...
 \subsection{Juego sencillo}
 
 En primer lugar, se plantea poder jugar de forma sencilla solo una ronda en la cual se deciden los
-roles de los jugadores, se les indica una pista/contraseña\tutor{Para los jugadores Inocentes, es la palabra a adivinar por el outsider. Pista/contraseña suena extraño} a los jugadores Inocentes y se procede con la lógica
-de juego estándar:\tutor{Después de dos puntos, va minúsculas. He corregido un par, pero a partir de aquí, corrigelas tu} Cada jugador siguiendo un orden secuencial, escribirá una palabra relacionada con su contraseña
+roles de los jugadores y se les indica una palabra clave a los jugadores Inocentes. Esta palabra 
+clave es desconocida por el Outsider y el resto de jugadores Inocentes deberán demostrar 
+que la conocen mientras evitan desvelarla al verdadero jugador Outsider. Se destaca 
+que ninguno de los jugadores debería conocer a ciencia cierta el rol de otro, por ello, se trata de un juego 
+con un alto factor de interacción social, donde la intuición y la discreción son elementos clave.
+
+Con la palabra clave relevada a los jugadores Inocentes, se procede con la lógica de juego estándar: cada jugador siguiendo 
+un orden secuencial, escribirá una palabra relacionada con su contraseña
 para indicar a los demás que conocen la palabra asignada; después de que todos los jugadores hayan compartido una
 palabra, se lleva a cabo una votación simultánea, donde cada jugador vota por la persona que creen
 que es el Outsider.
@@ -37,28 +43,31 @@ si logran descubrir al Outsider y este llega a ser el jugador más votado.
 El objetivo es llevar a cabo la implementación de esta lógica de la forma más consistente posible, trabajando en
 detalle con las conexiones websocket.
 
-\subsection{Útima oportunidad}
+\subsection{Última oportunidad}
 
 Habiendo implementado el juego sencillo, se querría añadir nuevas funcionalidades base. En primer lugar, dado el transcurso
 normal del juego, tras la votación simultánea, en el caso de que el Outsider reciba la mayoría de los votos, se le otorgará
 una última oportunidad para ganar adivinando la contraseña.
 
-\subsection{Multirondas}
+\subsection{Múltiples rondas}
 
-Cuando existen más de tres jugadores en una partida, se ve\tutor{Es ``se ve'', es poco formal. mejor ``se detecta la necesidad de ...''} bastante necesario el poder jugar varias rondas con otras contraseñas,
+Cuando existen más de tres jugadores en una partida, se detecta la necesidad de poder jugar varias rondas,
 ya que, si no se elimina al Outsider de primeras y se elimina a un jugador Inocente, podrían seguir jugando el resto de jugadores
 rondas adicionales.
 
-Los jugadores eliminados pasan a ser espectadores mientras el resto sigue jugando hasta que el número de jugadores sea
-igual al de Outsiders\tutor{Aún no has introducido que puede haber más, clarifica al menos que, de momento, solo hay 1} o se elimine mediante votación al Outsider en cuestión.
+Los jugadores eliminados pasan a ser espectadores mientras el resto sigue jugando hasta que no 
+se pueda seguir el juego porque solo queden un jugador Outsider y otro Inocente (en este caso
+ganaría el Outsider de forma definitiva) o se elimine mediante votación al Outsider en cuestión.
 
 \subsection{Varios Outsider}
 
-Relacionado con el anterior punto, en partidas con varios jugadores se ve\tutor{lo mismo} necesario aumentar el número de Outsiders en aras de
+Relacionado con el anterior punto, en partidas con varios jugadores se ve necesario aumentar el número de Outsiders en aras de
 una jugabilidad más interesante. De esta manera, se plantea que cuando el número de jugadores sea mayor que seis, simplemente sean
 dos jugadores Outsider en la partida.
 
-En estos casos el Outsider solo tendrá la oportunidad de adivinar la contraseña si es el último Outsider en la partida.
+En estos casos el Outsider solo tendrá la oportunidad de adivinar la contraseña si es el último Outsider en la partida. Por contraparte, si 
+todavía hay dos Outsider jugando y solo quedan otros dos jugadores Inocentes sin eliminar, ganaría el bando Outsider al tener ventaja en los 
+votos.
 
 \section{Objetivos secundarios y tecnológicos}
 
@@ -71,7 +80,7 @@ Se quiere aprovechar el uso de un entorno web para hacer más accesible el juego
 
 El objetivo es hacer usable la aplicación en el mayor número de dispositivos posibles y se quiere diferenciar principalmente entre
 teléfonos móviles y equipos de escritorio (ordenadores y portátiles principalmente). Se diferencia entre estos dos tipos de
-dispositivos porque también se preveen dos tipos de juego de forma predominante:
+dispositivos porque también se prevén dos tipos de juego de forma predominante:
 
 \begin{enumerate}
     \item Juego presencial en un mismo espacio físico
@@ -87,7 +96,7 @@ escritorio.
 
 \subsection{Testing}
 
-Se propone de forma adicional trabajar ciertos elementos de CI\tutor{La primera vez que hablas de un término, no puede ser usando sus siglas. Usa: Integración Continua (CI, por sus siglas en inglés)}, especialmente el testing del software, ya que, es una práctica
+Se propone de forma adicional trabajar ciertos elementos de Integración Continua (CI, por sus siglas en inglés), especialmente el testing del software, ya que, es una práctica
 esencial en la industria y resulta interesante trabajar el testing con tecnologías en tiempo real.
 
 \subsection{Despliegue}
@@ -100,7 +109,7 @@ De esta forma se pretende aprender sobre tecnologías de despliegue y de crear u
 
 \subsection{Feedback de usuarios}
 
-Para finalizar con la descripción inicial de objetivos/requisitos\tutor{Mejor déjalo sólo en objetivos, que esta sección se te ha alargado mucho y parecen casi requisitos}, se querría tener en cuenta una pequeña prueba con usuarios a mitad de
+Para finalizar con la descripción inicial de objetivos, se querría tener en cuenta una pequeña prueba con usuarios a mitad de
 desarrollo con el objetivo de encontrar bugs y pequeñas mejoras para el juego, lo que dará su propia lista de cambios a realizar.
 
 \section{Resumen de objetivos}

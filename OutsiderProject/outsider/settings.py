@@ -89,7 +89,7 @@ WSGI_APPLICATION = "outsider.wsgi.application"
 ASGI_APPLICATION = "outsider.asgi.application"
 
 # To test the websocket backend via 'pytest', the TEST flag must be set to false and a valid redis server must be running on localhost
-TEST = False
+TEST = True
 if TEST == True:
     redis_hosts = [("localhost", 6379), ("0.0.0.0", 6379)]
 else:
