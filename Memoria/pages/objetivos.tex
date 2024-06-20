@@ -32,7 +32,7 @@ que ninguno de los jugadores debería conocer a ciencia cierta el rol de otro, p
 con un alto factor de interacción social, donde la intuición y la discreción son elementos clave.
 
 Con la palabra clave relevada a los jugadores Inocentes, se procede con la lógica de juego estándar: cada jugador siguiendo 
-un orden secuencial, escribirá una palabra relacionada con su contraseña
+un orden secuencial, escribirá una palabra relacionada con su palabra clave
 para indicar a los demás que conocen la palabra asignada; después de que todos los jugadores hayan compartido una
 palabra, se lleva a cabo una votación simultánea, donde cada jugador vota por la persona que creen
 que es el Outsider.
@@ -47,7 +47,7 @@ detalle con las conexiones websocket.
 
 Habiendo implementado el juego sencillo, se querría añadir nuevas funcionalidades base. En primer lugar, dado el transcurso
 normal del juego, tras la votación simultánea, en el caso de que el Outsider reciba la mayoría de los votos, se le otorgará
-una última oportunidad para ganar adivinando la contraseña.
+una última oportunidad para ganar adivinando la palabra clave.
 
 \subsection{Múltiples rondas}
 
@@ -65,7 +65,7 @@ Relacionado con el anterior punto, en partidas con varios jugadores se ve necesa
 una jugabilidad más interesante. De esta manera, se plantea que cuando el número de jugadores sea mayor que seis, simplemente sean
 dos jugadores Outsider en la partida.
 
-En estos casos el Outsider solo tendrá la oportunidad de adivinar la contraseña si es el último Outsider en la partida. Por contraparte, si 
+En estos casos el Outsider solo tendrá la oportunidad de adivinar la palabra clave si es el último Outsider en la partida. Por contraparte, si 
 todavía hay dos Outsider jugando y solo quedan otros dos jugadores Inocentes sin eliminar, ganaría el bando Outsider al tener ventaja en los 
 votos.
 

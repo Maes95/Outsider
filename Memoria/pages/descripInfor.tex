@@ -569,19 +569,19 @@ posibles dependientes del uso de conexiones websocket estables y controladas. Po
 bastante abrumador y siempre existe el propio error humano característico en estas pruebas; confundirse al votar a un jugador o agotar el tiempo de manera
 involuntaria pueden comprometer este tipo de pruebas manuales especialmente si se quieren testear gran cantidad de casos.
 
-Dicho esto, se ha hecho uso de pytest \cite{pytest}, un framework que permite la creación de tests de forma sencilla en Python. Se ha hecho uso
-de pytest sobre otros de los muchos framework de testing debido al uso directo de Python y a las facilidades para testear 
+Dicho esto, se ha hecho uso de PyTest \cite{pytest}, un framework que permite la creación de tests de forma sencilla en Python. Se ha hecho uso
+de PyTest sobre otros de los muchos framework de testing debido al uso directo de Python y a las facilidades para testear 
 tecnologías asíncronas, lo cual cubre la parte de código más sensible y compleja de la aplicación.
 
 Dentro de la aplicación ``logic'' en la carpeta fuente del proyecto, se encuentra el fichero ``test\textunderscore websocket\textunderscore backend.py''. Dentro de este fichero
 se encuentran preparados para ejecutarse diferentes tests que ponen a prueba las conexiones websocket y la lógica de juego. El funcionamiento de un test 
-de pytest es bastante sencillo: como se puede observar en la figura (\ref{fig:res_desconexion}), lo primero es destacar el nombre del test, este debería ser representativo y 
+de PyTest es bastante sencillo: como se puede observar en la figura (\ref{fig:res_desconexion}), lo primero es destacar el nombre del test, este debería ser representativo y 
 claro; en este caso se trata del test ``test\textunderscore room\textunderscore connection\textunderscore wrong\textunderscore room'', lo que indica que 
 se comprobará la conexión a una sala errónea, es decir, se va a suponer un usuario que quiera conectarse a una sala que no existe pero va a hacer uso
 de un código de sala erróneo, por ende, el sistema debería rechazar esa conexión errónea por parte del usuario.
 
 Dicho esto, lo primer que se suele hacer en un test es crear información simulada, normalmente denominada como ``mock data''. Estos datos simulados
-sirven para darle un contexto al test en cuestión. En este caso a través del decorador ``@pytest.mark.parametrize("create\textunderscore test\textunderscore room", [test\textunderscore room], indirect=True)''
+sirven para darle un contexto al test en cuestión. En este caso, previamente al código de la función, con ayuda de los ``helpers/fixtures'' de Pytest 
 se creará una sala en la base de datos simulada la cual está vacía. Dependiendo del entorno de trabajo los datos de simulación per se y el como
 se crean variarán, debido a la asincronía presente en la mayor parte del código se harán uso de herramientas específicas, ya que, al igual que 
 en el framework estándar, mezclar peticiones síncronas a la base de datos con mensajes websocket suele requerir algún paso extra, en este caso y en los 
@@ -597,17 +597,142 @@ en vez de ``test\textunderscore room''. Dependiendo del test se querrán comprob
 el adecuada cuando al iniciar una partida o que las conexiones y desconexiones generen los resultados esperados dependiendo del estado de la partida.
 
 Cabría destacar que la mayoría de lógica que se testea per se es en su mayoría las conexiones websocket, por ello se agiliza la creación de salas
-a traves de los decoradores de pytest, que están diseñados con esa misma intención, preparar el entorno de forma previa a la ejecución de 
+a traves de los ``helpers/fixtures'' de PyTest, que están diseñados con esa misma intención, preparar el entorno de forma previa a la ejecución de 
 un test. 
 
 En el anexo (\ref{sect:testing}) se pueden encontrar las instrucciones en detalle para preparar el entorno y ejecutar los tests.
 
+
+
+
 \section{Pruebas manuales}
+
+El aseguramiento de la calidad (frecuentemente denominado con el anglicismo ``Quality Assurance'', ``QA'') comprende un conjunto de actividades planificadas 
+y sistemáticas implementadas dentro de un sistema con el objetivo de garantizar que se cumplan los requisitos de calidad 
+de un producto o servicio.
+
+Además de todo el trabajo relacionado con las pruebas automáticas, es destacable el esfuerzo de probar todos los aspectos de la aplicación
+de forma directa. En grandes proyectos es normal encontrar un equipo dedicado exclusivamente a QA, haciendo uso de la aplicación en detalle
+además de reportando de forma conveniente todos los problemas encontrados a los desarrolladores. Se han tenido en cuenta la realización de partidas
+con diferente número de jugadores, los diferentes resultados de ronda y la correcta visualización de elementos en pantalla, algo más difícil de 
+probar de forma automática; por ejemplo, detectar un correcto uso de colores o corroborar que existe una lógica de navegación intuitiva no son pruebas 
+que se puedan ejecutar fácilmente (hay opciones, pero son costosas o simplemente requieren esfuerzo adicional de desarrollo) a través de un test automático.
+
+Debido a que este proyecto ha sido realizado por una sola persona, el testing manual ha sido trabajado por el propio desarrollador de la aplicación.
+Por ello, aunque se prueben diferentes casos de prueba con diferentes dispositivos y configuraciones es destacable que se pueden obviar elementos y problemas
+debido al uso continuado e informado de la aplicación. El desarrollador sabe jugar al juego y puede que en comparación a otra persona externa al 
+proyecto realice acciones más rápidas sin fijarse en elementos con claros errores en la interfaz de la aplicación. Por estas razones, se ha querido tener
+en cuenta la realización de una pequeña prueba con usuarios externos para tener en cuenta sus opiniones.
+
+Esta prueba se realizó con la mayor parte de la lógica de la aplicación lista y sirvió para ajustar algunos elementos y corregir pequeños errores.
+En la figura (\ref{fig:res_prueba}) tal se muestra una foto del día que se realizó esta prueba. Es importante destacar que se hizo con bastantes jugadores en un mismo
+espacio físico, debido a que la aplicación no estaba desplegada en la nube y era solo accesible de forma local y aunque no se tuvieron en cuenta problemas derivado
+del juego a larga distancia o en otras redes, se pudieron observar problemas derivados de su uso en este tipo de escenarios de uso. Al final, la 
+aplicación posee un importante componente social y es importante ver como las personas actúan y hacen uso de la aplicación en un mismo espacio y tiempo; las
+expresiones faciales, la conversación en vivo o incluso la capacidad de hacer trampas son viables en este contexto.
+
+Los errores a solventar y las mejoras propuestas en esta prueba fueron:
+
+\begin{itemize}
+	\item Solucionar un error a la hora de enviar la palabra de juego escrita por el jugador. Es posible bloquear una ronda debido a la posibilidad de enviar dos veces
+	 	  la palabra por un jugador.
+	\item Permitir la ocultación de roles.
+	\item Cambiar una regla para que en el caso de existir dos Outsider, se elimine al primero directamente y solo se le de la capacidad de adivinar
+		  la palabra clave al segundo Outsider.
+	\item Solo proporcionar la palabra clave (una diferente a la de los jugadores Inocentes) al Outsider si es el primer jugador de la ronda. 
+		  En otro caso nunca tendrá nada al empezar.
+\end{itemize}
+
+Las diferentes propuestas fueron realizadas en la aplicación final y el error solucionado. Además de esto, sirvió para observar su uso por parte de otros usuarios
+y tener en cuenta incluso del uso de diferentes dispositivos a la hora de utilizar la aplicación, ya que cada uno hizo uso de su teléfono móvil.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[height=8cm,clip=true]{res_prueba.jpg}
+	\caption{Prueba con usuarios}
+	\label{fig:res_prueba}
+\end{figure}
+
+
+
 
 \section{Despliegue}
 
-\alumno{Me faltaría hablar un poco de las pruebas manuales y estaba dudando a la hora de hacer una guía en el apéndice sobre el despliegue, ¿la hago o simplemente me 
-pongo a explicarlo en detalle?}
+Para finalizar este capítulo sobre la descripción informática de la aplicación, quedaría por detallar el proceso de despliegue de la 
+aplicación.
+
+En primer lugar, sería indicado comentar que el despliegue se ha realizado para hacer uso de la aplicación desde cualquier dispositivo
+con conexión a internet y un navegador web. El despliegue se puede hacer de muchas formas y haciendo uso de diferentes tecnologías pero para 
+este proyecto se ha escogido Amazon Web Services (AWS) como plataforma de despliegue principal \cite{aws}. AWS ofrece una cantidad muy abundante
+de servicios, ya que, da servicios a toda clase de clientes y es una de las plataformas más usadas y conocidas en el ámbito de 
+computación en la nube. Son tantos los servicios que se hace complejo el simple hecho de listarlos a todos.
+
+En este caso, se hará uso de la plataforma Amazon Elastic Compute Cloud (Amazon EC2), normalmente denominada como EC2. Esta plataforma
+proporciona capacidad informática con tamaño modificable en la nube aunque en el marco del proyecto solo se hará uso de una pequeña máquina
+t2.micro con Linux como sistema operativo. Además de venir incluida en la capa gratuita de AWS, no es necesario contratar 
+una máquina con más capacidad de cómputo. 
+
+Además de la instanciación de la máquina, se propone la obtención de un dominio web para facilitar y dejar más vistoso el acceso a la aplicación
+web así como de hacer uso de Route 53 para gestionar el DNS requerido para direccionar este dominio con la IP estática de la máquina. 
+
+Con la plataforma lista para el despliegue, solo quedaría preparar la aplicación. Esto se ha hecho principalmente con el uso de Docker y Docker Compose a través
+del uso de contenedores. En concreto, se ha creado un fichero ``docker-compose.yaml'' para gestionar 
+la ``dockerización'' de los servicios de la aplicación. En el siguiente código \ref{alg:docker} se destacan las secciones de este
+fichero en el cual se configuran el servidor Redis para conexiones websocket, el backend de Django y el frontend
+desarrollado en Vue. Además de lo dockerización per se, es necesario ajustar el uso de urls y gestionar la configuración
+de carga de los diferentes servicios, por ejemplo, se definen archivos ``Dockerfile'' tanto para los contenedores
+de Django (localizado en ``outsider/Dockerfile'') como para Vue (definido en ``outsider-front/Dockerfile'').
+
+\begin{mypython}[float={h},caption={Estructura del fichero Docker Compose},label={alg:docker}]
+	services:
+		# Redis server for websocket use
+		redis: ...
+		
+		# Django backend container with WS logic (Django Channels)
+		django: ...
+	  	
+		# Main container / Vue frontend
+		vue_frontend: ...
+\end{mypython}
+
+Esta configuración puede resultar compleja si no se tiene experiencia previa, ya que, lo que se hace es preparar
+la aplicación para poder ejecutarse más rápido a través de Docker. Es necesario describir todos las 
+instalaciones que se deben realizar y configurar el entorno de ejecución de cada servicio en particular; por ejemplo,
+se deben indicar los puertos de escucha del backend a la hora de ejecutar el comando ``manage.py'' de Django.
+
+De esta forma, se tiene una aplicación portable y lista para poder ejecutarse en la nube. Para ello, simplemente 
+habrá que descargarse su contenido en la máquina EC2 que se halla escogido y ejecutar el mandato de Docker Compose pertinente. En la
+figura \ref{fig:res_amazon} se muestran los contenedores docker desplegados en la máquina a través de AWS y a través del dominio 
+\href{http://outsidergame.top/}{outsidergame.top} se puede acceder la aplicación web.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth,clip=true]{res_amazon.png}
+	\caption{Contenedores docker en ejecución de la aplicación}
+	\label{fig:res_amazon}
+\end{figure}
+
+Si se accede a \href{http://outsidergame.top:8050/admin/}{outsidergame.top:8050/admin/} es posible 
+acceder a la vista de administrador de Django con las siguientes credenciales:
+
+\begin{compactitem}
+	\item Usuario: outsider\textunderscore admin
+	\item Contraseña: 2024outsider
+\end{compactitem}
+
+En esta vista se podrá observar el estado de las partidas (útil para el desarrollo) y acceder a la lista
+de palabras clave que utiliza el juego. Como se puede comprobar en la figura \ref{fig:res_admin}, se puede modificar de forma
+directa las palabras disponibles (denotadas con ``a'') y sus tentativas (indicadas con la letra ``b'') 
+que se le proporcionan al Outsider si es el primero en empezar la ronda. Debido a que no hay más modelos de 
+datos presentes, el resto de modificaciones al comportamiento de la aplicación dependen 
+directamente de modificar el código y los archivos de configuración pertinentes.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth,clip=true]{res_admin.png}
+	\caption{Vista de administrador de Django}
+	\label{fig:res_admin}
+\end{figure}
+
 
 \alumno{El resto entiendo que es hacer el resumen y las conclusiones finales, no se si ves algo más que te descuadre para retocarlo}
-

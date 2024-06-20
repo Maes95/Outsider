@@ -480,8 +480,7 @@ Breve resumen del Trabajo de Fin de Grado (TFG). Recomendable entre 250-300 pala
 
 
 
-% Capítulo 1
-\chapter{Introducción}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -501,10 +500,15 @@ Breve resumen del Trabajo de Fin de Grado (TFG). Recomendable entre 250-300 pala
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\input{pages/introduccion.tex}
-
 % \afterpage{\blankpage} % puede generar problema en índice de contenidos
 % \newpage
+
+% Capítulo 1
+\chapter{Introducción}
+\label{chap:introduccion}
+\input{pages/introduccion.tex}
+
+\blankpage
 
 % Capítulo 2
 \chapter{Objetivos}
@@ -518,10 +522,14 @@ Breve resumen del Trabajo de Fin de Grado (TFG). Recomendable entre 250-300 pala
 \label{chap:herramientas}
 \input{pages/herramientas.tex}
 
+\blankpage
+
 % Capítulo 4
 \chapter{Descripción informática}
 \label{chap:descripInfor}
 \input{pages/descripInfor.tex}
+
+\blankpage
 
 % Capítulo 5
 \chapter{Conclusiones y trabajos futuros}
