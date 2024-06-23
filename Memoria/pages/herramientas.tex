@@ -12,7 +12,7 @@ esta se trata de una herramienta que permite un desarrollo rápido, seguro y esc
 
 Por otra parte se trabajará con Django Channels \cite{djangoChannels} para gestionar el uso de websockets. Django Channels
 permite el uso de websockets y tecnologías análogas mediante varios paquetes \alumno{en la documentación se hace uso
-directo del término paquete o módulo 'Channels is comprised of several packages...' son prácticamente sinónimos pero como veas} que se integran dentro del framework de Django.
+directo del término paquete o módulo 'Channels is comprised of several packages...' son prácticamente sinónimos pero como veas}\tutor{puedes dejarlo así} que se integran dentro del framework de Django.
 A través del uso de 'consumers' o consumidores, abstracciones propias de Channels, 
 se desarrollará la mayor parte de la lógica de la aplicación. 
 
@@ -38,13 +38,12 @@ iconos de forma sencilla o Contrast Finder \cite{contrastFinder} para comparar c
 \subsection{Docker}
 
 Docker \cite{docker} es una herramienta de código abierto que facilita un despliegue sencillo y portable utilizando contenedores
-virtuales. Estos contenedores se emplearán para hospedar los diversos servicios del sistema en un
-servidor.
+virtuales\tutor{No verás en ningún sitio contenedores virtuales. Llámalos simplemente contenedores}. Estos contenedores se emplearán para hospedar los diversos servicios del sistema en servidor.\tutor{No lo hospeda,simplemente es un empaquetamiento. Si te cuesta definir Docker, trata de buscar una definición en otro TFG o más oficial, evitando inventarte cosas (lo cual, te pueden penalizar.)}
 
 \subsection{AWS}
 
 Amazon Web Services (AWS)~\cite{aws} es una plataforma de servicios en la nube ofrecida por Amazon. Proporciona
-una amplísima gama de servicios que incluyen computación, almacenamiento, bases de datos, ... Estas soluciones permitirán
+una amplísima gama de servicios que incluyen computación, almacenamiento, bases de datos, ... \tutor{Abusas de los ters puntos cuando en muchos casos simplemente puedes poner un etc. ya está. Como te comenté, hay que evitar usar el lenguaje natural que utilizarías en una conversación por WhatsApp por ejemplo} Estas soluciones permitirán
 alojar la aplicación final de forma flexible y sencilla.
 
 Se detallará el uso tanto de Docker como de AWS en el proceso de preparación y despliegue de la aplicación.
@@ -80,6 +79,8 @@ avances entre el tutor y el alumno. Durante cada encuentro, se han ido discutien
 objetivos para la siguiente evaluación. En primera instancia se han planteado unos objetivos principales (crear el juego
 con funcionalidades básicas) y diversos objetivos adicionales/opcionales que se han ido discutiendo e
 implementando a lo largo de las diferente reuniones (testing, mecánicas adicionales, despliegue mediante AWS, ...).
+
+\tutor{Te ha quedado algo escueta. Aquí puedes contar las distintas iteraciones que hemos realizado apoyándote en el documento que tenemos.}
 
 Esta metodología ha demostrado ser efectiva para este tipo de proyecto, ya que permite un avance progresivo y detallado,
 evitando la acumulación de muchas tareas. Además, al planificar con visión a futuro, la aplicación ha crecido de manera sólida

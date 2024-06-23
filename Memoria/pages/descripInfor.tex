@@ -1,4 +1,4 @@
-En esta sección se expondrá la mayor cantidad de información sobre el desarrollo per se
+En esta sección se expondrá la mayor cantidad de información sobre el desarrollo per se\tutor{Esta expresión no aporta nada y se puede quitar 'per se'}
 del proyecto, desde la definición de requisitos y análisis inicial, hasta el proceso final
 de testing y despliegue.
 
@@ -57,7 +57,7 @@ requisitos funcionales como los no funcionales que debe cumplir la aplicación.
 	      a prueba el correcto transcurso de una partida así como las conexiones y desconexiones en el entorno websocket del backend.
 	\item RNF Despliegue y administración - La aplicación estará lista para el despliegue y accesible para poder tener información de administración del servidor
 	      backend.
-	\item RNF6 Documentación - Todas las capacidades de administración actuales y de futuro desarrollo serán accesible de forma sencilla.
+	\item RNF6 Documentación - Todas las capacidades de administración actuales y de futuro desarrollo serán accesible \tutor{accessibleS. Si es documentación, será que están documentadas, ¿no? ¿Dónde está esta documentación} de forma sencilla.
 \end{itemize}
 
 \section{Arquitectura general}
@@ -69,13 +69,13 @@ Después de haber analizado los diferentes requisitos y considerando las herrami
 se definen los servicios mínimos que debería ofrecer el sistema en conjunto:
 
 \begin{enumerate}
-	\item Backend - Django. Para empezar, es fundamental el uso de un servidor backend capaz de
+	\item Backend - Django. Para empezar\tutor{De nuevo, esto es muy coloquial. No empiezas a describir algo diciendo "Para empezar. Describe el servidor y sus características, esto no es una conversación}, es fundamental el uso de un servidor backend capaz de
 	      gestionar la lógica de peticiones básica y que tenga capacidad para hacer uso de tecnología websocket.
 	      Para esta tarea, se propone una implementación sencilla a través de Django. Se destaca que hay muy poca información que se
 	      quiera tratar de forma persistente, por ello, no será necesario un servicio de base de datos adicional
 	      y se recurrirá a la configuración por defecto de Django con un archivo SQLite.
 	\item Servidor websocket - Redis (Django Channels). Al hacer uso de Django y de su particular implementación de
-	      websockets, se ve indispensable el uso de un servicio adicional, un servidor Redis. Este servidor es necesario para
+	      websockets, se ve\tutor{Otra vez, aquí tendrías que usar 'se considera'} indispensable el uso de un servicio adicional, un servidor Redis. Este servidor es necesario para
 	      poder hacer uso del sistema de ``capas'', que permiten que varias instancias de controladores websocket
 	      (denominados ``consumers'') puedan comunicarse entre sí y con otras partes de Django \cite{djangoChannelsLayers}.
 	\item Frontend - Vue3. Finalmente, solo quedaría gestionar la vista de la aplicación a través de Vue
@@ -88,7 +88,7 @@ Estos serían los elementos básicos del sistema, pero hay que tener en cuenta s
 despliegue final. Para entenderlo todo de forma más organizada en la figura \ref{fig:res_arquitecturaSoftware} se muestra un esquema de la arquitectura
 a nivel general. En el apéndice se muestra la misma imagen (\ref{fig:res_arquitecturaSoftwareApend}) de mayor tamaño.
 
-\begin{figure}[h]
+\begin{figure}[ht!]
 	\centering
 	\includegraphics[width=\textwidth,clip=true]{res_arquitecturaSoftware.pdf}
 	\caption{Arquitectura final del sistema}
@@ -201,7 +201,7 @@ se tratará en detalle la estructura del framework de Vue/Vuetify y la construcc
 
 De manera adicional, cabe destacar que, debido a las facilidades de mandatos que ofrecen los sistemas unix así como que el despliegue
 final será en una maquina Linux, se está trabajando a través de WSL, es decir,
-ambas aplicaciones: frontend y backend, así como sus dependencias (python y Node.js principalmente) se ejecutan en Ubuntu a través de la interfaz
+ambas aplicaciones (frontend y backend), así como sus dependencias (python\tutor{Sigues poniendo Python en minúsculas y mayúsculas sin seguir ningún criterio, trata de ser consistente.} y Node.js principalmente) se ejecutan en Ubuntu a través de la interfaz
 de WSL, ya que, el ordenador en el cual se está desarrollando el proyecto solo tiene instalado Windows 11 y por decisión propia se prefiere su uso de forma
 cotidiana. Es importante tener esto en cuenta en primera instancia para evitar problemas en el futuro despliegue o mientras se está trabajando en el proyecto,
 debido a que, el uso de mandatos y la disponibilidad de ciertos instaladores y librerías cambia drásticamente entre Windows y Linux.
@@ -550,8 +550,8 @@ cosas y por ello puede resultar bastante útil aplicarlo desde un primer momento
 El juego debería proporcionar una lista de palabras para que los usuarios jueguen con las 
 diversas palabras clave, de forma adicional, se ha querido poder modificar esa lista de palabras de forma sencilla mediante el administrador de Django y un campo JSON (en el apéndice se indicará en mayor detalle su uso).
 Dicho esto, se ha ido modificando una regla que indica que se le debe proporcionar al jugador Outsider una ``palabra clave falsa'' si es el primer jugador en una ronda; esto es porque si 
-no tiene ninguna clase de pista adicional, se hace complicado evitar ser descubierto como Outsider. Por ende, la lista de palabras se hace algo más compleja, ya que, en este caso, el Outsider
-debería tener otra palabra que se parezca a nivel semántico a la palabra clave, pero sin ser la propia palabra clave; por ello, para generar esta lista de tuplas se ha hecho uso de ChatGPT \cite{ChatGPT} para
+no tiene ninguna clase de pista adicional, se hace complicado evitar ser descubierto como Outsider. Por ende\tutor{coloquial}, la lista de palabras se hace algo más compleja, ya que, en este caso, el Outsider
+debería tener otra palabra que se parezca a nivel semántico a la palabra clave, pero sin ser la propia palabra clave; \tutor{Aquí corta la frase con punto, que ya es muy larga}por ello, para generar esta lista de tuplas se ha hecho uso de ChatGPT \cite{ChatGPT} para
 poder tener al menos unos datos iniciales con los que testear y mostrar la aplicación evitando palabras repetidas entre diferentes partidas. Igualmente esto sería un aspecto a mejorar e incluso
 se podrían modificar las reglas para poder tratar con este aspecto en especial, porque, incluso haciendo uso de IA, se ha hecho muy poco consistente esta generación de tuplas de palabras semánticamente similares.
 
@@ -564,7 +564,7 @@ descubrir problemas desconocidos hasta el momento, el proceso de testing es una 
 software.
 
 Para este proyecto se ha querido experimentar con algún framework de testing para poner a prueba las conexiones websocket. Por ejemplo, como se había indicado
-en la sección anterior de problemas, los \ref{subsub:resultados_ronda} pueden llegar a ser muy variados e impredecibles debido a la cantidad de combinaciones
+en la sección anterior de problemas, los \tutor{los qué?}\ref{subsub:resultados_ronda} pueden llegar a ser muy variados e impredecibles debido a la cantidad de combinaciones
 posibles dependientes del uso de conexiones websocket estables y controladas. Por otro lado, hacer todas estas pruebas de forma manual puede resultar 
 bastante abrumador y siempre existe el propio error humano característico en estas pruebas; confundirse al votar a un jugador o agotar el tiempo de manera
 involuntaria pueden comprometer este tipo de pruebas manuales especialmente si se quieren testear gran cantidad de casos.
@@ -575,12 +575,12 @@ tecnologías asíncronas, lo cual cubre la parte de código más sensible y comp
 
 Dentro de la aplicación ``logic'' en la carpeta fuente del proyecto, se encuentra el fichero ``test\textunderscore websocket\textunderscore backend.py''. Dentro de este fichero
 se encuentran preparados para ejecutarse diferentes tests que ponen a prueba las conexiones websocket y la lógica de juego. El funcionamiento de un test 
-de PyTest es bastante sencillo: como se puede observar en la figura (\ref{fig:res_desconexion}), lo primero es destacar el nombre del test, este debería ser representativo y 
+de PyTest es bastante sencillo: como se puede observar en la figura \ref{fig:res_desconexion}, lo primero es destacar el nombre del test, este debería ser representativo y 
 claro; en este caso se trata del test ``test\textunderscore room\textunderscore connection\textunderscore wrong\textunderscore room'', lo que indica que 
 se comprobará la conexión a una sala errónea, es decir, se va a suponer un usuario que quiera conectarse a una sala que no existe pero va a hacer uso
 de un código de sala erróneo, por ende, el sistema debería rechazar esa conexión errónea por parte del usuario.
 
-Dicho esto, lo primer que se suele hacer en un test es crear información simulada, normalmente denominada como ``mock data''. Estos datos simulados
+Dicho esto\tutor{coloquial}, lo primer que se suele hacer en un test es crear información simulada, normalmente denominada como ``mock data''. Estos datos simulados
 sirven para darle un contexto al test en cuestión. En este caso, previamente al código de la función, con ayuda de los ``helpers/fixtures'' de Pytest 
 se creará una sala en la base de datos simulada la cual está vacía. Dependiendo del entorno de trabajo los datos de simulación per se y el como
 se crean variarán, debido a la asincronía presente en la mayor parte del código se harán uso de herramientas específicas, ya que, al igual que 
@@ -596,11 +596,11 @@ o en todo caso se ha rechazado la conexión websocket debido a que se hace uso d
 en vez de ``test\textunderscore room''. Dependiendo del test se querrán comprobar diferentes cosas, por ejemplo, comprobar que el número de Outsiders sea
 el adecuada cuando al iniciar una partida o que las conexiones y desconexiones generen los resultados esperados dependiendo del estado de la partida.
 
-Cabría destacar que la mayoría de lógica que se testea per se es en su mayoría las conexiones websocket, por ello se agiliza la creación de salas
+Cabría destacar que la mayoría de lógica que se testea per se\tutor{coloquial} es en su mayoría las conexiones websocket, por ello se agiliza la creación de salas
 a traves de los ``helpers/fixtures'' de PyTest, que están diseñados con esa misma intención, preparar el entorno de forma previa a la ejecución de 
 un test. 
 
-En el anexo (\ref{sect:testing}) se pueden encontrar las instrucciones en detalle para preparar el entorno y ejecutar los tests.
+En el anexo (\ref{sect:testing})\tutor{Quizás te lo tenía que haber puesto antes, cuando se referencia a una Tabla, Figura y Anexo, debes utilizar el siguiente formato Anexo B.1., Figura 3.4 (en mayúsculas y sin paréntesis)} se pueden encontrar las instrucciones en detalle para preparar el entorno y ejecutar los tests.
 
 
 
@@ -615,17 +615,17 @@ Además de todo el trabajo relacionado con las pruebas automáticas, es destacab
 de forma directa. En grandes proyectos es normal encontrar un equipo dedicado exclusivamente a QA, haciendo uso de la aplicación en detalle
 además de reportando de forma conveniente todos los problemas encontrados a los desarrolladores. Se han tenido en cuenta la realización de partidas
 con diferente número de jugadores, los diferentes resultados de ronda y la correcta visualización de elementos en pantalla, algo más difícil de 
-probar de forma automática; por ejemplo, detectar un correcto uso de colores o corroborar que existe una lógica de navegación intuitiva no son pruebas 
+probar de forma automática;\tutor{Corta aquí, frase muy larga} por ejemplo, detectar un correcto uso de colores o corroborar que existe una lógica de navegación intuitiva no son pruebas 
 que se puedan ejecutar fácilmente (hay opciones, pero son costosas o simplemente requieren esfuerzo adicional de desarrollo) a través de un test automático.
 
 Debido a que este proyecto ha sido realizado por una sola persona, el testing manual ha sido trabajado por el propio desarrollador de la aplicación.
 Por ello, aunque se prueben diferentes casos de prueba con diferentes dispositivos y configuraciones es destacable que se pueden obviar elementos y problemas
 debido al uso continuado e informado de la aplicación. El desarrollador sabe jugar al juego y puede que en comparación a otra persona externa al 
 proyecto realice acciones más rápidas sin fijarse en elementos con claros errores en la interfaz de la aplicación. Por estas razones, se ha querido tener
-en cuenta la realización de una pequeña prueba con usuarios externos para tener en cuenta sus opiniones.
+en cuenta la realización de una pequeña\tutor{no la llames pequeña, es una prueba en toda regla} prueba con usuarios externos para tener en cuenta sus opiniones.
 
 Esta prueba se realizó con la mayor parte de la lógica de la aplicación lista y sirvió para ajustar algunos elementos y corregir pequeños errores.
-En la figura (\ref{fig:res_prueba}) tal se muestra una foto del día que se realizó esta prueba. Es importante destacar que se hizo con bastantes jugadores en un mismo
+En la figura (\ref{fig:res_prueba}) tal se muestra una foto del día que se realizó esta prueba. Es importante destacar que se hizo con bastantes\tutor{trata de formalizarlo un poco, ¿cuántos jugadores?} jugadores en un mismo
 espacio físico, debido a que la aplicación no estaba desplegada en la nube y era solo accesible de forma local y aunque no se tuvieron en cuenta problemas derivado
 del juego a larga distancia o en otras redes, se pudieron observar problemas derivados de su uso en este tipo de escenarios de uso. Al final, la 
 aplicación posee un importante componente social y es importante ver como las personas actúan y hacen uso de la aplicación en un mismo espacio y tiempo; las
@@ -646,7 +646,7 @@ Los errores a solventar y las mejoras propuestas en esta prueba fueron:
 Las diferentes propuestas fueron realizadas en la aplicación final y el error solucionado. Además de esto, sirvió para observar su uso por parte de otros usuarios
 y tener en cuenta incluso del uso de diferentes dispositivos a la hora de utilizar la aplicación, ya que cada uno hizo uso de su teléfono móvil.
 
-\begin{figure}[h]
+\begin{figure}[ht!]
 	\centering
 	\includegraphics[height=8cm,clip=true]{res_prueba.jpg}
 	\caption{Prueba con usuarios}
@@ -662,14 +662,14 @@ Para finalizar este capítulo sobre la descripción informática de la aplicaci�
 aplicación.
 
 En primer lugar, sería indicado comentar que el despliegue se ha realizado para hacer uso de la aplicación desde cualquier dispositivo
-con conexión a internet y un navegador web. El despliegue se puede hacer de muchas formas y haciendo uso de diferentes tecnologías pero para 
+con conexión a internet y un navegador web. El despliegue se puede hacer de muchas formas y haciendo uso de diferentes tecnologías\tutor{Corta aquí, elimina el pero} pero para 
 este proyecto se ha escogido Amazon Web Services (AWS) como plataforma de despliegue principal \cite{aws}. AWS ofrece una cantidad muy abundante
 de servicios, ya que, da servicios a toda clase de clientes y es una de las plataformas más usadas y conocidas en el ámbito de 
 computación en la nube. Son tantos los servicios que se hace complejo el simple hecho de listarlos a todos.
 
 En este caso, se hará uso de la plataforma Amazon Elastic Compute Cloud (Amazon EC2), normalmente denominada como EC2. Esta plataforma
-proporciona capacidad informática con tamaño modificable en la nube aunque en el marco del proyecto solo se hará uso de una pequeña máquina
-t2.micro con Linux como sistema operativo. Además de venir incluida en la capa gratuita de AWS, no es necesario contratar 
+proporciona capacidad informática\tutor{capacidad de cómputo} con tamaño modificable en la nube aunque en el marco del proyecto solo se hará uso de una pequeña máquina
+t2.micro con Linux\tutor{matiza que es Ubuntu y su versión} como sistema operativo. Además de venir incluida en la capa gratuita de AWS, no es necesario contratar 
 una máquina con más capacidad de cómputo. 
 
 Además de la instanciación de la máquina, se propone la obtención de un dominio web para facilitar y dejar más vistoso el acceso a la aplicación
@@ -715,6 +715,8 @@ figura \ref{fig:res_amazon} se muestran los contenedores docker desplegados en l
 Si se accede a \href{http://outsidergame.top:8050/admin/}{outsidergame.top:8050/admin/} es posible 
 acceder a la vista de administrador de Django con las siguientes credenciales:
 
+\tutor{A partir de aquí, creo que debería ir en la descipción de la aplicación, no en el despliegue}
+
 \begin{compactitem}
 	\item Usuario: outsider\textunderscore admin
 	\item Contraseña: 2024outsider
@@ -735,4 +737,4 @@ directamente de modificar el código y los archivos de configuración pertinente
 \end{figure}
 
 
-\alumno{El resto entiendo que es hacer el resumen y las conclusiones finales, no se si ves algo más que te descuadre para retocarlo}
+\alumno{El resto entiendo que es hacer el resumen y las conclusiones finales, no se si ves algo más que te descuadre para retocarlo}\tutor{Salvo las notas que te he puesto, está bien}
