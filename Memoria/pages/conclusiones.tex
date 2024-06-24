@@ -1,1 +1,39 @@
-\section{Conclusiones}
+La finalidad de este proyecto es, tanto aprender y hacer uso de tecnologías
+asíncronas modernas, como la creación de una aplicación totalmente funcional 
+que implemente estas tecnologías en detalle.
+
+El objetivo principal es la creación de una aplicación que emule de la forma más
+completa el juego de adivinanzas de palabras y roles que se propone. Además de ir implementando
+diferentes reglas y funcionalidades al juego base, se proponen otros objetivos secundarios
+como la implementación de testing o el despliegue de la aplicación a través de un proveedor de 
+servicios. Se quiere profundizar en el uso de websockets y lo que implica su desarrollo, no
+simplemente quedarse en la superficie, por ello, todo el desarrollo gira entorno a este eje
+central. 
+
+La aplicación final incluye múltiples sistemas interconectados que permiten su correcto
+funcionamiento y uso por parte del usuario final a través de un navegador web. Para lograr esto, 
+ha sido necesario trabajar con diversas tecnologías/frameworks e implementar la lógica y diseño 
+necesarios para crear: Un servidor backend encargado de manejar la lógica websocket y un frontend
+responsable de facilitar una interfaz web con todas las funcionalidades pertinentes. 
+También ha sido necesario gestionar la comunicación necesaria entre los sistemas así como administrar
+los elementos adicionales necesarios.
+
+Para el trabajo relacionado con el backend se destaca el uso complejo y en detalle de tecnologías
+websocket a través de Django Channels. Todos los mensajes de juego y la comunicación en tiempo real
+entre jugadores no es una implementación sencilla y hay que tener en cuenta muchos 
+aspectos de la comunicación asíncrona entre varios usuarios. Además de esta implementación,
+se ha realizado trabajo adicional de testing, tanto para aprender el correcto funcionamiento 
+de la pruebas automáticas en estos entornos, como para poder probar de forma más 
+elaborada la aplicación.
+
+Por otra parte, para el desarrollo de la interfaz web, se han implementado interfaces
+usables mediante el uso de librerías de componentes (Vue y Vuetify) que facilitan mucho el trabajo de desarrollo
+a la vez que ofrecen un resultado bastante atractivo. También se destaca toda la lógica de
+intercomunicación y el código necesario implementado directamente en el frontend.
+
+Además de la implementación, se destaca la preparación de la aplicación mediante Docker, 
+para mejorar su portabilidad, y el despliegue final a través de AWS, 
+lo que permite su fácil acceso y uso por parte de cualquier usuario.
+
+Teniendo en cuenta lo explicado en los anteriores párrafos, se puede concluir
+que el proyecto cumple los objetivos propuestos a lo largo del desarrollo.

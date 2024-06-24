@@ -1,4 +1,4 @@
-En esta sección se expondrá la mayor cantidad de información sobre el desarrollo per se\tutor{Esta expresión no aporta nada y se puede quitar 'per se'}
+En esta sección se expondrá la mayor cantidad de información sobre el desarrollo
 del proyecto, desde la definición de requisitos y análisis inicial, hasta el proceso final
 de testing y despliegue.
 
@@ -55,9 +55,8 @@ requisitos funcionales como los no funcionales que debe cumplir la aplicación.
 	      por parte de otros jugadores.
 	\item RNF5 Testing - El sistema tendrá una opción de desarrollo para poder ejecutar diversos tests que ponen
 	      a prueba el correcto transcurso de una partida así como las conexiones y desconexiones en el entorno websocket del backend.
-	\item RNF Despliegue y administración - La aplicación estará lista para el despliegue y accesible para poder tener información de administración del servidor
+	\item RNF6 Despliegue y administración - La aplicación estará lista para el despliegue y accesible para poder tener información de administración del servidor
 	      backend.
-	\item RNF6 Documentación - Todas las capacidades de administración actuales y de futuro desarrollo serán accesible \tutor{accessibleS. Si es documentación, será que están documentadas, ¿no? ¿Dónde está esta documentación} de forma sencilla.
 \end{itemize}
 
 \section{Arquitectura general}
@@ -69,13 +68,13 @@ Después de haber analizado los diferentes requisitos y considerando las herrami
 se definen los servicios mínimos que debería ofrecer el sistema en conjunto:
 
 \begin{enumerate}
-	\item Backend - Django. Para empezar\tutor{De nuevo, esto es muy coloquial. No empiezas a describir algo diciendo "Para empezar. Describe el servidor y sus características, esto no es una conversación}, es fundamental el uso de un servidor backend capaz de
+	\item Backend - Django. Es fundamental el uso de un servidor backend capaz de
 	      gestionar la lógica de peticiones básica y que tenga capacidad para hacer uso de tecnología websocket.
 	      Para esta tarea, se propone una implementación sencilla a través de Django. Se destaca que hay muy poca información que se
 	      quiera tratar de forma persistente, por ello, no será necesario un servicio de base de datos adicional
 	      y se recurrirá a la configuración por defecto de Django con un archivo SQLite.
 	\item Servidor websocket - Redis (Django Channels). Al hacer uso de Django y de su particular implementación de
-	      websockets, se ve\tutor{Otra vez, aquí tendrías que usar 'se considera'} indispensable el uso de un servicio adicional, un servidor Redis. Este servidor es necesario para
+	      websockets, se considera indispensable el uso de un servicio adicional, un servidor Redis. Este servidor es necesario para
 	      poder hacer uso del sistema de ``capas'', que permiten que varias instancias de controladores websocket
 	      (denominados ``consumers'') puedan comunicarse entre sí y con otras partes de Django \cite{djangoChannelsLayers}.
 	\item Frontend - Vue3. Finalmente, solo quedaría gestionar la vista de la aplicación a través de Vue
@@ -85,7 +84,7 @@ se definen los servicios mínimos que debería ofrecer el sistema en conjunto:
 \end{enumerate}
 
 Estos serían los elementos básicos del sistema, pero hay que tener en cuenta su
-despliegue final. Para entenderlo todo de forma más organizada en la figura \ref{fig:res_arquitecturaSoftware} se muestra un esquema de la arquitectura
+despliegue final. Para entenderlo todo de forma más organizada en la Figura \ref{fig:res_arquitecturaSoftware} se muestra un esquema de la arquitectura
 a nivel general. En el apéndice se muestra la misma imagen (\ref{fig:res_arquitecturaSoftwareApend}) de mayor tamaño.
 
 \begin{figure}[ht!]
@@ -100,7 +99,7 @@ está construido sobre la especificación ASGI (Asynchronous Server Gateway Inte
 permite hacer uso tanto de conexiones y peticiones HTTP como del uso del protocolo websocket sin problemas, algo totalmente necesario para el desarrollo del proyecto. 
 
 La comunicación a bajo nivel se hace un poco más compleja, ya que, lo que facilita Django Channels son las herramientas de alto
-nivel para trabajar directamente con los websockets. En la figura \ref{fig:res_esquemaDjangoChannels} se puede observar con mayor detalle como funcionan
+nivel para trabajar directamente con los websockets. En la Figura \ref{fig:res_esquemaDjangoChannels} se puede observar con mayor detalle como funcionan
 las conexiones a bajo nivel en el entorno ASGI de Channels: desde el cliente web (Browser), se realizan peticiones
 tanto HTTP como websocket donde las flechas indican que, mientras los mensajes HTTP tienen un envío y respuesta, las conexiones websocket crean 
 un canal bidireccional, con capacidad para enviar y recibir mensajes de forma simultánea. Cuando estos mensajes llegan al servidor gestionado
@@ -132,7 +131,7 @@ estructura general que deberían tener algunas de las páginas principales de la
 se está usando un dispositivo móvil o un ordenador portátil (se entiende que funcione igual de bien en tablets y otros dispositivos similares), ya que, 
 estos tienen diferentes proporciones de pantalla y hay pantallas que comprometen mucho la visualización en general.
 
-En la figura \ref{fig:res_designLanding} se pueden observar a grandes rasgos los 
+En la Figura \ref{fig:res_designLanding} se pueden observar a grandes rasgos los 
 prototipos para la página principal y para la página de espera de juego con algunas notas además de colores 
 y estilos provisionales.
 
@@ -154,7 +153,7 @@ y estilos provisionales.
 
 Estos prototipos permiten concretar mejor el estilo y el diseño general de la página web. Además, 
 se llevan a cabo varias pruebas de colores, tipografías y otros elementos estéticos antes de 
-implementar estos estilos en la aplicación. En la figura \ref{fig:res_designJuego} se puede observar el primer diseño para la pantalla
+implementar estos estilos en la aplicación. En la Figura \ref{fig:res_designJuego} se puede observar el primer diseño para la pantalla
 de juego.
 
 \begin{figure}[h]
@@ -184,9 +183,16 @@ Debido a la experiencia previa en este apartado, no ha sido necesariamente compl
 la instalación es muy sencilla, solo se necesita tener Python en el sistema y ejecutar un par de mandatos, por otra parte,
 la instalación de Vue puede resultar algo más complicada, y en este caso se ha optado por hacer uso directamente de Vuetify para
 tener todas las dependencias derivadas de Node.js integradas en el proyecto. De esta forma se logra una estructura de proyecto
-como la que se puede observar en la figura \ref{fig:res_designJuego}. En el directorio ``outsider'' se encuentran los archivos 
+como la que se puede observar en la Figura \ref{fig:res_designJuego}. En el directorio ``outsider'' se encuentran los archivos 
 de configuración base de Django, mientras que en la carpeta ``outsider-front'' se encuentra todo el código fuente relacionado 
-con el uso de Vue/Vuetify. 
+con el uso de Vue/Vuetify.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[height=7cm]{res_estructFronted.png}
+	\caption{Prototipo de la página de juego}
+	\label{fig:res_designJuego}
+\end{figure}
 
 Se destaca que Django trabaja mediante el uso de ``aplicaciones''; haciendo referencia directa a la documentación de Django:
 el término ``aplicación'' o ``app'' describe un paquete de Python que proporciona un conjunto de funciones en concreto. 
@@ -201,7 +207,7 @@ se tratará en detalle la estructura del framework de Vue/Vuetify y la construcc
 
 De manera adicional, cabe destacar que, debido a las facilidades de mandatos que ofrecen los sistemas unix así como que el despliegue
 final será en una maquina Linux, se está trabajando a través de WSL, es decir,
-ambas aplicaciones (frontend y backend), así como sus dependencias (python\tutor{Sigues poniendo Python en minúsculas y mayúsculas sin seguir ningún criterio, trata de ser consistente.} y Node.js principalmente) se ejecutan en Ubuntu a través de la interfaz
+ambas aplicaciones (frontend y backend), así como sus dependencias (Python y Node.js principalmente) se ejecutan en Ubuntu a través de la interfaz
 de WSL, ya que, el ordenador en el cual se está desarrollando el proyecto solo tiene instalado Windows 11 y por decisión propia se prefiere su uso de forma
 cotidiana. Es importante tener esto en cuenta en primera instancia para evitar problemas en el futuro despliegue o mientras se está trabajando en el proyecto,
 debido a que, el uso de mandatos y la disponibilidad de ciertos instaladores y librerías cambia drásticamente entre Windows y Linux.
@@ -249,11 +255,11 @@ De esta forma, se entiende que los mensajes generados en el frontend web a trav�
 de que el backend ``consuma'' estos mensajes mediante los propios ``consumidores'' que se han instanciado a la hora de crear la comunicación websocket. 
 Por último, el uso de Django Channels se basa en el uso de estos objetos consumidores de la forma que se vea 
 más adecuada. Por ejemplo, cabe destacar que los consumidores pueden heredar de diferentes clases con diferentes características,
-por ejemplo pueden existir consumidores síncronos, asíncronos, realizar decodificación JSON de forma automática, ...
+por ejemplo pueden existir consumidores síncronos, asíncronos, realizar decodificación JSON de forma automática, etc.
 
 Teniendo clara como funciona la lógica de consumidores, faltaría destacar la implementación propia que se ha diseñado para este proyecto: Debido a que 
 la lógica gira en torno al control del flujo del juego, solo se hace uso de un controlador para gestionar la única conexión websocket que debería haber entre
-un jugador y una sala de juego. Por esto último también se denomina al consumidor como ``RoomConsumer''. El código~\ref{alg:RoomConsumer} ejemplifica los métodos 
+un jugador y una sala de juego. Por esto último también se denomina al consumidor como ``RoomConsumer''. El Código~\ref{alg:RoomConsumer} ejemplifica los métodos 
 principales e inicializarían del consumer en cuestión. Como se puede observar se ha hecho uso de un AsyncJsonWebsocketConsumer, con decodificación JSON y el uso de 
 comunicación asíncrona para poder gestionar varias peticiones de forma paralela sin necesidad de esperar a que se completen las peticiones en orden.
 
@@ -282,7 +288,7 @@ Por ello, además de gestionar el servidor Redis mediante un contenedor Docker, 
 o envío de mensajes desde el backend al frontend. Esto se realizará mediante el propio consumidor, el cual tiene la capacidad de suscribirse a un grupo haciendo uso
 de la aplicación de layers. Esta última operación se debe realizar cuando se acepta una conexión websocket en el propio consumidor. 
 
-En el código~\ref{alg:ReceiveCode} se puede observar el uso del método ``channel\textunderscore layer.group\textunderscore add()'' para añadir al consumidor per se 
+En el Código~\ref{alg:ReceiveCode} se puede observar el uso del método ``channel\textunderscore layer.group\textunderscore add()'' para añadir al consumidor
 al grupo (siempre estará relacionado el grupo a nivel lógico con la sala de juego en la que esté el propio jugador) cuando se realiza una nueva conexión websocket (método connect del consumidor). 
 
 \begin{mypython}[float={h},caption={Añadir consumer a un grupo},label={alg:JoinGroup}]
@@ -302,7 +308,7 @@ Este mensaje se tramitará en base al ``tipo'' de mensaje que defina el propio m
 existir un método denominado como ``startGame'' el cual, además de poder realizar lógica adicional (por ejemplo, solo enviar la palabra clave de juego a jugadores Inocentes) 
 enviaría finalmente el mensaje de empezar partida desde el consumidor al propio websocket (el propio usuario en el cliente web) mediante el método ``send\textunderscore json()''. 
 
-Se puede apreciar de forma resumida, tanto el código de broadcast como el envío del mensaje final al cliente en el código~\ref{alg:ReceiveCode}. Para otras acciones existirán
+Se puede apreciar de forma resumida, tanto el código de broadcast como el envío del mensaje final al cliente en el Código~\ref{alg:ReceiveCode}. Para otras acciones existirán
 otros métodos correspondientes y en este código solo se resalta el uso de ``startGame'' para ejemplificar el uso de grupos de consumers.
 
 Para finalizar este apartado y resumiendo brevemente, el objeto consumidor, además de de gestionar los mensajes que le llegan desde el cliente web y procesar la lógica necesaria, 
@@ -388,6 +394,30 @@ configuración adicional a la hora de iniciar o reiniciar el servidor backend (e
 de forma incorrecta debido a un bug del server o problemas de conexión mayores y, por otra parte, actualizar la lista de palabras que utiliza el juego cuando no se ha encontrado
 una lista de palabras inicial válidas o se ha borrado de la base de datos en algún momento.
 
+\subsubsection{Administrador de Django}
+
+Si se accede a \href{http://outsidergame.top:8050/admin/}{outsidergame.top:8050/admin/} es posible 
+acceder a la vista de administrador de Django con las siguientes credenciales:
+
+\begin{compactitem}
+	\item Usuario: outsider\textunderscore admin
+	\item Contraseña: 2024outsider
+\end{compactitem}
+
+En esta vista se podrá observar el estado de las partidas (útil para el desarrollo) y acceder a la lista
+de palabras clave que utiliza el juego. Como se puede comprobar en la Figura \ref{fig:res_admin}, se puede modificar de forma
+directa las palabras disponibles (denotadas con ``a'') y sus tentativas (indicadas con la letra ``b'') 
+que se le proporcionan al Outsider si es el primero en empezar la ronda. Debido a que no hay más modelos de 
+datos presentes, el resto de modificaciones al comportamiento de la aplicación dependen 
+directamente de modificar el código y los archivos de configuración pertinentes.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth,clip=true]{res_admin.png}
+	\caption{Vista de administrador de Django}
+	\label{fig:res_admin}
+\end{figure}
+
 \subsection{Desarrollo del frontend} \label{Desarrollo del frontend}
 
 Una vez explicado el desarrollo relacionado con el servidor/backend, se puede comenzar a abordar el desarrollo del frontend utilizando Vue
@@ -398,7 +428,7 @@ configuraciones adicionales.
 Vue solo hace una gran distinción entre elementos: vistas y componentes, que se distinguen por su uso específico. La diferencia es simplemente que 
 las vistas son componentes con capacidad de enrutamiento; es decir, mientras que los componentes pueden actuar como bloques reutilizables de comportamiento, estilo 
 y estructura en diversas partes de la página web, las vistas tienen una ruta específica (url) dentro de la página web. En el desarrollo del proyecto, como se pude observar 
-en la siguiente figura (\ref{fig:res_estructFronted}), se han planteado dos vistas que definen la página de inicio y la página que gestiona la sala de juego. Por otra parte
+en la siguiente Figura \ref{fig:res_estructFronted}, se han planteado dos vistas que definen la página de inicio y la página que gestiona la sala de juego. Por otra parte
 existen diversos componentes reutilizables que se integran dentro de cada una de la vistas.
 
 \begin{figure}[h]
@@ -409,12 +439,12 @@ existen diversos componentes reutilizables que se integran dentro de cada una de
 \end{figure}
 
 Antes de continuar con la descripción de las vistas, cabría destacar nuevamente el uso de Vuetify, ya que, se ha utilizado en gran medida para facilitar 
-el trabajo de diseño y maquetación web. Esto se ha llevado a cabo principalmente mediante el uso de componentes de Vuetify; estos componentes de diferentes tipos, facilitan la
-construcción de interfaz facilitando elementos como botones, carruseles de elementos, menús, ... con la facilidad de cambiar su diseño de forma sencilla sin hacer uso
+el trabajo de diseño y maquetación web. Esto se ha llevado a cabo principalmente mediante el uso de componentes de Vuetify. Estos componentes de diferentes tipos, facilitan la
+construcción de interfaz facilitando elementos como botones, carruseles de elementos o menús, con la facilidad de cambiar su diseño de forma sencilla sin hacer uso
 extensivo de CSS o en todo caso de código adicional para definir animaciones y comportamientos. De esta forma, se consigue una interfaz visualmente atractiva y de sencilla
 creación.
 
-Dicho esto, en la figura \ref{fig:res_mainpage} se puede observar la vista principal, ``HomeView.vue'' en un dispositivo de escritorio. Es una vista muy sencilla y el código asociado no
+Dicho esto, en la Figura \ref{fig:res_mainpage} se puede observar la vista principal, ``HomeView.vue'' en un dispositivo de escritorio. Es una vista muy sencilla y el código asociado no
 es nada complejo, ya que solo tiene en cuenta la actuación de los botones para crear una sala y unirse a una sala mediante una petición sencilla al servidor con el uso de Axios \cite{vueAxios}. 
 Se tiene en cuenta que el nombre de usuario no sea ni demasiado corto, ni demasiado largo así como que el código de sala esté presente a la hora de intentar acceder a una sala de juego 
 (o intentar crearla). También se proporcionan mensajes de ``error'' si ha habido alguna incidencia (normalmente el intentar unirse a una sala que no existe o al intentar crear una sala ya existente). 
@@ -434,7 +464,7 @@ Para empezar, destacamos el LobbyComponent, encargado de mostrar y gestionar, de
 incluye un chat entre los miembros actuales de la sala, diferentes indicadores del estado de la sala (código de sala para que se puedan unir otros usuarios, número de jugadores y
 lista con indicadores sobre capitanía de la sala) y un botón que sirve para iniciar la partida por parte del capitán de la sala si hay más de dos usuarios presentes.
 
-En la figura \ref{fig:res_lobby} se puede ver un lobby/sala de dos jugadores interactuando con el chat así como otra sala con seis jugadores listos para jugar. De esta sección solo
+En la Figura \ref{fig:res_lobby} se puede ver un lobby/sala de dos jugadores interactuando con el chat así como otra sala con seis jugadores listos para jugar. De esta sección solo
 cabría resaltar que se indica cuando se jugará con un outsider adicional (con seis o más jugadores) y también que, al lado de cada nombre de usuario se indica quién es el capitán mediante
 un logo de corona y resaltado en azul además de quién es el propio usuario que está haciendo uso de la aplicación mediante otro icono de cuenta/usuario al lado del nombre introducido
 antes de ingresar en la sala.
@@ -491,7 +521,7 @@ en blanco si el jugador no ha escogido a un jugador en el tiempo indicado.
 \end{figure}
 
 En último lugar se destaca que la lógica y elementos relacionados con los resultados entre rondas se describen en el 
-componente ``ResultsComponent''. En la figura \ref{fig:res_resultados} se muestra un caso específico de fin de ronda, en el cual los jugadores 
+componente ``ResultsComponent''. En la Figura \ref{fig:res_resultados} se muestra un caso específico de fin de ronda, en el cual los jugadores 
 han votado en su mayoría a un jugador Inocente, el cual es eliminado. En estos casos, se le facilita al capitán de 
 la sala poder jugar otra ronda adicional o darle la victoria directamente al jugador Outsider; queda en manos del 
 jugador/capitán en cuestión.
@@ -527,7 +557,7 @@ y los jugadores vuelven a la página principal.
 
 Esto es debido a que re-calcular la lógica en mitad de partida se hace demasiado complicada, especialmente mostrar los cambios de forma visual y sencilla a los usuarios. Por otra parte, las partidas 
 son rápidas y sencillas y se persigue un trato de la información sencillo y poco persistente. Solo existe información de los usuarios mientras están en una sala de juego, si se cierra la página 
-web no hay ninguna traza de información que se haya almacenado obviando el historial de navegación y los datos asociados a la caché del propio navegador. En la figura (\ref{fig:res_desconexion}) 
+web no hay ninguna traza de información que se haya almacenado obviando el historial de navegación y los datos asociados a la caché del propio navegador. En la Figura \ref{fig:res_desconexion}
 se puede apreciar el diálogo de desconexión estándar que se muestra cuando un jugador abandona una partida en curso.
 
 \begin{figure}[h]
@@ -550,8 +580,8 @@ cosas y por ello puede resultar bastante útil aplicarlo desde un primer momento
 El juego debería proporcionar una lista de palabras para que los usuarios jueguen con las 
 diversas palabras clave, de forma adicional, se ha querido poder modificar esa lista de palabras de forma sencilla mediante el administrador de Django y un campo JSON (en el apéndice se indicará en mayor detalle su uso).
 Dicho esto, se ha ido modificando una regla que indica que se le debe proporcionar al jugador Outsider una ``palabra clave falsa'' si es el primer jugador en una ronda; esto es porque si 
-no tiene ninguna clase de pista adicional, se hace complicado evitar ser descubierto como Outsider. Por ende\tutor{coloquial}, la lista de palabras se hace algo más compleja, ya que, en este caso, el Outsider
-debería tener otra palabra que se parezca a nivel semántico a la palabra clave, pero sin ser la propia palabra clave; \tutor{Aquí corta la frase con punto, que ya es muy larga}por ello, para generar esta lista de tuplas se ha hecho uso de ChatGPT \cite{ChatGPT} para
+no tiene ninguna clase de pista adicional, se hace complicado evitar ser descubierto como Outsider. Por ende, la lista de palabras se hace algo más compleja, ya que, en este caso, el Outsider
+debería tener otra palabra que se parezca a nivel semántico a la palabra clave, pero sin ser la propia palabra clave. Por consecuencia, para generar esta lista de tuplas se ha hecho uso de ChatGPT \cite{ChatGPT} para
 poder tener al menos unos datos iniciales con los que testear y mostrar la aplicación evitando palabras repetidas entre diferentes partidas. Igualmente esto sería un aspecto a mejorar e incluso
 se podrían modificar las reglas para poder tratar con este aspecto en especial, porque, incluso haciendo uso de IA, se ha hecho muy poco consistente esta generación de tuplas de palabras semánticamente similares.
 
@@ -564,25 +594,25 @@ descubrir problemas desconocidos hasta el momento, el proceso de testing es una 
 software.
 
 Para este proyecto se ha querido experimentar con algún framework de testing para poner a prueba las conexiones websocket. Por ejemplo, como se había indicado
-en la sección anterior de problemas, los \tutor{los qué?}\ref{subsub:resultados_ronda} pueden llegar a ser muy variados e impredecibles debido a la cantidad de combinaciones
+en la sección anterior de problemas, los resultados entre rondas (\ref{subsub:resultados_ronda}) pueden llegar a ser muy variados e impredecibles debido a la cantidad de combinaciones
 posibles dependientes del uso de conexiones websocket estables y controladas. Por otro lado, hacer todas estas pruebas de forma manual puede resultar 
 bastante abrumador y siempre existe el propio error humano característico en estas pruebas; confundirse al votar a un jugador o agotar el tiempo de manera
 involuntaria pueden comprometer este tipo de pruebas manuales especialmente si se quieren testear gran cantidad de casos.
 
-Dicho esto, se ha hecho uso de PyTest \cite{pytest}, un framework que permite la creación de tests de forma sencilla en Python. Se ha hecho uso
+A este respecto, se ha hecho uso de PyTest \cite{pytest}, un framework que permite la creación de tests de forma sencilla en Python. Se ha hecho uso
 de PyTest sobre otros de los muchos framework de testing debido al uso directo de Python y a las facilidades para testear 
 tecnologías asíncronas, lo cual cubre la parte de código más sensible y compleja de la aplicación.
 
 Dentro de la aplicación ``logic'' en la carpeta fuente del proyecto, se encuentra el fichero ``test\textunderscore websocket\textunderscore backend.py''. Dentro de este fichero
 se encuentran preparados para ejecutarse diferentes tests que ponen a prueba las conexiones websocket y la lógica de juego. El funcionamiento de un test 
-de PyTest es bastante sencillo: como se puede observar en la figura \ref{fig:res_desconexion}, lo primero es destacar el nombre del test, este debería ser representativo y 
+de PyTest es bastante sencillo: como se puede observar en la Figura \ref{fig:res_desconexion}, lo primero es destacar el nombre del test, este debería ser representativo y 
 claro; en este caso se trata del test ``test\textunderscore room\textunderscore connection\textunderscore wrong\textunderscore room'', lo que indica que 
 se comprobará la conexión a una sala errónea, es decir, se va a suponer un usuario que quiera conectarse a una sala que no existe pero va a hacer uso
 de un código de sala erróneo, por ende, el sistema debería rechazar esa conexión errónea por parte del usuario.
 
-Dicho esto\tutor{coloquial}, lo primer que se suele hacer en un test es crear información simulada, normalmente denominada como ``mock data''. Estos datos simulados
+Lo primero que se suele hacer en un test es crear información simulada, normalmente denominada como ``mock data''. Estos datos simulados
 sirven para darle un contexto al test en cuestión. En este caso, previamente al código de la función, con ayuda de los ``helpers/fixtures'' de Pytest 
-se creará una sala en la base de datos simulada la cual está vacía. Dependiendo del entorno de trabajo los datos de simulación per se y el como
+se creará una sala en la base de datos simulada la cual está vacía. Dependiendo del entorno de trabajo, los datos de simulación y el cómo
 se crean variarán, debido a la asincronía presente en la mayor parte del código se harán uso de herramientas específicas, ya que, al igual que 
 en el framework estándar, mezclar peticiones síncronas a la base de datos con mensajes websocket suele requerir algún paso extra, en este caso y en los 
 tests que lo requieran, el uso de etiquetas como sync\textunderscore to\textunderscore async.
@@ -596,12 +626,11 @@ o en todo caso se ha rechazado la conexión websocket debido a que se hace uso d
 en vez de ``test\textunderscore room''. Dependiendo del test se querrán comprobar diferentes cosas, por ejemplo, comprobar que el número de Outsiders sea
 el adecuada cuando al iniciar una partida o que las conexiones y desconexiones generen los resultados esperados dependiendo del estado de la partida.
 
-Cabría destacar que la mayoría de lógica que se testea per se\tutor{coloquial} es en su mayoría las conexiones websocket, por ello se agiliza la creación de salas
+Cabría destacar que la mayoría de lógica que se testea es en su mayoría las conexiones websocket, por ello se agiliza la creación de salas
 a traves de los ``helpers/fixtures'' de PyTest, que están diseñados con esa misma intención, preparar el entorno de forma previa a la ejecución de 
 un test. 
 
-En el anexo (\ref{sect:testing})\tutor{Quizás te lo tenía que haber puesto antes, cuando se referencia a una Tabla, Figura y Anexo, debes utilizar el siguiente formato Anexo B.1., Figura 3.4 (en mayúsculas y sin paréntesis)} se pueden encontrar las instrucciones en detalle para preparar el entorno y ejecutar los tests.
-
+En el Anexo \ref{sect:testing} se pueden encontrar las instrucciones en detalle para preparar el entorno y ejecutar los tests.
 
 
 
@@ -615,17 +644,18 @@ Además de todo el trabajo relacionado con las pruebas automáticas, es destacab
 de forma directa. En grandes proyectos es normal encontrar un equipo dedicado exclusivamente a QA, haciendo uso de la aplicación en detalle
 además de reportando de forma conveniente todos los problemas encontrados a los desarrolladores. Se han tenido en cuenta la realización de partidas
 con diferente número de jugadores, los diferentes resultados de ronda y la correcta visualización de elementos en pantalla, algo más difícil de 
-probar de forma automática;\tutor{Corta aquí, frase muy larga} por ejemplo, detectar un correcto uso de colores o corroborar que existe una lógica de navegación intuitiva no son pruebas 
+probar de forma automática. A modo de ejemplo, detectar un correcto uso de colores o corroborar que existe una lógica de navegación intuitiva no son pruebas 
 que se puedan ejecutar fácilmente (hay opciones, pero son costosas o simplemente requieren esfuerzo adicional de desarrollo) a través de un test automático.
 
 Debido a que este proyecto ha sido realizado por una sola persona, el testing manual ha sido trabajado por el propio desarrollador de la aplicación.
 Por ello, aunque se prueben diferentes casos de prueba con diferentes dispositivos y configuraciones es destacable que se pueden obviar elementos y problemas
 debido al uso continuado e informado de la aplicación. El desarrollador sabe jugar al juego y puede que en comparación a otra persona externa al 
 proyecto realice acciones más rápidas sin fijarse en elementos con claros errores en la interfaz de la aplicación. Por estas razones, se ha querido tener
-en cuenta la realización de una pequeña\tutor{no la llames pequeña, es una prueba en toda regla} prueba con usuarios externos para tener en cuenta sus opiniones.
+en cuenta la realización de una prueba con usuarios externos para tener en cuenta sus opiniones.
 
 Esta prueba se realizó con la mayor parte de la lógica de la aplicación lista y sirvió para ajustar algunos elementos y corregir pequeños errores.
-En la figura (\ref{fig:res_prueba}) tal se muestra una foto del día que se realizó esta prueba. Es importante destacar que se hizo con bastantes\tutor{trata de formalizarlo un poco, ¿cuántos jugadores?} jugadores en un mismo
+En la Figura \ref{fig:res_prueba} se muestra una foto del día que se realizó esta prueba. Es importante destacar que se hizo con un número
+significativo de jugadores (en torno a diez jugadores) en un mismo
 espacio físico, debido a que la aplicación no estaba desplegada en la nube y era solo accesible de forma local y aunque no se tuvieron en cuenta problemas derivado
 del juego a larga distancia o en otras redes, se pudieron observar problemas derivados de su uso en este tipo de escenarios de uso. Al final, la 
 aplicación posee un importante componente social y es importante ver como las personas actúan y hacen uso de la aplicación en un mismo espacio y tiempo; las
@@ -641,6 +671,7 @@ Los errores a solventar y las mejoras propuestas en esta prueba fueron:
 		  la palabra clave al segundo Outsider.
 	\item Solo proporcionar la palabra clave (una diferente a la de los jugadores Inocentes) al Outsider si es el primer jugador de la ronda. 
 		  En otro caso nunca tendrá nada al empezar.
+	\item Ajustar el número de jugadores máximos por partido
 \end{itemize}
 
 Las diferentes propuestas fueron realizadas en la aplicación final y el error solucionado. Además de esto, sirvió para observar su uso por parte de otros usuarios
@@ -662,14 +693,14 @@ Para finalizar este capítulo sobre la descripción informática de la aplicaci�
 aplicación.
 
 En primer lugar, sería indicado comentar que el despliegue se ha realizado para hacer uso de la aplicación desde cualquier dispositivo
-con conexión a internet y un navegador web. El despliegue se puede hacer de muchas formas y haciendo uso de diferentes tecnologías\tutor{Corta aquí, elimina el pero} pero para 
+con conexión a internet y un navegador web. El despliegue se puede hacer de muchas formas y haciendo uso de diferentes tecnologías. Para 
 este proyecto se ha escogido Amazon Web Services (AWS) como plataforma de despliegue principal \cite{aws}. AWS ofrece una cantidad muy abundante
 de servicios, ya que, da servicios a toda clase de clientes y es una de las plataformas más usadas y conocidas en el ámbito de 
 computación en la nube. Son tantos los servicios que se hace complejo el simple hecho de listarlos a todos.
 
 En este caso, se hará uso de la plataforma Amazon Elastic Compute Cloud (Amazon EC2), normalmente denominada como EC2. Esta plataforma
-proporciona capacidad informática\tutor{capacidad de cómputo} con tamaño modificable en la nube aunque en el marco del proyecto solo se hará uso de una pequeña máquina
-t2.micro con Linux\tutor{matiza que es Ubuntu y su versión} como sistema operativo. Además de venir incluida en la capa gratuita de AWS, no es necesario contratar 
+proporciona capacidad de cómputo con tamaño modificable en la nube aunque en el marco del proyecto solo se hará uso de una pequeña máquina
+t2.micro con Linux (específicamente con una imagen ``Ubuntu Server 24.04 LTS'') como sistema operativo. Además de venir incluida en la capa gratuita de AWS, no es necesario contratar 
 una máquina con más capacidad de cómputo. 
 
 Además de la instanciación de la máquina, se propone la obtención de un dominio web para facilitar y dejar más vistoso el acceso a la aplicación
@@ -677,7 +708,7 @@ web así como de hacer uso de Route 53 para gestionar el DNS requerido para dire
 
 Con la plataforma lista para el despliegue, solo quedaría preparar la aplicación. Esto se ha hecho principalmente con el uso de Docker y Docker Compose a través
 del uso de contenedores. En concreto, se ha creado un fichero ``docker-compose.yaml'' para gestionar 
-la ``dockerización'' de los servicios de la aplicación. En el siguiente código \ref{alg:docker} se destacan las secciones de este
+la ``dockerización'' de los servicios de la aplicación. En el siguiente Código \ref{alg:docker} se destacan las secciones de este
 fichero en el cual se configuran el servidor Redis para conexiones websocket, el backend de Django y el frontend
 desarrollado en Vue. Además de lo dockerización per se, es necesario ajustar el uso de urls y gestionar la configuración
 de carga de los diferentes servicios, por ejemplo, se definen archivos ``Dockerfile'' tanto para los contenedores
@@ -702,7 +733,7 @@ se deben indicar los puertos de escucha del backend a la hora de ejecutar el com
 
 De esta forma, se tiene una aplicación portable y lista para poder ejecutarse en la nube. Para ello, simplemente 
 habrá que descargarse su contenido en la máquina EC2 que se halla escogido y ejecutar el mandato de Docker Compose pertinente. En la
-figura \ref{fig:res_amazon} se muestran los contenedores docker desplegados en la máquina a través de AWS y a través del dominio 
+Figura \ref{fig:res_amazon} se muestran los contenedores docker desplegados en la máquina a través de AWS y a través del dominio 
 \href{http://outsidergame.top/}{outsidergame.top} se puede acceder la aplicación web.
 
 \begin{figure}[h]
@@ -711,30 +742,3 @@ figura \ref{fig:res_amazon} se muestran los contenedores docker desplegados en l
 	\caption{Contenedores docker en ejecución de la aplicación}
 	\label{fig:res_amazon}
 \end{figure}
-
-Si se accede a \href{http://outsidergame.top:8050/admin/}{outsidergame.top:8050/admin/} es posible 
-acceder a la vista de administrador de Django con las siguientes credenciales:
-
-\tutor{A partir de aquí, creo que debería ir en la descipción de la aplicación, no en el despliegue}
-
-\begin{compactitem}
-	\item Usuario: outsider\textunderscore admin
-	\item Contraseña: 2024outsider
-\end{compactitem}
-
-En esta vista se podrá observar el estado de las partidas (útil para el desarrollo) y acceder a la lista
-de palabras clave que utiliza el juego. Como se puede comprobar en la figura \ref{fig:res_admin}, se puede modificar de forma
-directa las palabras disponibles (denotadas con ``a'') y sus tentativas (indicadas con la letra ``b'') 
-que se le proporcionan al Outsider si es el primero en empezar la ronda. Debido a que no hay más modelos de 
-datos presentes, el resto de modificaciones al comportamiento de la aplicación dependen 
-directamente de modificar el código y los archivos de configuración pertinentes.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\textwidth,clip=true]{res_admin.png}
-	\caption{Vista de administrador de Django}
-	\label{fig:res_admin}
-\end{figure}
-
-
-\alumno{El resto entiendo que es hacer el resumen y las conclusiones finales, no se si ves algo más que te descuadre para retocarlo}\tutor{Salvo las notas que te he puesto, está bien}

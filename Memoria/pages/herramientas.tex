@@ -11,8 +11,7 @@ Además de conocer en profundidad cómo funcionan este framework y Python (que e
 esta se trata de una herramienta que permite un desarrollo rápido, seguro y escalable.
 
 Por otra parte se trabajará con Django Channels \cite{djangoChannels} para gestionar el uso de websockets. Django Channels
-permite el uso de websockets y tecnologías análogas mediante varios paquetes \alumno{en la documentación se hace uso
-directo del término paquete o módulo 'Channels is comprised of several packages...' son prácticamente sinónimos pero como veas}\tutor{puedes dejarlo así} que se integran dentro del framework de Django.
+permite el uso de websockets y tecnologías análogas mediante varios paquetes que se integran dentro del framework de Django.
 A través del uso de 'consumers' o consumidores, abstracciones propias de Channels, 
 se desarrollará la mayor parte de la lógica de la aplicación. 
 
@@ -37,13 +36,16 @@ iconos de forma sencilla o Contrast Finder \cite{contrastFinder} para comparar c
 
 \subsection{Docker}
 
-Docker \cite{docker} es una herramienta de código abierto que facilita un despliegue sencillo y portable utilizando contenedores
-virtuales\tutor{No verás en ningún sitio contenedores virtuales. Llámalos simplemente contenedores}. Estos contenedores se emplearán para hospedar los diversos servicios del sistema en servidor.\tutor{No lo hospeda,simplemente es un empaquetamiento. Si te cuesta definir Docker, trata de buscar una definición en otro TFG o más oficial, evitando inventarte cosas (lo cual, te pueden penalizar.)}
+Docker \cite{docker} es una herramienta de código abierto que facilita un despliegue sencillo y portable utilizando contenedores. 
+Un contenedor es una unidad estándar de software que agrupa el código y todas sus dependencias para que la aplicación se ejecute de 
+manera rápida y fiable en diferentes entornos de computación. Una imagen de contenedor Docker es un paquete de software ligero,
+independiente y ejecutable que incluye todo lo necesario para ejecutar una aplicación: código, tiempo de ejecución, 
+herramientas del sistema, bibliotecas del sistema y configuraciones \cite{dockerContainer}.
 
 \subsection{AWS}
 
 Amazon Web Services (AWS)~\cite{aws} es una plataforma de servicios en la nube ofrecida por Amazon. Proporciona
-una amplísima gama de servicios que incluyen computación, almacenamiento, bases de datos, ... \tutor{Abusas de los ters puntos cuando en muchos casos simplemente puedes poner un etc. ya está. Como te comenté, hay que evitar usar el lenguaje natural que utilizarías en una conversación por WhatsApp por ejemplo} Estas soluciones permitirán
+una amplísima gama de servicios que incluyen computación, almacenamiento, bases de datos, etc. Estas soluciones permitirán
 alojar la aplicación final de forma flexible y sencilla.
 
 Se detallará el uso tanto de Docker como de AWS en el proceso de preparación y despliegue de la aplicación.
@@ -76,11 +78,25 @@ de terminal.
 
 Este proyecto se ha guiado por el uso de una metodología de trabajo iterativa-incremental enfocada en la revisión de objetivos y
 avances entre el tutor y el alumno. Durante cada encuentro, se han ido discutiendo propuestas de mejora que se han convertido en
-objetivos para la siguiente evaluación. En primera instancia se han planteado unos objetivos principales (crear el juego
-con funcionalidades básicas) y diversos objetivos adicionales/opcionales que se han ido discutiendo e
-implementando a lo largo de las diferente reuniones (testing, mecánicas adicionales, despliegue mediante AWS, ...).
+objetivos para la siguiente evaluación. En primera instancia, después de 
+plantear los objetivos principales del desarrollo, se han propuesto tres diferentes fases de progreso con fechas estimadas:
 
-\tutor{Te ha quedado algo escueta. Aquí puedes contar las distintas iteraciones que hemos realizado apoyándote en el documento que tenemos.}
+\begin{itemize}
+	\item Fase 1: Septiembre 2023 - Diciembre 2023
+	\item Fase 2: Enero 2024 - Febrero 2024
+	\item Fase 3: Marzo 2024 - Mayo 2024
+\end{itemize}
+
+En la primera fase se destaca como objetivo principal crear una primera versión sencilla de la aplicación con 
+las funcionalidades de juego básicas. Se propone iterar el desarrollo 
+varias veces cumpliendo pequeños objetivos para lograr esta versión preliminar de forma satisfactoria.
+
+En la segunda fase se propone desarrollar una versión avanzada de la aplicación con elementos adicionales. De forma similar, se propone trabajar
+mediante pequeñas iteraciones donde se pretende implementar reglas y funcionalidades adicionales al juego además de testing.
+
+Habiendo completado estos puntos, a excepción del testing, se plantea una tercera fase enfocada en el despliegue de la aplicación y en la 
+revisión del código presente (además de la documentación necesaria para el trabajo de fin de grado). 
+Además, se plantea  nuevamente implementar finalmente el testing deseado.
 
 Esta metodología ha demostrado ser efectiva para este tipo de proyecto, ya que permite un avance progresivo y detallado,
 evitando la acumulación de muchas tareas. Además, al planificar con visión a futuro, la aplicación ha crecido de manera sólida
