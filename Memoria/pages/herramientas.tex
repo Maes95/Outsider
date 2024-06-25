@@ -8,11 +8,11 @@ de trabajo que se ha seguido para la elaboración de la aplicación.
 Las bases del proyecto se fundamentan en el uso de Django \cite{django} como tecnología de backend.
 
 Además de conocer en profundidad cómo funcionan este framework y Python (que es el lenguaje con el que trabaja Django),
-esta se trata de una herramienta que permite un desarrollo rápido, seguro y escalable.
+esta se trata de una herramienta que permite un desarrollo rápido y escalable.
 
 Por otra parte se trabajará con Django Channels \cite{djangoChannels} para gestionar el uso de websockets. Django Channels
 permite el uso de websockets y tecnologías análogas mediante varios paquetes que se integran dentro del framework de Django.
-A través del uso de 'consumers' o consumidores, abstracciones propias de Channels, 
+A través del uso de ``consumers'' o consumidores, abstracciones propias de Channels, 
 se desarrollará la mayor parte de la lógica de la aplicación. 
 
 Posteriormente se hará mención a Pytest \cite{pytest} a la hora de implementar el testing automático.
@@ -38,15 +38,14 @@ iconos de forma sencilla o Contrast Finder \cite{contrastFinder} para comparar c
 
 Docker \cite{docker} es una herramienta de código abierto que facilita un despliegue sencillo y portable utilizando contenedores. 
 Un contenedor es una unidad estándar de software que agrupa el código y todas sus dependencias para que la aplicación se ejecute de 
-manera rápida y fiable en diferentes entornos de computación. Una imagen de contenedor Docker es un paquete de software ligero,
-independiente y ejecutable que incluye todo lo necesario para ejecutar una aplicación: código, tiempo de ejecución, 
-herramientas del sistema, bibliotecas del sistema y configuraciones \cite{dockerContainer}.
+manera rápida y fiable en diferentes entornos de computación \cite{dockerContainer}. Con el uso de Docker, se preparará la aplicación 
+en diferentes contenedores para su despliegue de forma sencilla.
 
 \subsection{AWS}
 
 Amazon Web Services (AWS)~\cite{aws} es una plataforma de servicios en la nube ofrecida por Amazon. Proporciona
 una amplísima gama de servicios que incluyen computación, almacenamiento, bases de datos, etc. Estas soluciones permitirán
-alojar la aplicación final de forma flexible y sencilla.
+alojar la aplicación final de forma flexible.
 
 Se detallará el uso tanto de Docker como de AWS en el proceso de preparación y despliegue de la aplicación.
 
@@ -70,8 +69,8 @@ En último lugar se encuentra la herramienta más básica y a la vez más import
 el proyecto, Visual Studio Code \cite{vscode}. Visual Studio Code, comúnmente conocido como Visual Code o VS Code,
 es un editor de código fuente desarrollado por Microsoft.
 
-Todo el código se ha tratado mediante Visual code, desde la creación y edición del código hasta la ejecución de comandos
-de terminal.
+Todo el código se ha tratado mediante Visual Code, desde la creación y edición del código hasta la ejecución de comandos
+en la terminal del sistema.
 
 
 \section{Metodología}
@@ -79,7 +78,8 @@ de terminal.
 Este proyecto se ha guiado por el uso de una metodología de trabajo iterativa-incremental enfocada en la revisión de objetivos y
 avances entre el tutor y el alumno. Durante cada encuentro, se han ido discutiendo propuestas de mejora que se han convertido en
 objetivos para la siguiente evaluación. En primera instancia, después de 
-plantear los objetivos principales del desarrollo, se han propuesto tres diferentes fases de progreso con fechas estimadas:
+plantear los objetivos principales del desarrollo y la motivación general
+del proyecto, se han propuesto tres diferentes fases de progreso con fechas estimadas:
 
 \begin{itemize}
 	\item Fase 1: Septiembre 2023 - Diciembre 2023
@@ -97,6 +97,18 @@ mediante pequeñas iteraciones donde se pretende implementar reglas y funcionali
 Habiendo completado estos puntos, a excepción del testing, se plantea una tercera fase enfocada en el despliegue de la aplicación y en la 
 revisión del código presente (además de la documentación necesaria para el trabajo de fin de grado). 
 Además, se plantea  nuevamente implementar finalmente el testing deseado.
+
+Todas estas fases de desarrollo han terminado con reuniones enfocadas en discutir el avance del proyecto y los objetivos
+completados de la fase en cuestión. De forma adicional, se ha tenido en cuenta este desarrollo por fases incluso para las subidas
+de código y otros elementos al repositorio del proyecto. En la Figura \ref{fig:res_commits} se pueden observar diferentes aportaciones 
+por parte del alumno al repositorio con su número de versión asociado y una pequeña descripción.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth,clip=true]{res_commits.png}
+	\caption{Aportaciones al repositorio de GitHub}
+	\label{fig:res_commits}
+\end{figure}
 
 Esta metodología ha demostrado ser efectiva para este tipo de proyecto, ya que permite un avance progresivo y detallado,
 evitando la acumulación de muchas tareas. Además, al planificar con visión a futuro, la aplicación ha crecido de manera sólida

@@ -12,8 +12,8 @@ Además del propio juego, es necesario dar las capacidades y herramientas necesa
 poder organizar partidas de forma sencilla. Para ello se plantea la creación de una página de inicio que
 permita al usuario poder crear salas de juego o unirse a salas ya creadas.
 
-El objetivo principal sería permitir a todos los usuarios de la aplicación poder jugar a
-diferentes partidas teniendo en cuenta varias limitaciones como el que un jugador no debería poder acceder
+El objetivo en detalle sería permitir a todos los usuarios de la aplicación poder jugar a
+diferentes partidas, teniendo en cuenta varias limitaciones como el que un jugador no debería poder acceder
 a una partida ya empezada o evitar la creación de salas con el mismo nombre. De forma adicional, en esta página se deberían mostrar instrucciones que expliquen el funcionamiento
 del juego.
 
@@ -31,7 +31,7 @@ que la conocen mientras evitan desvelarla al verdadero jugador Outsider. Se dest
 que ninguno de los jugadores debería conocer a ciencia cierta el rol de otro, por ello, se trata de un juego 
 con un alto factor de interacción social, donde la intuición y la discreción son elementos clave.
 
-Con la palabra clave relevada a los jugadores Inocentes, se procede con la lógica de juego estándar: cada jugador siguiendo 
+Con la palabra clave revelada a los jugadores Inocentes, se procede con la lógica de juego estándar: cada jugador siguiendo 
 un orden secuencial, escribirá una palabra relacionada con su palabra clave
 para indicar a los demás que conocen la palabra asignada; después de que todos los jugadores hayan compartido una
 palabra, se lleva a cabo una votación simultánea, donde cada jugador vota por la persona que creen
@@ -41,18 +41,18 @@ El Outsider ganará si no es el jugador más votado. Por otra parte, el resto de
 si logran descubrir al Outsider y este llega a ser el jugador más votado.
 
 El objetivo es llevar a cabo la implementación de esta lógica de la forma más consistente posible, trabajando en
-detalle con las conexiones websocket.
+detalle las conexiones websocket.
 
 \subsection{Última oportunidad}
 
-Habiendo implementado el juego sencillo, se querría añadir nuevas funcionalidades base. En primer lugar, dado el transcurso
+Habiendo implementado el juego sencillo, se quiere añadir nuevas funcionalidades base. En primer lugar, dado el transcurso
 normal del juego, tras la votación simultánea, en el caso de que el Outsider reciba la mayoría de los votos, se le otorgará
 una última oportunidad para ganar adivinando la palabra clave.
 
 \subsection{Múltiples rondas}
 
 Cuando existen más de tres jugadores en una partida, se detecta la necesidad de poder jugar varias rondas,
-ya que, si no se elimina al Outsider de primeras y se elimina a un jugador Inocente, podrían seguir jugando el resto de jugadores
+ya que, si no se elimina al Outsider inicialmente y se elimina a un jugador Inocente, podrían seguir jugando el resto de jugadores
 rondas adicionales.
 
 Los jugadores eliminados pasan a ser espectadores mientras el resto sigue jugando hasta que no 
@@ -66,26 +66,26 @@ una jugabilidad más interesante. De esta manera, se plantea que cuando el núme
 dos jugadores Outsider en la partida.
 
 En estos casos el Outsider solo tendrá la oportunidad de adivinar la palabra clave si es el último Outsider en la partida. Por contraparte, si 
-todavía hay dos Outsider jugando y solo quedan otros dos jugadores Inocentes sin eliminar, ganaría el bando Outsider al tener ventaja en los 
+todavía hay dos Outsiders jugando y solo quedan otros dos jugadores Inocentes sin eliminar, ganaría el bando Outsider al tener ventaja en los 
 votos.
 
 \section{Objetivos secundarios y tecnológicos}
 
 Dados los objetivos/reglas principales que debería cumplir el juego, se añaden varios puntos adicionales que se quieren
-tratar como requisitos del proyecto.
+tratar como objetivos secundarios del proyecto.
 
 \subsection{Plataforma de juego}
 
 Se quiere aprovechar el uso de un entorno web para hacer más accesible el juego a diferente tipo de usuarios.
 
-El objetivo es hacer usable la aplicación en el mayor número de dispositivos posibles y se quiere diferenciar principalmente entre
-teléfonos móviles y equipos de escritorio (ordenadores y portátiles principalmente). Se diferencia entre estos dos tipos de
+El objetivo es hacer usable la aplicación en el mayor número de dispositivos posibles diferenciando principalmente entre
+teléfonos móviles y equipos de escritorio (ordenadores y portátiles esencialmente). Se diferencia entre estos dos tipos de
 dispositivos porque también se prevén dos tipos de juego de forma predominante:
 
-\begin{enumerate}
-    \item Juego presencial en un mismo espacio físico
-    \item Juego remoto
-\end{enumerate}
+\begin{compactitem}
+    \item Juego presencial en un mismo espacio físico.
+    \item Juego remoto.
+\end{compactitem}
 
 Se entiende que si un grupo quiere jugar en un espacio físico común, por ejemplo, en un cumpleaños en la casa de uno de los
 jugadores, en la mayoría de casos todos los jugadores jugarán con sus propios dispositivos móviles, principalmente smartphones.
@@ -97,11 +97,11 @@ escritorio.
 \subsection{Testing}
 
 Se propone de forma adicional trabajar ciertos elementos de Integración Continua (CI, por sus siglas en inglés), especialmente el testing del software, ya que, es una práctica
-esencial en la industria y resulta interesante trabajar el testing con tecnologías en tiempo real.
+esencial en la industria y resulta bastante llamativo trabajar el testing con tecnologías en tiempo real.
 
 \subsection{Despliegue}
 
-Para poder enseñar el resultado del proyecto de la forma más accesible posible, también se querría trabajar con tecnologías de
+Para poder enseñar el resultado del proyecto de la forma más accesible posible, también se quiere trabajar con tecnologías de
 AWS (Amazon Web Services) para poder tener la aplicación desplegada y totalmente disponible para cualquier usuario a la hora
 de acceder a esta.
 
@@ -109,8 +109,8 @@ De esta forma se pretende aprender sobre tecnologías de despliegue y de crear u
 
 \subsection{Feedback de usuarios}
 
-Para finalizar con la descripción inicial de objetivos, se querría tener en cuenta una pequeña prueba con usuarios a mitad de
-desarrollo con el objetivo de encontrar bugs y pequeñas mejoras para el juego, lo que dará su propia lista de cambios a realizar.
+Para finalizar con la descripción inicial de objetivos, se pretende realizar una pequeña prueba con usuarios a mitad de
+desarrollo con el objetivo de encontrar bugs y pequeñas mejoras para el juego, lo que generará su propia lista de cambios a realizar.
 
 \section{Resumen de objetivos}
 
@@ -121,7 +121,7 @@ desarrollo con el objetivo de encontrar bugs y pequeñas mejoras para el juego, 
     \item Permitir jugar varias rondas.
     \item Añadir más jugadores Outsider al juego si hay muchos jugadores en partida.
     \item Gestionar la usabilidad de la aplicación en diferentes dispositivos.
-    \item Tener en cuenta el feedback de los usuarios - Testing manual.
-    \item Realización de tests para la lógica en tiempo real - Testing automático.
+    \item Tener en cuenta el feedback de los usuarios. Testing manual.
+    \item Realización de tests para la lógica en tiempo real. Testing automático.
     \item Desplegar la aplicación a través de tecnologías modernas.
 \end{enumerate}
