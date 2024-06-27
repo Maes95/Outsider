@@ -1,3 +1,5 @@
+\section{Conclusiones}
+
 La finalidad de este proyecto es, tanto aprender y hacer uso de tecnologías
 asíncronas modernas, como la creación de una aplicación totalmente funcional 
 que implemente estas tecnologías en detalle.
@@ -27,7 +29,7 @@ de la pruebas automáticas en estos entornos, como para poder probar de forma m�
 elaborada la aplicación.
 
 Por otra parte, para el desarrollo de la interfaz web, se han implementado interfaces
- mediante el uso de librerías de componentes (Vue y Vuetify) que facilitan mucho el trabajo de desarrollo
+mediante el uso de librerías de componentes (Vue y Vuetify) que facilitan mucho el trabajo de desarrollo
 a la vez que ofrecen un resultado bastante atractivo. También se destaca toda la lógica de
 intercomunicación y el código necesario implementado directamente en el frontend.
 
@@ -38,4 +40,51 @@ lo que permite su fácil acceso y uso por parte de cualquier usuario.
 Teniendo en cuenta lo explicado en los anteriores párrafos, se puede concluir
 que el proyecto cumple los objetivos propuestos a lo largo del desarrollo.
 
-\tutor{Añadir brevemente algunos trabajos futuros (posibles extensiones, cosas que te gustaría haber hecho, etc.)}
+
+
+\section{Aspectos pendientes y trabajos futuros}
+
+Teniendo en cuenta la realización de objetivos, existen varios aspectos a tratar en cuanto a la posibilidad
+de implementar mejoras o realizar trabajos de ampliación sobre la aplicación.
+
+\subsection{Información de usuarios}
+Debido a que no era el objetivo principal del proyecto, no hay ninguna implementación relacionada con la administración
+persistente de información sobre los jugadores. Añadir la capacidad a los usuarios para poder registrarse y tener guardada
+información sobre sus partidas e información en detalle podría ser interesante, especialmente a la hora de personalizar
+un poco más la aplicación.
+
+Sería posible añadir un ranking o tener la capacidad de tener ``amigos'' dentro del juego para poder acceder a partidas entre
+usuarios conocidos de forma más sencilla. Los añadidos pueden ser muy diversos, pero todos requerirían un esfuerzo adicional 
+para gestionar la comunicación síncrona de una base de datos de algún tipo junto
+a la dificultad añadida de implementar un sistema de autenticación de usuarios. 
+
+Por otra parte, todos los elementos adicionales
+que se han comentado (como la capacidad de tener una lista de amigos) deberían trabajarse de forma individual.
+
+\subsection{Lista de partidas}
+Otro añadido que se muestra interesante, es la capacidad de tener una lista de partidas abiertas para que un jugador se pueda
+unir. Este añadido permitiría a los jugadores que quieran jugar con desconocidos unirse de forma directa a una partida 
+sin hacer uso de otros medios.
+
+Con esta lista de partidas, sería ideal añadir la capacidad de crear una sala privada o una sala pública. Mientras que a una sala
+pública podría acceder cualquier usuario desde esta lista, una sala privada no aparecería en este listado (en el caso de existir muchas
+salas de juego) o en todo caso solo sería accesible con un código de acceso.
+
+\subsection{Opciones de partida}
+Relacionado con el anterior punto, la capacidad de modificar el estado de la sala y la partida por parte de los usuarios se planteó 
+como un posible añadido para la aplicación. Por ejemplo, definir el número de jugadores Outsider o limitar el número de rondas
+por partida.
+
+Esta implementación, debido a la carga de lógica que acarrea no se llegó a implementar, pero se destaca que podría ser un gran
+añadido y no requeriría la implementación de sistemas nuevos. Sería necesario guardar esta configuración de partida
+e implementar una lógica más compleja que tenga en cuenta todas estas variaciones de juego posibles. Ayudaría bastante seguir haciendo
+uso del sistema de testing para comprobar de forma más rápida todos estos nuevos cambios.
+
+\subsection{Escalabilidad}
+Además del testing implementado, es importante poner a prueba las capacidades de rendimiento de los sistemas. Podría ser
+muy interesante plantear un uso masivo de la aplicación y como se tendría que modificar el entorno para adaptarse a estos cambios. Ya que, 
+puede que se llegué a un punto donde los servidores se vean sobrepasados o en todo caso, si se sigue haciendo uso de una máquina
+EC2 y de AWS, se genere un sobrecoste importante del uso de los servicios de cloud.
+
+En el proyecto no se han realizado pruebas de este tipo y el simple hecho de plantear este tipo de problemas es bastante atractivo
+si se quieren explorar estos conceptos de rendimiento y capacidad de carga en un sistema informático.
