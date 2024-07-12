@@ -1,7 +1,7 @@
 const BASE_URL = "";
 // const API_URL = "https://api.outsidergame.top";
-const API_URL = "http://localhost:8050/";
-const WEBSOCKET_URL = "ws://localhost:8050/";
+const API_URL = "http://51.136.34.97:8050/";
+const WEBSOCKET_URL = "ws://51.136.34.97:8050/";
 
 const State = {
   LOBBY: "LOBBY",
