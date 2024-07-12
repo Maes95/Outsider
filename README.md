@@ -101,3 +101,6 @@ Finalmente, el sistema puede ejecutar los tests. Para ello solo habría que ejec
 </li> <br>
 
 </ol>
+
+
+az group create --name outsider-group --location "South Central US"

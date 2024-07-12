@@ -9,11 +9,7 @@ services:
 
   # Django backend container with WS logic (Django Channels)
   django:
-    container_name: backend_django
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    image: backend_django
+    image: maes95/outsider-backend:1.0.0
     depends_on:
       - redis
     ports:
@@ -21,12 +17,8 @@ services:
 
   # Main container / Vue frontend
   vue_frontend:
-    container_name: vue_frontend
     restart: always
-    build:
-      context: ./outsider-front
-      dockerfile: Dockerfile
-    image: vue_frontend
+    image: maes95/outsider-front:1.0.0
     depends_on:
       - django
     ports:
