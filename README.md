@@ -103,4 +103,7 @@ Finalmente, el sistema puede ejecutar los tests. Para ello solo habría que ejec
 </ol>
 
 
-az group create --name outsider-group --location "South Central US"
+az group create --name outsider-group --location "Spain Central"
+az appservice plan create --name outsider-plan --resource-group outsider-group --sku S1 --is-linux
+az webapp create --resource-group outsider-group --plan outsider-plan\
+ --name outsider --multicontainer-config-type compose --multicontainer-config-file docker-compose.yaml
