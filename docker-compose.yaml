@@ -18,8 +18,8 @@ services:
   # Main container / Vue frontend
   vue_frontend:
     restart: always
-    image: maes95/outsider-front:1.0.2
+    image: maes95/outsider-front:1.0.4
     depends_on:
       - django
     ports:
-      - 80:80
+      - 8051:80
