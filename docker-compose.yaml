@@ -3,29 +3,19 @@ services:
   # Redis server for websocket use
   redis:
     container_name: redis
+    network_mode: host
     restart: always
     image: redis:latest
-    ports:
-      - "6379:6379"
 
   # Django backend container with WS logic (Django Channels)
   django:
     image: maes95/outsider-backend:1.0.1
+    network_mode: host
     depends_on:
       - redis
-    ports:
-     - 8050:8050 
 
   # Main container / Vue frontend
   vue_frontend:
     restart: always
-    image: maes95/outsider-front:1.0.4
-    depends_on:
-      - django
-    ports:
-      - 8051:80
-      
-networks:
-  host:
-    name: host
-    external: true
+    image: maes95/outsider-front:1.0.11
+    network_mode: host
